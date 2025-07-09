@@ -5,7 +5,7 @@ const Pagination = () => {
     const totalPages = 5;
 
     return (
-        <div className="w-full mx-auto flex items-center justify-between mt-6">
+        <div className="w-full mx-auto px-6 py-4 flex items-center justify-between mt-6">
             <div className="flex items-center space-x-2">
                 <span className="text-sm text-gray-700">총 23개 유저 중 1-10개 표시</span>
             </div>
@@ -41,11 +41,11 @@ const Pagination = () => {
                     다음
                 </button>
 
-                <select className="px-3 py-1 text-sm border rounded">
-                    <option>10개씩 보기</option>
-                    <option>20개씩 보기</option>
-                    <option>50개씩 보기</option>
-                </select>
+                {/*<select className="px-3 py-1 text-sm border rounded">*/}
+                {/*    <option>10개씩 보기</option>*/}
+                {/*    <option>20개씩 보기</option>*/}
+                {/*    <option>50개씩 보기</option>*/}
+                {/*</select>*/}
             </div>
         </div>
     );
