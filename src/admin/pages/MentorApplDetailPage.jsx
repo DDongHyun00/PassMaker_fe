@@ -8,6 +8,7 @@ import Projects from "../components/mentorApplDetail/Projects.jsx";
 import Experience from "../components/mentorApplDetail/Experience.jsx";
 import Introduce from "../components/mentorApplDetail/Introduce.jsx";
 import Information from "../components/mentorApplDetail/Information.jsx";
+import Back from "../common/Back.jsx";
 
 const MentorApplDetailPage = () => {
     const [activeTab, setActiveTab] = useState('info');
@@ -17,15 +18,15 @@ const MentorApplDetailPage = () => {
             <Header />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Header */}
-                <div className="max-w-7xl mx-auto px-4 py-8">
+
+                <div className="max-w-7xl mx-auto px-4 py-1">
+                    <div className="mb-4">
+                        <Back />
+                    </div>
                     <div className="mb-8">
                         <h1 className="text-2xl font-bold text-gray-900 mb-2">멘토 신청 상세 조회</h1>
                         <p className="text-gray-600 ">신청하신 멘토의 상세 정보를 확인하고 승인/반려 처리를 할 수 있습니다.</p>
                     </div>
-                        <button className="text-blue-600 hover:text-blue-800 font-medium transition-colors">
-                            목록으로 돌아가기
-                        </button>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

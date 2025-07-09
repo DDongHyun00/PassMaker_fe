@@ -12,7 +12,6 @@ const MentorApplicationPage = () => {
     return(
         <div className="w-full mx-auto min-h-screen bg-gray-50 flex flex-col">
             <Header />
-
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto px-4 py-8">
                     {/* 헤더 */}
