@@ -3,9 +3,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../common/lib/axios.js";
 import CenterWrapper from "../../common/styles/CenterWrapper.jsx";
+import { useAuth } from "../../auth/AuthContext.jsx";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [form, setForm] = useState({
     email: "",
@@ -23,11 +25,16 @@ const LoginPage = () => {
     e.preventDefault();
     setError(null);
 
+    console.log("로그인 시도 중..."); // 추가
     try {
       const response = await axios.post("/api/auth/login", form); // JWT 쿠키 자동 저장됨
+      console.log("로그인 성공 응답:", response); // 추가
       console.log("로그인 성공:", response.data);
+      login(); // Use the login function from AuthContext
+      console.log("AuthContext login 함수 호출됨"); // 추가
+      console.log("localStorage.isLoggedIn 값: ", localStorage.getItem("isLoggedIn")); // 추가 확인
 
-      navigate("/main"); // 메인 페이지로 이동
+      navigate("/"); // 메인 페이지로 이동
     } catch (err) {
       console.error("로그인 실패:", err);
       setError("이메일 또는 비밀번호가 올바르지 않습니다.");
@@ -48,7 +55,7 @@ const LoginPage = () => {
             placeholder="이메일"
             value={form.email}
             onChange={handleChange}
-            className="border p-2 rounded"
+            className="border p-2 rounded text-black"
           />
           <input
             name="password"
@@ -56,7 +63,7 @@ const LoginPage = () => {
             placeholder="비밀번호"
             value={form.password}
             onChange={handleChange}
-            className="border p-2 rounded"
+            className="border p-2 rounded text-black"
           />
           <button
             type="submit"
