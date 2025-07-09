@@ -1,4 +1,5 @@
 import React from 'react';
+import {Facebook, Twitter, Instagram, Linkedin, Mail, Phone,  MapPin} from 'lucide-react';
 
 const Footer = () => {
     return (
@@ -7,14 +8,14 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">관리자 기능</h3>
-                        <p className="text-sm text-gray-600 mb-4">
-                            효율적인 관리자 시스템으로 서비스 품질을 향상시키고 사용자 경험을 개선합니다.
-                        </p>
+                                <p className="text-sm text-gray-600 mb-4 leading-tight max-w-[180px]">
+                                    효율적인 관리자 시스템으로 서비스 품질을 향상시키고 사용자 경험을 개선합니다.
+                                </p>
                         <div className="flex space-x-4">
-                            <div className="w-6 h-6 bg-gray-400 rounded"></div>
-                            <div className="w-6 h-6 bg-gray-400 rounded"></div>
-                            <div className="w-6 h-6 bg-gray-400 rounded"></div>
-                            <div className="w-6 h-6 bg-gray-400 rounded"></div>
+                            <Facebook />
+                            <Twitter />
+                            <Instagram />
+                            <Linkedin />
                         </div>
                     </div>
 
@@ -39,11 +40,21 @@ const Footer = () => {
                     </div>
 
                     <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">고객 지원</h3>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">서비스 지원</h3>
                         <div className="space-y-2 text-sm text-gray-600">
-                            <p>support@admin-system.com</p>
-                            <p>02-123-4567</p>
-                            <p>서울특별시 강남구 테헤란로 123</p>
+                            <div className="flex items-center gap-2">
+                                <Mail size={20} />
+                                <p>support@admin-system.com</p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Phone size={20}/>
+                                <p>02-123-4567</p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                < MapPin />
+                                <p>서울특별시 강남구 테헤란로 123</p>
+                            </div>
+
                         </div>
                     </div>
                 </div>

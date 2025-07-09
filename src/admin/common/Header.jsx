@@ -1,5 +1,5 @@
 import React from 'react';
-// { Search, Bell, ChevronDown } from 'lucide-react';
+import {Bell, ChevronDown, Search, LayoutDashboard } from "lucide-react";
 
 const Header = () => {
     return (
@@ -8,7 +8,8 @@ const Header = () => {
                 <div className="flex justify-between items-center h-16">
                     <div className="flex items-center">
                         <div className="flex-shrink-0 flex items-center">
-                            <div className="w-8 h-8 bg-blue-500 rounded mr-2"></div>
+                            {/*<div className="w-8 h-8 bg-blue-500 rounded mr-2"></div>*/}
+                            <LayoutDashboard />
                             <span className="text-lg font-semibold text-gray-900">관리자 대시보드</span>
                         </div>
                     </div>
@@ -20,7 +21,7 @@ const Header = () => {
                                 placeholder="검색어를 입력하세요"
                                 className="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
-                            {/*<Search className="absolute right-3 top-2.5 h-4 w-4 text-gray-400" />*/}
+                            <Search className="absolute right-3 top-2.5 h-4 w-4 text-gray-400" />
                         </div>
 
                         <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
@@ -28,13 +29,13 @@ const Header = () => {
                         </button>
 
                         <button className="p-2 text-gray-400 hover:text-gray-500">
-                            {/*<Bell className="h-5 w-5" />*/}
+                            <Bell className="h-5 w-5" />
                         </button>
 
                         <div className="flex items-center space-x-2">
                             <span className="text-sm text-gray-700">김관리</span>
                             <span className="text-xs text-gray-500">시스템 관리자</span>
-                            {/*<ChevronDown className="h-4 w-4 text-gray-400" />*/}
+                            <ChevronDown className="h-4 w-4 text-gray-400" />
                         </div>
                     </div>
                 </div>

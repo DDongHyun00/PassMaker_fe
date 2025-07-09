@@ -9,6 +9,8 @@ import MentoringRoomPage from "../room/pages/MentoringRoomPage.jsx";
 import UserListPage from "../admin/pages/UserListPage.jsx";
 import UserDetailPage from "../admin/pages/UserDetailPage.jsx";
 import MentorApplicationPage from "../admin/pages/MentorApplicationPage.jsx";
+import MentorApplDetailPage from "../admin/pages/MentorApplDetailPage.jsx";
+import ReportsReviewPage from "../admin/pages/ReportsReviewPage.jsx";
 
 const Router = () => {
     return (
@@ -22,6 +24,8 @@ const Router = () => {
             <Route path="/admin/users" element={<UserListPage />} />
             <Route path="/admin/users/id" element={<UserDetailPage />} />
             <Route path="/admin/mentor-application" element={<MentorApplicationPage />} />
+            <Route path="/admin/mentor-application/id" element={<MentorApplDetailPage />} />
+            <Route path="/admin/report-review" element={<ReportsReviewPage />} />
 
         </Routes>
     );

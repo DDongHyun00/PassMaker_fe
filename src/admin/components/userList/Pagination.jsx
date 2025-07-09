@@ -5,7 +5,7 @@ const Pagination = () => {
     const totalPages = 5;
 
     return (
-        <div className="flex items-center justify-between mt-6">
+        <div className="w-full mx-auto flex items-center justify-between mt-6">
             <div className="flex items-center space-x-2">
                 <span className="text-sm text-gray-700">총 23개 유저 중 1-10개 표시</span>
             </div>
