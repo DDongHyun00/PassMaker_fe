@@ -43,7 +43,7 @@ const SignupPage = () => {
 
     try {
       // axios 요청
-      const response = await axios.post("/api/auth/signup", form);
+      const response = await axios.post("http://localhost:8080/api/auth/signup", form);
       console.log("회원가입 성공:", response.data);
       // 성공 시 로그인 페이지로 이동
       navigate("/login");

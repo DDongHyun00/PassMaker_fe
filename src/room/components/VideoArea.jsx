@@ -1,95 +1,55 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import WebRTCConnection from "./WebRTCConnection.jsx";
 import { Rnd } from "react-rnd";
+import React from 'react';
 
-const VideoArea = ({ timer, cameraEnabled, micEnabled }) => {
+const VideoArea = ({ timer, cameraEnabled, micEnabled, setLocalStream }) => {
+    const location = useLocation();
+    const roomId = new URLSearchParams(location.search).get("roomId");
+
     const localVideoRef = useRef(null);
-    const [localStream, setLocalStream] = useState(null);
-
-    useEffect(() => {
-        const initMedia = async () => {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: true,
-                    audio: true,
-                });
-
-                if (localVideoRef.current) {
-                    localVideoRef.current.srcObject = stream;
-                }
-
-                setLocalStream(stream);
-            } catch (err) {
-                console.error("카메라/마이크 접근 실패:", err);
-                alert("카메라/마이크 권한이 필요합니다.");
-            }
-        };
-
-        if (cameraEnabled || micEnabled) {
-            initMedia();
-        }
-
-        return () => {
-            if (localStream) {
-                localStream.getTracks().forEach((track) => track.stop());
-            }
-        };
-    }, [cameraEnabled, micEnabled]);
+    const remoteVideoRef = useRef(null);
 
     return (
         <div className="flex-1 bg-black relative overflow-hidden h-[calc(100vh-80px)]">
-            {/* 타이머 표시 */}
-            <div className="absolute top-4 right-4 text-white text-xl">{timer}</div>
+            {/* 상대방 화면 (전체 화면) */}
+            <video
+                ref={remoteVideoRef}
+                autoPlay
+                playsInline
+                className="w-full h-full bg-black object-cover"
+            />
 
-            {/* 상대방 대기 UI */}
-            <div className="w-full h-full flex items-start justify-center pt-40">
-                {!cameraEnabled && (
-                    <div className="text-gray-400 text-center">
-                        <div className="w-32 h-32 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg className="w-16 h-16" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    fillRule="evenodd"
-                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        </div>
-                        <p className="text-lg">상대방을 기다리고 있습니다...</p>
-                    </div>
-                )}
-            </div>
-
-            {/* 내 영상: Rnd로 드래그+리사이즈+비율 고정 */}
-            {cameraEnabled && (
-                <Rnd
-                    default={{
-                        x: 40,
-                        y: 40,
-                        width: 200,
-                        height: 150,
-                    }}
-                    bounds="parent"
-                    lockAspectRatio
-                    minWidth={120}
-                    minHeight={90}
-                    maxHeight={400}
-                    style={{
-                        border: "5px solid #a855f7",
-                        borderRadius: "12px",
-                        overflow: "hidden",
-                        backgroundColor: "black",
-                        position: "absolute",
-                        zIndex: 10,
-                    }}
-                >
+            {/* 나의 화면 - 드래그 및 리사이징 가능 */}
+            <Rnd
+                default={{ x: 20, y: 100, width: 320, height: 240 }}
+                minWidth={160}
+                minHeight={120}
+                bounds="parent"
+                lockAspectRatio={true}
+                dragHandleClassName="drag-handle"
+                className="absolute z-20 rounded-xl overflow-hidden shadow-lg border-2 border-purple-500"
+            >
+                <div className="w-full h-full bg-black drag-handle flex items-center justify-center relative">
+                    <p className="text-white text-sm absolute top-2 left-2 z-10">나의 화면</p>
                     <video
                         ref={localVideoRef}
                         autoPlay
-                        playsInline
                         muted
-                        className="w-full h-full object-cover"
+                        playsInline
+                        className="w-full h-full object-cover rounded-xl"
                     />
-                </Rnd>
-            )}
+                </div>
+            </Rnd>
+
+            {/* WebRTC 연결 처리 */}
+            <WebRTCConnection
+                roomId={roomId}
+                localVideoRef={localVideoRef}
+                remoteVideoRef={remoteVideoRef}
+                setLocalStream={setLocalStream}
+            />
         </div>
     );
 };

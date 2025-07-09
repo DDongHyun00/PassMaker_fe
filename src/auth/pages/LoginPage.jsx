@@ -24,7 +24,7 @@ const LoginPage = () => {
     setError(null);
 
     try {
-      const response = await axios.post("/api/auth/login", form); // JWT 쿠키 자동 저장됨
+      const response = await axios.post("http://localhost:8080/api/auth/login", form); // JWT 쿠키 자동 저장됨
       console.log("로그인 성공:", response.data);
 
       navigate("/main"); // 메인 페이지로 이동
