@@ -22,19 +22,6 @@ const PaymentHistory = () => {
                 <div className="flex items-center justify-between py-3 border-b border-gray-100">
                     <div className="flex items-center space-x-3">
                         <span className="text-sm text-gray-600">결제 번호</span>
-                        <span className="text-sm font-medium">PAY_2023_1319</span>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                        <span className="text-sm text-gray-600">날짜</span>
-                        <span className="text-sm font-medium">2023-11-03</span>
-                        <span className="text-sm text-gray-600">금액</span>
-                        <span className="text-sm font-medium">₩50,000</span>
-                    </div>
-                </div>
-
-                <div className="flex items-center justify-between py-3 border-b border-gray-100">
-                    <div className="flex items-center space-x-3">
-                        <span className="text-sm text-gray-600">결제 번호</span>
                         <span className="text-sm font-medium">PAY_2023_1142</span>
                     </div>
                     <div className="flex items-center space-x-4">

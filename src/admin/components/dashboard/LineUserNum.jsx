@@ -1,12 +1,15 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import {CartesianGrid, Line, LineChart, ResponsiveContainer, XAxis, YAxis} from "recharts";
 
-const LineChartCompo = ({ data, title }) => (
+const LineUserNum = ({ data, title }) => (
 
     <div className="bg-white p-6 rounded-lg shadow-sm border">
         <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-            <button className="text-blue-600 text-sm">더보기</button>
+            <Link to="/admin/users" className="text-blue-600 text-sm">
+                더보기
+            </Link>
         </div>
         <ResponsiveContainer width="100%" height={200}>
             <LineChart data={data}>
@@ -19,4 +22,4 @@ const LineChartCompo = ({ data, title }) => (
         </ResponsiveContainer>
     </div>
 );
-export default LineChartCompo;
+export default LineUserNum;

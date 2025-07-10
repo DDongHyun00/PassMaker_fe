@@ -1,11 +1,11 @@
 import React from 'react';
 import StatCard from "../components/dashboard/StatCard.jsx";
 import Footer from "../common/Footer.jsx";
-import LineChartCompo from "../components/dashboard/LineChartCompo.jsx";
+import LineUserNum from "../components/dashboard/LineUserNum.jsx";
 import PieChartCompo from "../components/dashboard/PieChartCompo.jsx";
-import DataTable from "../components/dashboard/DataTable.jsx";
+import TableReports from "../components/dashboard/TableReports.jsx";
 import BarChartCompo from "../components/dashboard/BarChartCompo.jsx";
-import HorizontalBarChart from "../components/dashboard/HorizontalBarChart.jsx";
+import HorizontalMentor from "../components/dashboard/HorizontalMentor.jsx";
 
 const Dashboard = () => {
 
@@ -51,13 +51,14 @@ const Dashboard = () => {
     ];
 
     return (
+        <div className="fixed inset-0 flex justify-center overflow-auto items-start bg-gray-50">
+            <div className="w-full max-w-7xl  rounded p-6">
         <div className="min-h-screen bg-gray-50">
-            <div className="bg-white shadow-sm border-b">
+            <div className=" border-b">
                 <div className="max-w-7xl mx-auto px-6 py-4">
                     <div className="flex items-center justify-between">
                         <h1 className="text-2xl font-bold text-gray-900">관리자 통계 대시보드</h1>
                         <div className="flex items-center space-x-4">
-                            <span className="text-sm text-gray-600">최근 업데이트: 2024년 1월 15일</span>
                             <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">
                                 데이터 다운로드
                             </button>
@@ -101,25 +102,26 @@ const Dashboard = () => {
 
                 {/* Charts Row 1 */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                    <LineChartCompo
+                    <LineUserNum
                         data={lineChartData}
                         title="사용자 증가 추이"
                     />
-                    <PieChartCompo
-                        data={pieChartData}
-                        title="신고유형분석"
+                    <HorizontalMentor
+                        data={horizontalBarData}
+                        title="분야별 멘토 분포"
                     />
+
                 </div>
 
                 {/* Data Table */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                    <DataTable
+                    <TableReports
                         data={tableData}
                         title="최근 신고 현황"
                     />
-                    <HorizontalBarChart
-                        data={horizontalBarData}
-                        title="지역별사용자분포"
+                    <PieChartCompo
+                        data={pieChartData}
+                        title="신고 유형 분석"
                     />
                 </div>
 
@@ -127,7 +129,7 @@ const Dashboard = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                     <BarChartCompo
                         data={barChartData}
-                        title="사용자활동시간대"
+                        title="사용자 활동 시간대"
                     />
                     <PieChartCompo
                         data={pieChartData}
@@ -141,7 +143,8 @@ const Dashboard = () => {
             </div>
             <Footer />
         </div>
+            </div>
+        </div>
     );
 };
-
 export default Dashboard;

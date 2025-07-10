@@ -1,68 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const UserTable = () => {
-    const [users, setUsers] = useState([
-        {
-            id: 1001,
-            name: '김지훈',
-            email: 'jihoon.kim@example.com',
-            type: '멤버',
-            status: '활성',
-            joinDate: '2023-05-12',
-            lastAccess: '2023-11-28',
-            actions: '작업'
-        },
-        {
-            id: 1002,
-            name: '이수진',
-            email: 'sujin.lee@example.com',
-            type: '일반 회원',
-            status: '활성',
-            joinDate: '2023-06-03',
-            lastAccess: '2023-11-25',
-            actions: '작업'
-        },
-        {
-            id: 1003,
-            name: '박민준',
-            email: 'minjun.park@example.com',
-            type: '멤버',
-            status: '경고',
-            joinDate: '2023-04-18',
-            lastAccess: '2023-10-05',
-            actions: '작업'
-        },
-        {
-            id: 1004,
-            name: '최서연',
-            email: 'seoyeon.choi@example.com',
-            type: '일반 회원',
-            status: '활성',
-            joinDate: '2023-07-22',
-            lastAccess: '2023-11-27',
-            actions: '작업'
-        },
-        {
-            id: 1005,
-            name: '정다은',
-            email: 'daeun.jung@example.com',
-            type: '관리자',
-            status: '활성',
-            joinDate: '2023-03-15',
-            lastAccess: '2023-11-29',
-            actions: '작업'
-        }
-    ]);
-
+const UserTable = ({users, searchText, statusFilter, typeFilter, sortOrder, currentPage, usersPerPage}) => {
     const getStatusBadge = (status) => {
         const baseClasses = "px-2 py-1 rounded-full text-xs font-medium";
         switch (status) {
-            case '활성':
+            case '활동중':
                 return `${baseClasses} bg-green-100 text-green-800`;
-            case '경고':
-                return `${baseClasses} bg-yellow-100 text-yellow-800`;
-            case '비활성':
+            case '비활동중':
                 return `${baseClasses} bg-gray-100 text-gray-800`;
+            case '정지중':
+                return `${baseClasses} bg-red-100 text-red-800`;
             default:
                 return `${baseClasses} bg-gray-100 text-gray-800`;
         }
@@ -71,16 +18,46 @@ const UserTable = () => {
     const getTypeBadge = (type) => {
         const baseClasses = "px-2 py-1 rounded-full text-xs font-medium";
         switch (type) {
-            case '멤버':
+            case '멘토':
                 return `${baseClasses} bg-blue-100 text-blue-800`;
-            case '관리자':
+            case '멘티':
                 return `${baseClasses} bg-purple-100 text-purple-800`;
-            case '일반 회원':
-                return `${baseClasses} bg-gray-100 text-gray-800`;
             default:
                 return `${baseClasses} bg-gray-100 text-gray-800`;
         }
     };
+
+    const filteredUsers = users.filter((user) => {
+        const keyword = searchText.toLowerCase();
+        return (user.name.toLowerCase().includes(keyword) ||
+            user.email.toLowerCase().includes(keyword) ||
+            user.id.toString().includes(keyword)
+        );
+    });
+
+    const statusFiltered = statusFilter === '모든 상태'
+        ? filteredUsers
+        : filteredUsers.filter(user => user.status === statusFilter);
+
+    const typeFiltered = typeFilter === '모든 유형'
+        ? statusFiltered
+        : statusFiltered.filter(user => user.type === typeFilter);
+
+    const sortedUsers = [...typeFiltered].sort((a, b) => {
+        if (sortOrder === '가입일순') {
+            return new Date(b.joinDate) - new Date(a.joinDate);
+        }
+        if (sortOrder === '이름순') {
+            return a.name.localeCompare(b.name);
+        }
+        if (sortOrder === '최근 접속순') {
+            return new Date(b.lastAccess) - new Date(a.lastAccess);
+        }
+        return 0;
+    });
+
+    const startIndex = (currentPage -1)*usersPerPage;
+    const pageUsers = sortedUsers.slice(startIndex, startIndex + usersPerPage);
 
     return (
         <div className="w-full mx-auto bg-white rounded-lg shadow-sm border">
@@ -118,7 +95,7 @@ const UserTable = () => {
                     </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                    {users.map((user) => (
+                    {pageUsers.map((user) => (
                         <tr key={user.id} className="hover:bg-gray-50">
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <input type="checkbox" className="h-4 w-4 text-blue-600 rounded border-gray-300" />

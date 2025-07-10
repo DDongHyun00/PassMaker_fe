@@ -1,10 +1,13 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
-const DataTable = ({ data, title }) => (
+const TableReports = ({ data, title }) => (
     <div className="bg-white p-6 rounded-lg shadow-sm border">
         <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-            <button className="text-blue-600 text-sm">더보기</button>
+            <Link to="/admin/report-review" className="text-blue-600 text-sm">
+                더보기
+            </Link>
         </div>
         <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -40,4 +43,4 @@ const DataTable = ({ data, title }) => (
         </div>
     </div>
 );
-export default DataTable;
+export default TableReports;

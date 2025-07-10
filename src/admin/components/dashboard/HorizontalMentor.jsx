@@ -1,10 +1,13 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
-const HorizontalBarChart = ({ data, title }) => (
+const HorizontalMentor = ({ data, title }) => (
     <div className="bg-white p-6 rounded-lg shadow-sm border">
         <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-            <button className="text-blue-600 text-sm">더보기</button>
+            <Link to="/admin/mentor-application" className="text-blue-600 text-sm">
+                더보기
+            </Link>
         </div>
         <div className="space-y-4">
             {data.map((item, index) => (
@@ -24,4 +27,4 @@ const HorizontalBarChart = ({ data, title }) => (
         </div>
     </div>
 );
-export default HorizontalBarChart;
+export default HorizontalMentor;

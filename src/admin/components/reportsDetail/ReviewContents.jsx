@@ -17,7 +17,7 @@ const ReviewContents = () => {
                             <Rating />
                         </div>
                         <div className="text-right">
-                            <div className="text-sm text-red-500 mb-1">취소 완료됨</div>
+                            <div className="text-sm font-bold text-red-500 mb-1">취소 완료됨</div>
                         </div>
                     </div>
 
@@ -31,7 +31,7 @@ const ReviewContents = () => {
                         하는 분들시기 전이는 끝까지했습니다.
                     </div>
 
-                    <div className="flex justify-between text-sm text-gray-500">
+                    <div className="flex flex-col justify-between text-sm text-gray-500 gap-y-2 pl-6">
                         <span>작성일 상세: 2023년 10월 10일</span>
                         <span>문의현황: 직원 처리완료 중이전</span>
                     </div>
