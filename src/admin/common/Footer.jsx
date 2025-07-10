@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 import {Facebook, Twitter, Instagram, Linkedin, Mail, Phone,  MapPin} from 'lucide-react';
 
 const Footer = () => {
@@ -8,7 +9,7 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">관리자 기능</h3>
-                                <p className="text-sm text-gray-600 mb-4 leading-tight max-w-[180px]">
+                                <p className="text-sm text-gray-600 mb-4 leading-relaxed max-w-[180px]">
                                     효율적인 관리자 시스템으로 서비스 품질을 향상시키고 사용자 경험을 개선합니다.
                                 </p>
                         <div className="flex space-x-4">
@@ -20,22 +21,32 @@ const Footer = () => {
                     </div>
 
                     <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">관리자 페이지</h3>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">관리 목록</h3>
                         <ul className="space-y-2 text-sm text-gray-600">
-                            <li><a href="#" className="hover:text-gray-900">전체 유저 목록 조회</a></li>
-                            <li><a href="#" className="hover:text-gray-900">유저 상태 조회</a></li>
-                            <li><a href="#" className="hover:text-gray-900">멤버 신청 목록 조회</a></li>
-                            <li><a href="#" className="hover:text-gray-900">멤버 신청 상세 조회</a></li>
+                            <li><Link to="/admin/users" className="hover:text-gray-900">
+                                전체 유저 목록 조회
+                            </Link></li>
+                            <li><Link to="/admin/mentor-application" className="hover:text-gray-900">
+                                멘토 신청 목록 조회
+                            </Link></li>
+                            <li><Link to="/admin/report-review" className="hover:text-gray-900">
+                                신고 리뷰 목록 조회
+                            </Link></li>
+                            <li><Link to="/admin/inquiries" className="hover:text-gray-900">
+                                1:1 문의 목록 조회
+                            </Link></li>
                         </ul>
                     </div>
 
                     <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">추가 기능</h3>
                         <ul className="space-y-2 text-sm text-gray-600">
+                            <li><Link to="/admin" className="hover:text-gray-900">
+                                관리자 통계 대시보드
+                            </Link></li>
                             <li><a href="#" className="hover:text-gray-900">신고된 리뷰 목록</a></li>
                             <li><a href="#" className="hover:text-gray-900">리뷰 신고 상세 처리</a></li>
                             <li><a href="#" className="hover:text-gray-900">1:1 문의 목록</a></li>
-                            <li><a href="#" className="hover:text-gray-900">관리자 통계 대시보드</a></li>
                         </ul>
                     </div>
 

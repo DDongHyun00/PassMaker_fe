@@ -5,7 +5,7 @@ const SearchSection = () => {
     const [searchTerm, setSearchTerm] = useState('');
 
     return (
-        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 m-4">
+        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 m-0">
             <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle className="text-yellow-600" size={20} />
                 <span className="font-semibold text-yellow-800">신고된 리뷰: 24건</span>

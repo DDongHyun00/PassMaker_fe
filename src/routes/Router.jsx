@@ -14,6 +14,7 @@ import MentorApplDetailPage from "../admin/pages/MentorApplDetailPage.jsx";
 import ReportsReviewPage from "../admin/pages/ReportsReviewPage.jsx";
 import ReportsDetailPage from "../admin/pages/ReportsDetailPage.jsx";
 import InquiryListPage from "../admin/pages/InquiryListPage.jsx";
+import InquiryDetailPage from "../admin/pages/InquiryDetailPage.jsx";
 import Dashboard from "../admin/pages/Dashboard.jsx";
 
 const Router = () => {
@@ -30,8 +31,9 @@ const Router = () => {
             <Route path="/admin/mentor-application" element={<MentorApplicationPage />} />
             <Route path="/admin/mentor-application/id" element={<MentorApplDetailPage />} />
             <Route path="/admin/report-review" element={<ReportsReviewPage />} />
-            <Route path="/admin/report-reviewdetail" element={<ReportsDetailPage />} />
+            <Route path="/admin/report-review/id" element={<ReportsDetailPage />} />
             <Route path="/admin/inquiries" element={<InquiryListPage />} />
+            <Route path="/admin/inquiries/id" element={<InquiryDetailPage />} />
             <Route path="/admin" element={<Dashboard />} />
 
         </Routes>

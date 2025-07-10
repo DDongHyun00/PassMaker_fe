@@ -14,6 +14,8 @@ const MentorApplDetailPage = () => {
     const [activeTab, setActiveTab] = useState('info');
 
     return (
+        <div className="fixed inset-0 flex justify-center overflow-auto items-start bg-gray-50">
+            <div className="w-full max-w-7xl  rounded p-6">
         <div className="w-full mx-auto min-h-screen bg-gray-50 flex flex-col">
             <Header />
 
@@ -21,7 +23,7 @@ const MentorApplDetailPage = () => {
 
                 <div className="max-w-7xl mx-auto px-4 py-1">
                     <div className="mb-4">
-                        <Back />
+                        <Back to="/admin/mentor-application"/>
                     </div>
                     <div className="mb-8">
                         <h1 className="text-2xl font-bold text-gray-900 mb-2">멘토 신청 상세 조회</h1>
@@ -49,6 +51,8 @@ const MentorApplDetailPage = () => {
 
             </div>
             <Footer />
+        </div>
+            </div>
         </div>
     );
 };

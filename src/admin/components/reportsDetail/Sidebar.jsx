@@ -6,7 +6,8 @@ const Sidebar = () => {
 
     return (
         <div className="w-80 bg-gray-50 p-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">처리 절차</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">처리 결정</h3>
+            <h3 className="text-medium text-gray-900 mb-2">처리 방법 선택</h3>
 
             <div className="mb-6">
                 <div className="relative">
@@ -15,17 +16,21 @@ const Sidebar = () => {
                         value={selectedCategory}
                         onChange={(e) => setSelectedCategory(e.target.value)}
                     >
-                        <option>처리 방식</option>
-                        <option>신고 방식</option>
-                        <option>확인 방식</option>
+                        <option>처리방법선택</option>
+                        <option>블라인드 승인</option>
+                        <option>블라인드 거절</option>
                     </select>
                     <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 </div>
 
                 <div className="mt-4 space-y-2">
-                    <div className="text-sm text-gray-600">처리 방식을 선택하세요</div>
-                    <div className="text-sm text-gray-600">처리 방식을 선택하세요</div>
-                    <div className="text-sm text-gray-600">처리 사항</div>
+                    <div className="text-medium font-bold text-gray-600">결정 사유</div>
+                    <div className="space-y-4">
+                            <textarea
+                                className="w-full h-32 p-2 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="결정 사유를 입력하세요."
+                            ></textarea>
+                    </div>
                 </div>
             </div>
 
