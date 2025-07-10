@@ -1,18 +1,37 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 
-// https://vite.dev/config/
+import rollupNodePolyFill from 'rollup-plugin-node-polyfills';
+
 export default defineConfig({
   server:{
     port:5173
   },
   plugins: [react()],
+  resolve: {
+    alias: {
+      // Node 전역 객체 alias 설정
+      global: 'globalthis',
+    },
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      define: {
+        global: 'globalThis',
+      },
+      plugins: [
+        NodeGlobalsPolyfillPlugin({
+          buffer: true,
+        }),
+      ],
+    },
+  },
+  build: {
+    rollupOptions: {
+      plugins: [
+        rollupNodePolyFill(), // Rollup에서도 polyfill 적용
+      ],
+    },
+  },
 });
-
-// // vite.config.js
-// export default {
-//   server: {
-//     host: "0.0.0.0",
-//     port: 5173,
-//   },
-// };
