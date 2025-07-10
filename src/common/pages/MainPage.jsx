@@ -1,45 +1,26 @@
 // src/pages/MainPage.jsx
-import React from "react";
-import axios from "../lib/axios.js";
-import CenterWrapper from "../styles/CenterWrapper.jsx";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';  // react-router v6 기준
+import MentorList from '../components/MentorList';
+import Header from '../components/Header';
+import { useAuth } from '../../auth/AuthContext';
 
-const MainPage = () => {
+export default function MainPage() {
   const navigate = useNavigate();
+  const { isLoggedIn, logout } = useAuth();
+  const handleLogin = () => navigate('/login');
+  const handleSignup = () => navigate('/signup');
+  const handleMyPage = () => navigate('/mypage');
 
-  const handleLogout = async () => {
-    try {
-      const socialType = localStorage.getItem("socialType");
-
-      let logoutUrl = "/api/auth/logout"; // 기본: 일반 로그인
-      if (socialType === "KAKAO") logoutUrl = "/oauth/kakao/logout";
-      if (socialType === "GOOGLE") logoutUrl = "/oauth/google/logout";
-
-      await axios.post(logoutUrl);
-      localStorage.removeItem("socialType"); // 정리
-
-      alert("로그아웃 되었습니다.");
-      navigate("/"); // 로그인 페이지로 이동
-    } catch (error) {
-      console.error("로그아웃 실패:", error);
-      alert("로그아웃 중 오류 발생");
-    }
-  };
 
   return (
-    <CenterWrapper>
-      <div className="p-8 text-center">
-        <h1 className="text-3xl font-bold mb-4">메인 페이지</h1>
-        <p className="text-lg mb-6">로그인 완료 메인 기능 페이지</p>
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
-        >
-          로그아웃
-        </button>
-      </div>
-    </CenterWrapper>
+    <div className="min-h-screen flex flex-col">
+      {/* 헤더 추가 */}
+      <Header isLoggedIn={isLoggedIn} onLogout={logout} />
+      {/* ─── 메인 컨텐츠 ─── */}
+      <main className="flex-1 bg-gray-50">
+        <MentorList />
+      </main>
+    </div>
   );
-};
-
-export default MainPage;
+}
