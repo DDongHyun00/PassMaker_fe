@@ -5,6 +5,9 @@ import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfil
 import rollupNodePolyFill from 'rollup-plugin-node-polyfills';
 
 export default defineConfig({
+  server:{
+    port:5173
+  },
   plugins: [react()],
   resolve: {
     alias: {
