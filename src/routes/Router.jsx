@@ -19,10 +19,13 @@ import InquiryListPage from "../admin/pages/InquiryListPage.jsx";
 import InquiryDetailPage from "../admin/pages/InquiryDetailPage.jsx";
 import Dashboard from "../admin/pages/Dashboard.jsx";
 
+import { Routes, Route } from 'react-router-dom';
+
+
 const Router = () => {
     return (
         <Routes>
-            <Route path="/" element={<TitlePage />} />
+            {/*<Route path="/" element={<TitlePage />} />*/}
             <Route path="/main" element={<MainPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
@@ -41,18 +44,4 @@ const Router = () => {
         </Routes>
     );
 };
-
-const Router = () => (
-  <Routes>
-      <Route path="/login-select" element={<LoginSelectPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignupPage />} />
-    <Route element={<Layout />}>
-      <Route path="/" element={<MainPage />} />
-      <Route path="/mypage" element={<MyPage />} />
-      <Route path="/mentoringroom" element={<MentoringRoomPage />} />
-    </Route>
-  </Routes>
-);
-
 export default Router;

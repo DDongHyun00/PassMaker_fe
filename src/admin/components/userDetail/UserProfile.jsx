@@ -9,7 +9,7 @@ const UserProfile = () => {
                         <span className="text-2xl font-bold text-blue-600">박</span>
                     </div>
                     <h2 className="text-lg font-semibold text-gray-900">박진만</h2>
-                    <p className="text-sm text-gray-500">팀장 역할</p>
+                    <p className="text-sm text-gray-500">멘티</p>
                 </div>
 
                 <div className="space-y-4 text-sm">
@@ -47,12 +47,22 @@ const UserProfile = () => {
             </div>
 
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-lg font-bold text-gray-600">멘토 상태</h3>
-                        <span className="text-xs text-orange-900">신청중</span>
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-xl font-bold text-gray-900">멘토 상태</h3>
+                        <span className="text-sm text-bold text-orange-900">신청중</span>
                     </div>
-                    <div className="text-3xl font-bold text-gray-900 mb-1">12</div>
-                    <p className="text-sm text-gray-500">2023년 10월 대비</p>
+                    <div className="mb-4">
+                        <p className="text-gray-600 mb-1">신청일</p>
+                        <p className="font-bold text-gray-900">2025-07-11</p>
+                    </div>
+                    <div className="mb-4">
+                        <p className="text-gray-600 mb-1">전문 분야</p>
+                        <p className="font-bold text-blue-500">IT</p>
+                    </div>
+                    <div className="mb-4">
+                        <p className="text-gray-600 mb-1">경력</p>
+                        <p className="font-bold text-gray-900">무슨회사 5년</p>
+                    </div>
             </div>
         </div>
 
