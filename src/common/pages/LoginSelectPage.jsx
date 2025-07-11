@@ -6,7 +6,7 @@ import logo from '../../assets/PassMakerLogo.webp';
 
 
 
-const TitlePage = () => {
+const LoginSelectPage = () => {
   const navigate = useNavigate();
 
   const handleKakaoLogin = () => {
@@ -79,4 +79,4 @@ const TitlePage = () => {
   );
 };
 
-export default TitlePage;
+export default LoginSelectPage;
