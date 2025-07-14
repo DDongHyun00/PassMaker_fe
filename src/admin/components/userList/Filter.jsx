@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Filter = ({ searchText, setSearchText, statusFilter, setStatusFilter, typeFilter, setTypeFilter, sortOrder, setSortOrder, resetFilters}) => {
+const Filter = ({ searchText, setSearchText, statusFilter, setStatusFilter, roleFilter, setRoleFilter, sortOrder, setSortOrder, resetFilters}) => {
     return (
         <div className="w-full mx-auto bg-white p-4 rounded-lg shadow-sm border mb-6">
             <div className="flex items-center justify-between">
@@ -17,12 +17,12 @@ const Filter = ({ searchText, setSearchText, statusFilter, setStatusFilter, type
                     <div className="flex items-center space-x-4">
                         <select
                             className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            value={typeFilter || '모든 유형'}
-                            onChange={(e) => setTypeFilter(e.target.value)}
+                            value={roleFilter || '모든 유형'}
+                            onChange={(e) => setRoleFilter(e.target.value)}
                         >
                             <option>모든 유형</option>
-                            <option>멘토</option>
-                            <option>멘티</option>
+                            <option value="멘토">멘토</option>
+                            <option value="멘티">멘티</option>
                         </select>
                         <select
                             className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -30,9 +30,9 @@ const Filter = ({ searchText, setSearchText, statusFilter, setStatusFilter, type
                             onChange={(e) => setStatusFilter(e.target.value)}
                         >
                             <option>모든 상태</option>
-                            <option>활동중</option>
-                            <option>비활동중</option>
-                            <option>정지중</option>
+                            <option>활동회원</option>
+                            <option>탈퇴회원</option>
+                            <option>블랙리스트</option>
                         </select>
                         <select
                             className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -41,7 +41,6 @@ const Filter = ({ searchText, setSearchText, statusFilter, setStatusFilter, type
                         >
                             <option>가입일순</option>
                             <option>이름순</option>
-                            <option>최근 접속순</option>
                         </select>
                         <button
                             className="px-4 py-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"

@@ -21,6 +21,8 @@ import InquiryListPage from "../admin/pages/InquiryListPage.jsx";
 import InquiryDetailPage from "../admin/pages/InquiryDetailPage.jsx";
 import Dashboard from "../admin/pages/Dashboard.jsx";
 
+
+
 const Router = () => {
     const { user, loading } = useAuth();
 
@@ -43,9 +45,9 @@ const Router = () => {
 
                 {/* 관리자 페이지도 추후 권한 체크 확장 가능 */}
                 <Route path="/admin/users" element={<UserListPage />} />
-                <Route path="/admin/users/id" element={<UserDetailPage />} />
+                <Route path="/admin/users/:userId" element={<UserDetailPage />} />
                 <Route path="/admin/mentor-application" element={<MentorApplicationPage />} />
-                <Route path="/admin/mentor-application/id" element={<MentorApplDetailPage />} />
+                <Route path="/admin/mentor-application/:applyId" element={<MentorApplDetailPage />} />
                 <Route path="/admin/report-review" element={<ReportsReviewPage />} />
                 <Route path="/admin/report-review/id" element={<ReportsDetailPage />} />
                 <Route path="/admin/inquiries" element={<InquiryListPage />} />
@@ -55,5 +57,4 @@ const Router = () => {
         </Routes>
     );
 };
-
 export default Router;

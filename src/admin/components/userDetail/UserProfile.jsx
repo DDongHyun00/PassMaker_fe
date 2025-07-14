@@ -1,72 +1,108 @@
 import React from 'react';
 
-const UserProfile = () => {
-    return(
-        <div className="flex flex-col + space-y-6">
+const UserProfile = ({ user }) => {
+    // 날짜 변환 유틸
+    const formatDate = (dateString) => {
+        if (!dateString) return '날짜 정보 없음';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        });
+    };
+
+    return (
+        <div className="flex flex-col space-y-6">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-8">
-                <div className="text-center mb-6">
-                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl font-bold text-blue-600">박</span>
+                {/* 상단 사용자 정보 */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 text-left">
+                    <div className="mt-10 flex flex-col items-center">
+                        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+              <span className="text-2xl font-bold text-blue-600">
+                {user.name ? user.name[0] : '?'}
+              </span>
+                        </div>
+                        <h2 className="text-lg font-semibold text-gray-900">{user.name}</h2>
                     </div>
-                    <h2 className="text-lg font-semibold text-gray-900">박진만</h2>
-                    <p className="text-sm text-gray-500">멘티</p>
-                </div>
 
-                <div className="space-y-4 text-sm">
-                    <div className="flex justify-between">
-                        <span className="text-gray-600">사용자 ID</span>
-                        <span className="font-medium">USER_2023_1042</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span className="text-gray-600">이메일</span>
-                        <span className="font-medium">james.park@example.com</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span className="text-gray-600">전화번호</span>
-                        <span className="font-medium">010-1234-5678</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span className="text-gray-600">가입일</span>
-                        <span className="font-medium">2023년 1월 15일</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span className="text-gray-600">최근 접속</span>
-                        <span className="font-medium">2023년 11월 8일 14:23</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span className="text-gray-600">접속 국가</span>
-                        <span className="font-medium">미국(아마존 웹 서비스)</span>
+                    <div className="space-y-4 mt-4 flex flex-col items-end mr-12">
+                        <div className="flex justify-between w-full">
+                            <span className="text-gray-600">사용자 ID</span>
+                            <span className="font-medium">{user.id}</span>
+                        </div>
+                        <div className="flex justify-between w-full">
+                            <span className="text-gray-600">이메일</span>
+                            <span className="font-medium">{user.email}</span>
+                        </div>
+                        <div className="flex justify-between w-full">
+                            <span className="text-gray-600">가입일</span>
+                            <span className="font-medium">{formatDate(user.createdAt)}</span>
+                        </div>
+                        <div className="flex justify-between w-full">
+                            <span className="text-gray-600">사용자 구분</span>
+                            <span className="font-medium">{String(user.mentor).toLowerCase() === 'true' ? '멘토' : '멘티'}</span>
+                        </div>
                     </div>
                 </div>
 
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                    <button className="w-full bg-red-50 text-red-600 py-2 px-4 rounded-md text-sm font-medium hover:bg-red-100">
+                {/* 예약 내역 */}
+                <div className="pl-10">
+                    <div className="pt-10 pl-3 flex justify-between">
+                        <span className="text-gray-600">예약내역</span>
+                    </div>
+                    <div className="w-full pt-4 bg-white">
+                        <div className="overflow-x-auto border-2 mr-10">
+                            <table className="w-full table-fixed divide-y divide-gray-200">
+                                <thead className="bg-gray-50">
+                                <tr>
+                                    <th className="px-6 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">NO</th>
+                                    <th className="px-6 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">예약번호</th>
+                                    <th className="px-6 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">예약시간</th>
+                                    <th className="px-6 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">멘토명</th>
+                                    <th className="px-6 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">결제금액</th>
+                                </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                {user.reservations && user.reservations.length > 0 ? (
+                                    user.reservations.map((res, idx) => (
+                                        <tr key={res.reserveId}>
+                                            <td className="px-7 py-4 text-gray-900 text-center">{idx + 1}</td>
+                                            <td className="px-7 py-4 text-gray-900 text-center">{res.reserveId}</td>
+                                            <td className="px-7 py-4 text-gray-900 text-center">
+                                                {formatDate(res.reservationTime)}
+                                            </td>
+                                            <td className="px-7 py-4 text-gray-900 text-center">{res.mentorName}</td>
+                                            <td className="px-7 py-4 text-gray-900 text-center">
+                                                {res.amount?.toLocaleString()}원
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="5" className="px-7 py-4 text-center text-gray-500">
+                                            예약 내역이 없습니다.
+                                        </td>
+                                    </tr>
+                                )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                {/* 하단 버튼 */}
+                <div className="mt-6 pt-6 pr-10 border-gray-200 flex justify-end">
+                    <button className="bg-red-50 text-orange-600 py-2 px-4 mr-4 rounded-md text-sm font-medium hover:bg-orange-100">
+                        계정 정지
+                    </button>
+                    <button className="bg-red-50 text-red-600 py-2 px-4 rounded-md text-sm font-medium hover:bg-red-100">
                         계정 삭제
                     </button>
                 </div>
             </div>
-
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-xl font-bold text-gray-900">멘토 상태</h3>
-                        <span className="text-sm text-bold text-orange-900">신청중</span>
-                    </div>
-                    <div className="mb-4">
-                        <p className="text-gray-600 mb-1">신청일</p>
-                        <p className="font-bold text-gray-900">2025-07-11</p>
-                    </div>
-                    <div className="mb-4">
-                        <p className="text-gray-600 mb-1">전문 분야</p>
-                        <p className="font-bold text-blue-500">IT</p>
-                    </div>
-                    <div className="mb-4">
-                        <p className="text-gray-600 mb-1">경력</p>
-                        <p className="font-bold text-gray-900">무슨회사 5년</p>
-                    </div>
-            </div>
         </div>
-
-    )
-}
+    );
+};
 
 export default UserProfile;

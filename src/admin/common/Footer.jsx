@@ -9,9 +9,11 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">관리자 기능</h3>
-                                <p className="text-sm text-gray-600 mb-4 leading-relaxed max-w-[180px]">
-                                    효율적인 관리자 시스템으로 서비스 품질을 향상시키고 사용자 경험을 개선합니다.
-                                </p>
+                                <div className="text-sm text-gray-600 mb-8 leading-relaxed max-w-[180px]">
+                                    <Link to="/admin" className="hover:text-gray-900 ">
+                                        관리자 대시보드
+                                    </Link>
+                                </div>
                         <div className="flex space-x-4">
                             <Facebook />
                             <Twitter />
@@ -21,7 +23,7 @@ const Footer = () => {
                     </div>
 
                     <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">페이지 목록</h3>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">고객 관리</h3>
                         <ul className="space-y-2 text-sm text-gray-600">
                             <li><Link to="/admin/users" className="hover:text-gray-900">
                                 회원 관리
@@ -29,23 +31,18 @@ const Footer = () => {
                             <li><Link to="/admin/mentor-application" className="hover:text-gray-900">
                                 멘토 관리
                             </Link></li>
+
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">운영 관리</h3>
+                        <ul className="space-y-2 text-sm text-gray-600">
                             <li><Link to="/admin/report-review" className="hover:text-gray-900">
                                 신고 관리
                             </Link></li>
                             <li><Link to="/admin/inquiries" className="hover:text-gray-900">
                                 1:1 문의 관리
-                            </Link></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">현황 및 통계</h3>
-                        <ul className="space-y-2 text-sm text-gray-600">
-                            <li><Link to="/admin" className="hover:text-gray-900">
-                                관리자 대시보드
-                            </Link></li>
-                            <li><Link to="/admin" className="hover:text-gray-900">
-                                매출 통계
                             </Link></li>
                         </ul>
                     </div>

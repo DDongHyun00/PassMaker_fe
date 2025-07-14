@@ -46,9 +46,6 @@ const ApplicationTable = ({applications =[], searchText, statusFilter, typeFilte
                             분야
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            경력
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             상태
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -81,9 +78,6 @@ const ApplicationTable = ({applications =[], searchText, statusFilter, typeFilte
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 {app.field}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {app.experience}
-                            </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(app.status)}`}>
                         {app.status}
@@ -94,7 +88,7 @@ const ApplicationTable = ({applications =[], searchText, statusFilter, typeFilte
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 <Link
-                                    to="/admin/mentor-application/id"
+                                    to={`/admin/mentor-application/${app.id}`}
                                     className="text-blue-600 hover:text-blue-500">
                                     상세보기
                                 </Link>
