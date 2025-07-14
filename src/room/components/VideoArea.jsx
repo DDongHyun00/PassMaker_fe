@@ -1,16 +1,16 @@
-import { useState, useRef, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useRef } from "react";
 import WebRTCConnection from "./WebRTCConnection.jsx";
+import { useParams } from "react-router-dom";
 import { Rnd } from "react-rnd";
-import React from 'react';
 
-const VideoArea = ({ timer, cameraEnabled, micEnabled, setLocalStream }) => {
-    const location = useLocation();
-    const roomId = new URLSearchParams(location.search).get("roomId");
+const VideoArea = ({ timer, cameraEnabled, micEnabled, setLocalStream, userId }) => {
+    const { roomId: roomIdParam } = useParams();
+    const roomId = parseInt(roomIdParam);
 
     const localVideoRef = useRef(null);
     const remoteVideoRef = useRef(null);
 
+    console.log("VideoArea 렌더링됨. userId:", userId);
     return (
         <div className="flex-1 bg-black relative overflow-hidden h-[calc(100vh-80px)]">
             {/* 상대방 화면 (전체 화면) */}
@@ -44,12 +44,15 @@ const VideoArea = ({ timer, cameraEnabled, micEnabled, setLocalStream }) => {
             </Rnd>
 
             {/* WebRTC 연결 처리 */}
-            <WebRTCConnection
-                roomId={roomId}
-                localVideoRef={localVideoRef}
-                remoteVideoRef={remoteVideoRef}
-                setLocalStream={setLocalStream}
-            />
+            {roomId && (
+                <WebRTCConnection
+                    roomId={roomId}
+                    localVideoRef={localVideoRef}
+                    remoteVideoRef={remoteVideoRef}
+                    setLocalStream={setLocalStream}
+                    userId={userId}
+                />
+            )}
         </div>
     );
 };
