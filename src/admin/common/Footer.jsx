@@ -21,32 +21,32 @@ const Footer = () => {
                     </div>
 
                     <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">관리 목록</h3>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">페이지 목록</h3>
                         <ul className="space-y-2 text-sm text-gray-600">
                             <li><Link to="/admin/users" className="hover:text-gray-900">
-                                전체 유저 목록 조회
+                                회원 관리
                             </Link></li>
                             <li><Link to="/admin/mentor-application" className="hover:text-gray-900">
-                                멘토 신청 목록 조회
+                                멘토 관리
                             </Link></li>
                             <li><Link to="/admin/report-review" className="hover:text-gray-900">
-                                신고 리뷰 목록 조회
+                                신고 관리
                             </Link></li>
                             <li><Link to="/admin/inquiries" className="hover:text-gray-900">
-                                1:1 문의 목록 조회
+                                1:1 문의 관리
                             </Link></li>
                         </ul>
                     </div>
 
                     <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">추가 기능</h3>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">현황 및 통계</h3>
                         <ul className="space-y-2 text-sm text-gray-600">
                             <li><Link to="/admin" className="hover:text-gray-900">
-                                관리자 통계 대시보드
+                                관리자 대시보드
                             </Link></li>
-                            <li><a href="#" className="hover:text-gray-900">신고된 리뷰 목록</a></li>
-                            <li><a href="#" className="hover:text-gray-900">리뷰 신고 상세 처리</a></li>
-                            <li><a href="#" className="hover:text-gray-900">1:1 문의 목록</a></li>
+                            <li><Link to="/admin" className="hover:text-gray-900">
+                                매출 통계
+                            </Link></li>
                         </ul>
                     </div>
 

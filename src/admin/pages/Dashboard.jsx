@@ -117,27 +117,27 @@ const Dashboard = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                     <TableReports
                         data={tableData}
-                        title="최근 신고 현황"
+                        title="당일 매출 현황"
                     />
-                    <PieChartCompo
-                        data={pieChartData}
-                        title="신고 유형 분석"
+                    <BarChartCompo
+                        data={barChartData}
+                        title="일별 매출 현황"
                     />
                 </div>
 
                 {/* Charts Row 2 */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                    <BarChartCompo
-                        data={barChartData}
-                        title="사용자 활동 시간대"
+                    <PieChartCompo
+                        data={pieChartData}
+                        title="분야별 매출 현황"
                     />
                     <PieChartCompo
                         data={pieChartData}
-                        title="지역별 사용자 분포"
+                        title="신고 현황 분석"
                     />
                     <PieChartCompo
                         data={pieChartData}
-                        title="문의유형분석"
+                        title="문의 유형 분석"
                     />
                 </div>
             </div>
