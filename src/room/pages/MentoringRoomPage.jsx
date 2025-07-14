@@ -2,8 +2,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import MentoringHeader from '../components/MentoringHeader.jsx';
 import VideoArea from '../components/VideoArea.jsx';
 import MentoringPreparation from '../components/MentoringPreparation.jsx';
+import { useAuth } from "../../auth/AuthContext.jsx"; //
+
 
 const MentoringRoomPage = () => {
+    const { user, loading } = useAuth();
+
+    if (loading || !user || !user.userId) {
+        return <div>로딩 중...</div>;  // 혹은 return null
+    }
+
+    console.log("MentoringRoomPage 렌더링됨. userId:", user.userId);
+
     const [timer, setTimer] = useState(0);
     const [cameraEnabled, setCameraEnabled] = useState(true);
     const [micEnabled, setMicEnabled] = useState(true);
@@ -38,6 +48,13 @@ const MentoringRoomPage = () => {
         return () => clearInterval(interval);
     }, []);
 
+    useEffect(() => {
+        if (!loading) {
+            console.log("MentoringRoomPage 렌더링됨. userId:", user?.userId);
+        }
+    }, [loading, user]);
+
+
     const formatTime = (seconds) => {
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
@@ -48,12 +65,15 @@ const MentoringRoomPage = () => {
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col">
             <MentoringHeader />
-            <VideoArea
-                timer={formatTime(timer)}
-                cameraEnabled={cameraEnabled}
-                micEnabled={micEnabled}
-                setLocalStream={setLocalStream}
-            />
+            {user && (
+                <VideoArea
+                    userId={user.userId}
+                    timer={formatTime(timer)}
+                    cameraEnabled={cameraEnabled}
+                    micEnabled={micEnabled}
+                    setLocalStream={setLocalStream}
+                />
+            )}
             <MentoringPreparation
                 cameraEnabled={cameraEnabled}
                 micEnabled={micEnabled}

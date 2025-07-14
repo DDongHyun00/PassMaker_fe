@@ -1,34 +1,36 @@
-import { useState, useRef, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useRef } from "react";
 import WebRTCConnection from "./WebRTCConnection.jsx";
+import { useParams } from "react-router-dom";
 import { Rnd } from "react-rnd";
-import React from 'react';
 
-const VideoArea = ({ timer, cameraEnabled, micEnabled, setLocalStream }) => {
-    const location = useLocation();
-    const roomId = new URLSearchParams(location.search).get("roomId");
+const VideoArea = ({ timer, cameraEnabled, micEnabled, setLocalStream, userId }) => {
+    const { roomId: roomIdParam } = useParams();
+    const roomId = parseInt(roomIdParam);
 
     const localVideoRef = useRef(null);
     const remoteVideoRef = useRef(null);
 
+    console.log("VideoArea 렌더링됨. userId:", userId);
+
     return (
-        <div className="flex-1 bg-black relative overflow-hidden h-[calc(100vh-80px)]">
-            {/* 상대방 화면 (전체 화면) */}
+        <div className="grow w-screen h-[calc(100vh-80px)] bg-black relative overflow-hidden">
+
+
+        {/* 상대방 화면 (전체 배경 채움) */}
             <video
                 ref={remoteVideoRef}
                 autoPlay
                 playsInline
-                className="w-full h-full bg-black object-cover"
+                className="absolute top-1/2 left-1/2 w-full max-h-[30%] -translate-x-1/2 -translate-y-1/2 object-cover"
             />
 
             {/* 나의 화면 - 드래그 및 리사이징 가능 */}
             <Rnd
-                default={{ x: 20, y: 100, width: 320, height: 240 }}
+                default={{ x: 20, y: 100, width: 320, height: 180 }} // 16:9 비율
                 minWidth={160}
-                minHeight={120}
+                minHeight={90}
                 bounds="parent"
-                lockAspectRatio={true}
-                dragHandleClassName="drag-handle"
+                lockAspectRatio={16 / 9}
                 className="absolute z-20 rounded-xl overflow-hidden shadow-lg border-2 border-purple-500"
             >
                 <div className="w-full h-full bg-black drag-handle flex items-center justify-center relative">
@@ -44,12 +46,15 @@ const VideoArea = ({ timer, cameraEnabled, micEnabled, setLocalStream }) => {
             </Rnd>
 
             {/* WebRTC 연결 처리 */}
-            <WebRTCConnection
-                roomId={roomId}
-                localVideoRef={localVideoRef}
-                remoteVideoRef={remoteVideoRef}
-                setLocalStream={setLocalStream}
-            />
+            {roomId && (
+                <WebRTCConnection
+                    roomId={roomId}
+                    localVideoRef={localVideoRef}
+                    remoteVideoRef={remoteVideoRef}
+                    setLocalStream={setLocalStream}
+                    userId={userId}
+                />
+            )}
         </div>
     );
 };

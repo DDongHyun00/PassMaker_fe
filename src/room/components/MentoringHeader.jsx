@@ -11,7 +11,7 @@ const MentoringHeader = () => {
 
   const handleExit = () => {
     if (window.confirm('정말로 인터뷰를 종료하시겠습니까?')) {
-      window.location.href = '/mentoringroom';
+      window.location.href = '/';
     }
   };
 
