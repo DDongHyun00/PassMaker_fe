@@ -12,11 +12,11 @@ const Permission = () => {
 
     return(
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">신청 현황</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">승인여부</h2>
             <div className="space-y-4">
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                    <h3 className="font-semibold text-yellow-800 mb-2">접수 현황</h3>
-                    <p className="text-yellow-700">
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h3 className="font-semibold text-gray-800 mb-2">관리자 코멘트</h3>
+                    <p className="text-gray-700">
                         신청서 접수 완료, 검토 중 단계입니다.
                     </p>
                 </div>
