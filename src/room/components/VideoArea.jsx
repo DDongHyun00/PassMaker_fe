@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import WebRTCConnection from "./WebRTCConnection.jsx";
 import { useParams } from "react-router-dom";
 import { Rnd } from "react-rnd";
@@ -9,8 +9,39 @@ const VideoArea = ({ timer, cameraEnabled, micEnabled, setLocalStream, userId })
 
     const localVideoRef = useRef(null);
     const remoteVideoRef = useRef(null);
+    const audioRef = useRef(null);
+    const localStreamRef = useRef(null); // 오디오 연결용
+
+    // 마이크 상태 출력 함수
+    function checkMicEnabled(stream) {
+        const audioTrack = stream.getAudioTracks()[0];
+        if (!audioTrack) {
+            console.log("마이크 트랙 없음");
+            return;
+        }
+        console.log("마이크 상태:", audioTrack.enabled ? "켜짐" : "꺼짐");
+    }
 
     console.log("VideoArea 렌더링됨. userId:", userId);
+
+    // setLocalStream 확장
+    const handleSetLocalStream = (stream) => {
+        localStreamRef.current = stream;
+
+        if (audioRef.current) {
+            audioRef.current.srcObject = stream;
+        }
+
+        checkMicEnabled(stream);
+        setLocalStream(stream); // 원래 부모로 전달하던 것도 그대로 호출
+    };
+
+    // audio 태그는 최초 렌더링 이후에도 스트림 연결 유지
+    useEffect(() => {
+        if (localStreamRef.current && audioRef.current) {
+            audioRef.current.srcObject = localStreamRef.current;
+        }
+    }, []);
 
     return (
         <div className="grow w-screen h-[calc(100vh-80px)] bg-black relative overflow-hidden">
@@ -51,10 +82,12 @@ const VideoArea = ({ timer, cameraEnabled, micEnabled, setLocalStream, userId })
                     roomId={roomId}
                     localVideoRef={localVideoRef}
                     remoteVideoRef={remoteVideoRef}
-                    setLocalStream={setLocalStream}
+                    setLocalStream={handleSetLocalStream}     //setLocalStream
                     userId={userId}
                 />
             )}
+            {/* 내 오디오 직접 듣기용 */}
+            <audio ref={audioRef} autoPlay controls className="absolute bottom-2 left-2 w-[200px] z-50 bg-white rounded" />
         </div>
     );
 };
