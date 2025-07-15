@@ -10,6 +10,7 @@ const UserDetailPage = () => {
     const { userId } = useParams();
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [userStatus, setUserStatus] = useState('');
 
     useEffect(() => {
         axios.get(`http://localhost:8080/admin/users/${userId}`)
@@ -27,6 +28,21 @@ const UserDetailPage = () => {
     if (loading) return <div>로딩 중...</div>;
     if (!userData) return <div>유저 데이터를 불러올 수 없습니다.</div>;
 
+    const handleStatusChange = (status) => {
+        setUserStatus(status);
+        axios.get(`http://localhost:8080/admin/users/${userId}`)
+            .then(res => {
+                setUserData(res.data);  // 유저 데이터를 새로 갱신
+            })
+            .catch(err => {
+                console.error("유저 데이터 불러오기 실패", err);
+            });
+    };
+
+    const handleUserUpdate = (updatedUser) => {
+        setUserData(updatedUser);  // 새로운 유저 정보로 업데이트
+    };
+
     return(
         <div className="fixed inset-0 flex justify-center overflow-auto items-start bg-gray-50 mt-12">
             <div className="w-full max-w-7xl  rounded p-6">
@@ -43,10 +59,11 @@ const UserDetailPage = () => {
                 </div>
 
                 <div className="px-12 py-6">
-                    {/*<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">*/}
-                        {/* Left Column - User Profile */}
                         <div className="lg:col-span-1">
-                            <UserProfile user={userData}/>
+                            <UserProfile
+                                user={userData}
+                                onStatusChange={handleStatusChange}
+                                onUserUpdate={handleUserUpdate}/>
                         </div>
                 </div>
 
