@@ -13,14 +13,19 @@ export default function MentorList() {
   const [selected, setSelected] = useState('전체');
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/mentors', { credentials: 'include' })
-      .then(res => {
-        if (!res.ok) throw new Error(res.status);
-        return res.json();
-      })
-      .then(data => setMentors(data))
-      .catch(console.error);
+    fetch("http://localhost:8080/api/mentors", {
+      credentials: 'include'
+    })
+        .then(res => {
+          if (!res.ok) throw new Error("서버 오류: " + res.status);
+          return res.json();
+        })
+        .then(data => setMentors(data))
+        .catch(err => {
+          console.error("MentorList fetch 실패:", err.message);
+        });
   }, []);
+
 
   // 1) 직무별 필터
   const filtered = selected === '전체'
