@@ -1,6 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
+import axios from 'axios';
 
-const UserProfile = ({ user }) => {
+const UserProfile = ({ user, onStatusChange, onUserUpdate }) => {
+    const [isSuspendLoading, setIsSuspendLoading] = useState(false); // 계정 정지 로딩 상태
+    const [isDeleteLoading, setIsDeleteLoading] = useState(false); // 계정 삭제 로딩 상태
+
     // 날짜 변환 유틸
     const formatDate = (dateString) => {
         if (!dateString) return '날짜 정보 없음';
@@ -10,6 +14,50 @@ const UserProfile = ({ user }) => {
             month: 'long',
             day: 'numeric',
         });
+    };
+
+    const restoreAccount = async () => {
+        setIsSuspendLoading(true);  // 로딩 상태 설정
+        try {
+            await axios.put(`http://localhost:8080/admin/users/${user.id}/restore`);  // 복원 API 호출
+            alert('계정이 복원되었습니다.');
+            onStatusChange('ACTIVE');
+            const updatedUser = await axios.get(`http://localhost:8080/admin/users/${user.id}`);
+            onUserUpdate(updatedUser.data);
+        } catch (error) {
+            console.error('계정 복원 실패', error);
+            alert('계정 복원에 실패했습니다.');
+        } finally {
+            setIsSuspendLoading(false);  // 로딩 상태 종료
+        }
+    };
+
+    const suspendAccount = async () => {
+        setIsSuspendLoading(true);
+        try {
+            await axios.put(`http://localhost:8080/admin/users/${user.id}/suspend`);
+            alert('계정이 정지되었습니다.');
+            onStatusChange('SUSPENDED');  // 상태 변경 후 상위 컴포넌트에 전달
+        } catch (error) {
+            console.error('계정 정지 실패', error);
+            alert('계정 정지에 실패했습니다.');
+        } finally {
+            setIsSuspendLoading(false);
+        }
+    };
+
+    const deleteAccount = async () => {
+        setIsDeleteLoading(true);
+        try {
+            await axios.delete(`http://localhost:8080/admin/users/${user.id}`);
+            alert('계정이 삭제되었습니다.');
+            onStatusChange('DELETED');  // 상태 변경 후 상위 컴포넌트에 전달
+        } catch (error) {
+            console.error('계정 삭제 실패', error);
+            alert('계정 삭제에 실패했습니다.');
+        } finally {
+            setIsDeleteLoading(false);
+        }
     };
 
     return (
@@ -42,6 +90,10 @@ const UserProfile = ({ user }) => {
                         <div className="flex justify-between w-full">
                             <span className="text-gray-600">사용자 구분</span>
                             <span className="font-medium">{String(user.mentor).toLowerCase() === 'true' ? '멘토' : '멘티'}</span>
+                        </div>
+                        <div className="flex justify-between w-full">
+                            <span className="text-gray-600">유저 상태</span>
+                            <span className="font-medium">{user.statusText}</span> {/* 유저 상태 표시 */}
                         </div>
                     </div>
                 </div>
@@ -93,11 +145,22 @@ const UserProfile = ({ user }) => {
 
                 {/* 하단 버튼 */}
                 <div className="mt-6 pt-6 pr-10 border-gray-200 flex justify-end">
-                    <button className="bg-red-50 text-orange-600 py-2 px-4 mr-4 rounded-md text-sm font-medium hover:bg-orange-100">
-                        계정 정지
+                    <button
+                        className="bg-green-50 text-green-600 py-2 px-4 mr-4 rounded-md text-sm font-medium hover:bg-green-100"
+                        onClick={restoreAccount}
+                        disabled={isSuspendLoading}
+                    >
+                        {isSuspendLoading ? '로딩 중...' : '계정 복원'}
                     </button>
-                    <button className="bg-red-50 text-red-600 py-2 px-4 rounded-md text-sm font-medium hover:bg-red-100">
-                        계정 삭제
+                    <button className="bg-red-50 text-orange-600 py-2 px-4 mr-4 rounded-md text-sm font-medium hover:bg-orange-100"
+                            onClick={suspendAccount}
+                            disabled={isSuspendLoading}>
+                        {isSuspendLoading ? '로딩 중...' : '계정 정지'}
+                    </button>
+                    <button className="bg-red-50 text-red-600 py-2 px-4 rounded-md text-sm font-medium hover:bg-red-100"
+                            onClick={deleteAccount}
+                            disabled={isDeleteLoading}>
+                        {isDeleteLoading ? '로딩 중...' : '계정 삭제'}
                     </button>
                 </div>
             </div>
