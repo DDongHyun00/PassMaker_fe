@@ -1,13 +1,15 @@
 // TitlePage.jsx
 import React from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CenterWrapper from "../styles/CenterWrapper.jsx";
 import logo from '../../assets/PassMakerLogo.webp';
-
+import AuthModal from "../components/AuthModal";
 
 
 const LoginSelectPage = () => {
   const navigate = useNavigate();
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   const handleKakaoLogin = () => {
     // 백엔드 카카오 OAuth 시작 URL로 리디렉트
@@ -74,7 +76,16 @@ const LoginSelectPage = () => {
             </span>
           </button>
         </div>
+        {/* 이메일/비밀번호 찾기 버튼 */}
+        <button
+            onClick={() => setShowAuthModal(true)}
+            className="mt-3 text-sm underline text-white"
+        >
+          이메일 / 비밀번호 찾기
+        </button>
       </div>
+      {/* 모달 렌더링 */}
+      {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
     </CenterWrapper>
   );
 };
