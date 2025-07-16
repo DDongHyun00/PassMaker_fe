@@ -1,0 +1,14 @@
+/* customCalendar.css */
+.react-calendar {
+  width: 100%;
+  border: none;
+  font-family: inherit;
+}
+
+.react-calendar__tile--active {
+  background: #E9D5FF !important;
+  color: #7C3AED !important;
+  border-radius: 6px;
+  font-weight: 600;
+}
+/* npm install react-calendar 설치 필요*/
