@@ -82,9 +82,9 @@ const Router = () => {
           element={<MentorApplDetailPage />}
         />
         <Route path="/admin/report-review" element={<ReportsReviewPage />} />
-        <Route path="/admin/report-review/id" element={<ReportsDetailPage />} />
+        <Route path="/admin/report-review/:id" element={<ReportsDetailPage />} />
         <Route path="/admin/inquiries" element={<InquiryListPage />} />
-        <Route path="/admin/inquiries/id" element={<InquiryDetailPage />} />
+        <Route path="/admin/inquiries/:inquiryId" element={<InquiryDetailPage />} />
         <Route path="/admin" element={<Dashboard />} />
       </Route>
     </Routes>

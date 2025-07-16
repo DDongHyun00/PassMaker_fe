@@ -18,11 +18,9 @@ const UserTable = ({users, searchText, statusFilter, roleFilter, sortOrder, curr
 
     const getTypeBadge = (type) => {
         const base = "px-2 py-1 rounded-full text-xs font-medium";
-        switch (type) {
-            case 'MENTOR': return `${base} bg-blue-100 text-blue-800`;
-            case 'MENTEE': return `${base} bg-purple-100 text-purple-800`;
-            default: return `${base} bg-gray-100 text-gray-800`;
-        }
+        if (type === '멘토') return `${base} bg-blue-100 text-blue-800`;
+        if (type === '멘티') return `${base} bg-purple-100 text-purple-800`;
+        return null;
     };
 
     const filteredUsers = users.filter(user => {
