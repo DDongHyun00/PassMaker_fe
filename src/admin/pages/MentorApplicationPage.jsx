@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import Header from '../common/Header.jsx';
 import Footer from '../common/Footer.jsx';
 import MentorChart from "../components/mentorApplication/MentorChart.jsx";
@@ -8,100 +9,88 @@ import SearchBar from "../components/mentorApplication/SearchBar.jsx";
 import Pagination from "../common/Pagination.jsx";
 
 const MentorApplicationPage = () => {
+    const [applications, setApplications] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [searchText, setSearchText] = useState('');
     const [statusFilter, setStatusFilter] = useState('전체 상태');
     const [typeFilter, setTypeFilter] = useState('전체 분야');
-    const [sortOrder, setSortOrder] = useState('최신순');
     const [currentPage, setCurrentPage] = useState(1);
     const usersPerPage = 10;
-    const [applications, setApplications] = React.useState([
-        {
-            id: 'MN-2023-0002',
-            applicationDate: '2025-05-14',
-            name: '박민수',
-            email: 'minsu.park@email.com',
-            field: '개발',
-            experience: '3년',
-            status: '승인',
-            processedDate: '2023-5-15'
-        },
-        {
-            id: 'MN-2023-0003',
-            applicationDate: '2025-06-13',
-            name: '김하늘',
-            email: 'haneul.kim@email.com',
-            field: '디자인',
-            experience: '5년',
-            status: '대기',
-            processedDate: '2023-9-14'
-        },
-        {
-            id: 'MN-2023-0004',
-            applicationDate: '2025-06-12',
-            name: '이준호',
-            email: 'junho.lee@email.com',
-            field: '마케팅',
-            experience: '2년',
-            status: '거부',
-            processedDate: ''
-        },
-        {
-            id: 'MN-2023-0005',
-            applicationDate: '2025-07-10',
-            name: '최서연',
-            email: 'seoyeon.choi@email.com',
-            field: '개발/웹',
-            experience: '4년',
-            status: '승인',
-            processedDate: '2023-11-11'
-        },
-        {
-            id: 'MN-2023-0006',
-            applicationDate: '2025-07-10',
-            name: '정민규',
-            email: 'mingyu.jung@email.com',
-            field: '데이터',
-            experience: '7년',
-            status: '대기',
-            processedDate: ''
+
+    const translateStatus = (status) => {
+        switch (status) {
+            case 'APPROVED': return '승인';
+            case 'PENDING': return '대기';
+            case 'REJECTED': return '거부';
+            default: return '기타';
         }
-    ]);
+    };
 
-    const filteredApplications = applications.filter(app => {
-        const keyword = searchText.toLowerCase();
-        const matchSearch = app.name.toLowerCase().includes(keyword)
-            || app.email.toLowerCase().includes(keyword)
-            || app.id.toLowerCase().includes(keyword);
+    useEffect(() => {
+        const fetchApplications = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/admin/mentor-application', {
+                    params: {
+                        searchText,
+                        status: statusFilter === '전체 상태' ? '' : statusFilter,
+                        type: typeFilter  === '전체 분야' ? '' : typeFilter,
+                        page: currentPage - 1, // 백엔드는 0부터 시작
+                        size: usersPerPage
+                    }
+                });
 
-        const matchStatus = statusFilter === '전체 상태' || app.status === statusFilter;
-        const matchField = typeFilter === '전체 분야' || app.field.includes(typeFilter);
+                const mapped = response.data.map(item => ({
+                    id: item.applyId, // 실제 ID 포맷 조정
+                    name: item.name,
+                    email: item.email,
+                    field: item.fields.join('/'), // ["개발", "디자인"] → "개발/디자인"
+                    experience: item.experiences.join(', '), // ["3년", "5년"] → "3년, 5년"
+                    status: translateStatus(item.status), // 영어 상태 → 한글로 변경
+                    applicationDate: item.applicationDate?.split('T')[0], // 날짜 포맷 정리
+                    processedDate: item.processedDate?.split('T')[0] || '' // null 처리
+                }));
 
-        return matchSearch && matchStatus && matchField;
-    });
+                setApplications(mapped);
+                setError(null);
+            } catch (err) {
+                console.error('데이터 요청 실패:', err);
+                setError('멘토 신청 목록을 불러오는 데 실패했습니다.');
+                setApplications([]);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const totalPages = Math.ceil(filteredApplications.length / usersPerPage);
+        fetchApplications();
+    }, [searchText, statusFilter, typeFilter, currentPage]);
+
+    const totalPages = Math.ceil(applications.length / usersPerPage);
 
     const resetFilters = () => {
         setSearchText('');
         setStatusFilter('전체 상태');
         setTypeFilter('전체 분야');
-        setSortOrder('최신순');
         setCurrentPage(1);
     };
 
+    if (loading) return <div className="text-center p-10">로딩 중...</div>;
+    if (error) return <div className="text-center p-10 text-red-500">{error}</div>;
+
     return(
-        <div className="fixed inset-0 flex justify-center overflow-auto items-start bg-gray-50">
+        <div className="fixed inset-0 flex justify-center overflow-auto items-start bg-gray-50 mt-12">
             <div className="w-full max-w-7xl  rounded p-6">
         <div className="w-full mx-auto min-h-screen bg-gray-50 flex flex-col">
             <Header />
             <div className="flex-grow">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="max-w-7xl mx-auto px-4 py-8">
                         <div className="mb-8">
                             <h1 className="text-2xl font-bold text-gray-900 mb-2">멘토 신청 현황</h1>
                             <p className="text-gray-600">멘토 신청자를 확인하고 승인 여부를 결정할 수 있습니다</p>
                         </div>
-
+                        <ApplicationStatus
+                            applications={applications} />
                         <SearchBar
                             searchText={searchText}
                             setSearchText={setSearchText}
@@ -109,27 +98,20 @@ const MentorApplicationPage = () => {
                             setStatusFilter={setStatusFilter}
                             typeFilter={typeFilter}
                             setTypeFilter={setTypeFilter}
-                            sortOrder={sortOrder}
-                            setSortOrder={setSortOrder}
                             resetFilters={resetFilters}/>
                         <ApplicationTable
                             applications={applications}
                             searchText={searchText}
                             statusFilter={statusFilter}
                             typeFilter={typeFilter}
-                            currentPage={currentPage}
-                            usersPerPage={usersPerPage}/>
+                            />
                         <Pagination
                             currentPage={currentPage}
                             setCurrentPage={setCurrentPage}
                             totalPages={totalPages}
-                            totalItems={filteredApplications.length}
-                            usersPerPage={usersPerPage}
-                            applications={applications}
-                            searchText={searchText}
-                            statusFilter={statusFilter}
-                            typeFilter={typeFilter}/>
-                        <ApplicationStatus applications={applications} />
+                            totalItems={applications.length}
+                            usersPerPage={usersPerPage} />
+
                         <MentorChart applications={applications} />
                     </div>
                 </div>

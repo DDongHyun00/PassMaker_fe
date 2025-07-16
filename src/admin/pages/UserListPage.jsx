@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 import Header from '../common/Header.jsx';
 import Footer from '../common/Footer.jsx';
 import Filter from '../components/userList/Filter.jsx';
@@ -7,78 +8,65 @@ import Pagination from '../common/Pagination.jsx';
 import { Plus } from 'lucide-react';
 
 const UserListPage = () => {
-    const [users, setUsers] = useState([
-        {
-            id: 1001,
-            name: '김지훈',
-            email: 'jihoon.kim@example.com',
-            type: '멘티',
-            status: '활동중',
-            joinDate: '2023-05-12',
-            lastAccess: '2023-11-28',
-            actions: '작업'
-        },
-        {
-            id: 1002,
-            name: '이수진',
-            email: 'sujin.lee@example.com',
-            type: '멘티',
-            status: '비활동중',
-            joinDate: '2023-06-03',
-            lastAccess: '2023-11-25',
-            actions: '작업'
-        },
-        {
-            id: 1003,
-            name: '박민준',
-            email: 'minjun.park@example.com',
-            type: '멘토',
-            status: '정지중',
-            joinDate: '2023-04-18',
-            lastAccess: '2023-10-05',
-            actions: '작업'
-        },
-        {
-            id: 1004,
-            name: '최서연',
-            email: 'seoyeon.choi@example.com',
-            type: '멘티',
-            status: '활동중',
-            joinDate: '2023-07-22',
-            lastAccess: '2023-11-27',
-            actions: '작업'
-        },
-        {
-            id: 1005,
-            name: '정다은',
-            email: 'daeun.jung@example.com',
-            type: '멘토',
-            status: '활동중',
-            joinDate: '2023-03-15',
-            lastAccess: '2023-11-29',
-            actions: '작업'
-        }
-    ]);
-
     const [searchText, setSearchText] = useState('');
     const [statusFilter, setStatusFilter] = useState('모든 상태');
-    const [typeFilter, setTypeFilter] = useState('모든 유형');
     const [sortOrder, setSortOrder] = useState('가입일순');
     const [currentPage, setCurrentPage] = useState(1);
-    const totalUsers = 23;
     const usersPerPage = 10;
-    const totalPages = Math.ceil(totalUsers / usersPerPage);
+
+    const [users, setUsers] = useState([]); // 선언되어 있어야 함
+    const [totalUsers, setTotalUsers] = useState(0);
+    const [searchName, setSearchName] = useState('');
+    const [roleFilter, setRoleFilter] = useState('모든 유형');
+
+    const roleParam = roleFilter === '모든 유형'
+        ? ''
+        : (roleFilter === '멘토' ? 'MENTOR' : 'MENTEE');
+
+    const fetchUsers = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/admin/users', {
+                params: {
+                    name: searchName || '',
+                    nickname: '',
+                    role: roleParam,
+                    sortOrder,
+                    page: currentPage - 1,
+                    size: usersPerPage,
+                },
+            });
+            setUsers(response.data.content); // Page 객체의 content
+            setTotalUsers(response.data.totalElements); // 전체 개수
+        } catch (error) {
+            console.error('유저 목록 불러오기 실패:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUsers();
+    }, [searchName, roleFilter, sortOrder, currentPage]);
+
+    useEffect(() => {
+        console.log('🚀 users:', users); // 👉 확인
+    }, [users]);
+    useEffect(() => {
+        console.log('🔥 users:', users);
+        users.forEach(u => {
+            console.log(`${u.name}, ${u.status}, ${u.type}, ${u.joinDate}`);
+        });
+    }, [users]);
 
     const resetFilters = () => {
         setSearchText('');
         setStatusFilter('모든 상태');
-        setTypeFilter('모든 유형');
+        setRoleFilter('모든 유형');
         setSortOrder('가입일순');
         setCurrentPage(1);
     };
+    const totalPages = Math.ceil(totalUsers / usersPerPage);
 
     return (
-        <div className="fixed inset-0 flex justify-center overflow-auto items-start bg-gray-50">
+        <div className="fixed inset-0 flex justify-center overflow-auto items-start bg-gray-50 mt-12">
             <div className="w-full max-w-7xl  rounded p-6">
         <div className="h-screen w-full mx-auto bg-gray-50 flex flex-col">
                 <Header />
@@ -93,12 +81,12 @@ const UserListPage = () => {
                             </button>
                         </div>
                         <Filter
-                            searchText={searchText}
-                            setSearchText={setSearchText}
+                            searchText={searchName}
+                            setSearchText={setSearchName}
                             statusFilter={statusFilter}
                             setStatusFilter={setStatusFilter}
-                            typeFilter={typeFilter}
-                            setTypeFilter={setTypeFilter}
+                            roleFilter={roleFilter}
+                            setRoleFilter={setRoleFilter}
                             sortOrder={sortOrder}
                             setSortOrder={setSortOrder}
                             resetFilters={resetFilters}/>
@@ -106,7 +94,7 @@ const UserListPage = () => {
                             users={users}
                             searchText={searchText}
                             statusFilter={statusFilter}
-                            typeFilter={typeFilter}
+                            roleFilter={roleFilter}
                             sortOrder={sortOrder}
                             currentPage={currentPage}
                             usersPerPage={usersPerPage}/>

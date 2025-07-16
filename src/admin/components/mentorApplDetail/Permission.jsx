@@ -1,39 +1,71 @@
-import React from "react";
+import React,{ useState } from "react";
 import {CheckCircle, XCircle} from "lucide-react";
+import axios from "axios";
 
-const Permission = () => {
+const Permission = ({ applyId }) => {
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [rejectionReason, setRejectionReason] = useState("");
 
-    const handleApprove = () => {
-        alert('멘토 신청이 승인되었습니다.');
+    const handleApprove = async () => {
+        setLoading(true);
+        try {
+            await axios.patch(`http://localhost:8080/admin/mentor-application/${applyId}?status=APPROVED`);
+            alert('멘토 신청이 승인되었습니다.');
+        } catch (error) {
+            setErrorMessage('승인 처리 중 오류가 발생했습니다.');
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
     };
-    const handleReject = () => {
-        alert('멘토 신청이 반려되었습니다.');
+
+    const handleReject = async () => {
+        if (!rejectionReason || rejectionReason.trim() === "") {
+            alert("반려 사유를 입력해 주세요.");
+            return;
+        }
+        setLoading(true);
+        try {
+            await axios.patch(`http://localhost:8080/admin/mentor-application/${applyId}?status=REJECTED&rejectionReason=${encodeURIComponent(rejectionReason)}`);
+            alert('멘토 신청이 반려되었습니다.');
+        } catch (error) {
+            setErrorMessage('반려 처리 중 오류가 발생했습니다.');
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return(
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">신청 현황</h2>
-            <div className="space-y-4">
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                    <h3 className="font-semibold text-yellow-800 mb-2">접수 현황</h3>
-                    <p className="text-yellow-700">
-                        신청서 접수 완료, 검토 중 단계입니다.
-                    </p>
+        <div className="w-96 h-50 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">승인여부</h2>
+            <div className="w-full space-y-4">
+                <div className=" bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <textarea
+                        className="text-gray-700 resize-none w-full focus:outline-none"
+                        placeholder="반려하시는 경우, 반려사유를 필수로 작성하셔야합니다."
+                        value={rejectionReason}
+                        onChange={(e) => setRejectionReason(e.target.value)}>
+                    </textarea>
                 </div>
+
                 <div className="grid grid-cols-1 gap-3 mt-6">
                     <button
                         onClick={handleApprove}
+                        disabled={loading}
                         className="flex items-center justify-center bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors font-medium"
                     >
                         <CheckCircle className="mr-2" size={18} />
-                        승인하기
+                        {loading ? "승인 중..." : "승인하기"}
                     </button>
                     <button
                         onClick={handleReject}
+                        disabled={loading}
                         className="flex items-center justify-center bg-gray-500 text-white py-3 px-4 rounded-lg hover:bg-gray-600 transition-colors font-medium"
                     >
                         <XCircle className="mr-2" size={18} />
-                        반려하기
+                        {loading ? "반려 중..." : "반려하기"}
                     </button>
                 </div>
             </div>

@@ -6,13 +6,14 @@ import rollupNodePolyFill from 'rollup-plugin-node-polyfills';
 
 export default defineConfig({
   server:{
-    port:5173
+    port:5173,
+    strictPort: true
   },
   plugins: [react()],
   resolve: {
     alias: {
       // Node 전역 객체 alias 설정
-      global: 'globalthis',
+      global: 'globalThis',
     },
   },
   optimizeDeps: {

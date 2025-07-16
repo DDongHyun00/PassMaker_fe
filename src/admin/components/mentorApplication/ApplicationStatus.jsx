@@ -1,14 +1,27 @@
 import React from 'react';
 import {BarChart3} from "lucide-react";
 
-const ApplicationStatus = ({ applications, prevApplications=[] }) => {
+const ApplicationStatus = ({ applications }) => {
     const currentTotal = applications.length;
-    const prevTotal = prevApplications.length;
-
     const approved = applications.filter(app => app.status === '승인').length;
     const pending = applications.filter(app => app.status === '대기').length;
     const approvalRate = currentTotal ? ((approved / currentTotal) * 100).toFixed(1) : 0;
+    // 이전 달 날짜 계산
+    const today = new Date();
+    const prevMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    const prevMonthYear = prevMonth.getFullYear();
+    const prevMonthMonth = prevMonth.getMonth(); // 0~11
 
+    // 이전 달 데이터 필터링
+    const prevApplications = applications.filter(app => {
+        const date = new Date(app.applicationDate);
+        return (
+            date.getFullYear() === prevMonthYear &&
+            date.getMonth() === prevMonthMonth
+        );
+    });
+
+    const prevTotal = prevApplications.length;
     const increasePercent = prevTotal
         ? (((currentTotal - prevTotal) / prevTotal) * 100).toFixed(1)
         : null;

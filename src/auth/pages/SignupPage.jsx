@@ -43,12 +43,13 @@ const SignupPage = () => {
 
     try {
       // axios 요청
-      const response = await axios.post("http://localhost:8080/api/auth/signup", form);
+      const response = await axios.post("http://localhost:8080/api/auth/signup", form,{ withCredentials: true });
       console.log("회원가입 성공:", response.data);
       // 성공 시 로그인 페이지로 이동
       navigate("/login");
     } catch (err) {
       console.log("회원가입 실패:", err);
+      console.log("서버 응답 데이터:", err.response.data);
       setError("회원가입에 실패했습니다. 입력값을 확인해주세요.");
     }
   };

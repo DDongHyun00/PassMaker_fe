@@ -1,61 +1,49 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import React from "react";
+import {Link} from "react-router-dom";
 
-const ApplicationTable = ({applications =[], searchText, statusFilter, typeFilter}) => {
+const InquiryTable = ({inquiries, searchText, statusFilter, typeFilter}) => {
     const getStatusColor = (status) => {
         switch (status) {
-            case '승인': return 'bg-green-100 text-green-800';
-            case '대기': return 'bg-yellow-100 text-yellow-800';
-            case '거부': return 'bg-red-100 text-red-800';
-            default: return 'bg-gray-100 text-gray-800';
+            case '대기':
+                return 'bg-yellow-100 text-yellow-800';
+            case '처리중':
+                return 'bg-green-100 text-green-800';
+            case '처리완료':
+                return 'bg-blue-100 text-blue-800';
+            default:
+                return 'bg-gray-100 text-gray-800';
         }
+    }
+    const truncateText = (text, maxLength = 40) => {
+        return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
     };
 
-    const filteredApplications = applications.filter((application) => {
-        const keyword = (searchText || '').toLowerCase();
-
-        const matchSearch =
-            !keyword ||
-            application.name?.toLowerCase().includes(keyword) ||
-            application.email?.toLowerCase().includes(keyword);
-
-        const matchStatus =
-            statusFilter === '전체 상태' ||
-            ((application.status?? '').trim() === statusFilter?.trim());
-
-        const matchField =
-            typeFilter === '전체 분야' ||
-            application.field?.toLowerCase().includes(typeFilter?.toLowerCase());
-
-        return matchSearch && matchStatus && matchField;
-    });
-
-    return(
+    return (
         <div className="w-full mx-auto bg-white rounded-lg shadow-sm border ">
             <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                     <tr>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            신청번호
+                            No.
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            문의자
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            문의 제목
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            문의 내용
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            구분
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             신청일
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            이름
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            이메일
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            분야
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             상태
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            처리일
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             관리
@@ -63,38 +51,34 @@ const ApplicationTable = ({applications =[], searchText, statusFilter, typeFilte
                     </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                    {filteredApplications.map((app) => (
-                        <tr key={app.id} className="hover:bg-gray-50">
+                    {inquiries.map((inq) => (
+                        <tr key={inq.id} className="hover:bg-gray-50">
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {app.id}
+                                {inq.id}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {app.applicationDate}
+                                {inq.inquirer}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {inq.title}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 max-w-[250px] truncate">
+                                {truncateText(inq.content)}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {inq.type}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {inq.date}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                <div>
-                                    <div className="text-sm font-medium text-gray-900">{app.name}</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <div className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{app.email}</div>
-                                </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {app.field}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(app.status)}`}>
-                        {app.status}
+                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(inq.status)}`}>
+                        {inq.status}
                       </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {app.processedDate}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 <Link
-                                    to={`/admin/mentor-application/${app.id}`}
+                                    to="/admin/inquiries/id"
                                     className="text-blue-600 hover:text-blue-500">
                                     상세보기
                                 </Link>
@@ -105,7 +89,13 @@ const ApplicationTable = ({applications =[], searchText, statusFilter, typeFilte
                 </table>
             </div>
         </div>
+        // <div className="bg-white border rounded-lg m-4">
+        //     <TableHeader />
+        //     {reportData.map((report) => (
+        //         <TableRow key={report.no} {...report} />
+        //     ))}
+        // </div>
     )
 }
 
-export default ApplicationTable;
+export default InquiryTable;

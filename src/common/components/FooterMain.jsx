@@ -1,19 +1,16 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
 import {Facebook, Twitter, Instagram, Linkedin, Mail, Phone,  MapPin} from 'lucide-react';
 
-const Footer = () => {
+const FooterMain = () => {
     return (
         <footer className="bg-gray-100 mt-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">관리자 기능</h3>
-                                <div className="text-sm text-gray-600 mb-8 leading-relaxed max-w-[180px]">
-                                    <Link to="/admin" className="hover:text-gray-900 ">
-                                        관리자 대시보드
-                                    </Link>
-                                </div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">(주)PassMaker</h3>
+                                <p className="text-l text-gray-600 mb-4 leading-tight max-w-[180px]">
+                                    탐구하고 도전하는 당신을 응원합니다.
+                                </p>
                         <div className="flex space-x-4">
                             <Facebook />
                             <Twitter />
@@ -23,28 +20,23 @@ const Footer = () => {
                     </div>
 
                     <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">고객 관리</h3>
-                        <ul className="space-y-2 text-sm text-gray-600">
-                            <li><Link to="/admin/users" className="hover:text-gray-900">
-                                회원 관리
-                            </Link></li>
-                            <li><Link to="/admin/mentor-application" className="hover:text-gray-900">
-                                멘토 관리
-                            </Link></li>
-
-                        </ul>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4"></h3>
+                        {/* <ul className="space-y-2 text-sm text-gray-600">
+                            <li><a href="#" className="hover:text-gray-900">전체 유저 목록 조회</a></li>
+                            <li><a href="#" className="hover:text-gray-900">유저 상태 조회</a></li>
+                            <li><a href="#" className="hover:text-gray-900">멤버 신청 목록 조회</a></li>
+                            <li><a href="#" className="hover:text-gray-900">멤버 신청 상세 조회</a></li>
+                        </ul> */}
                     </div>
 
                     <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">운영 관리</h3>
-                        <ul className="space-y-2 text-sm text-gray-600">
-                            <li><Link to="/admin/report-review" className="hover:text-gray-900">
-                                신고 관리
-                            </Link></li>
-                            <li><Link to="/admin/inquiries" className="hover:text-gray-900">
-                                1:1 문의 관리
-                            </Link></li>
-                        </ul>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4"></h3>
+                        {/* <ul className="space-y-2 text-sm text-gray-600">
+                            <li><a href="#" className="hover:text-gray-900"></a></li>
+                            <li><a href="#" className="hover:text-gray-900"></a></li>
+                            <li><a href="#" className="hover:text-gray-900"></a></li>
+                            <li><a href="#" className="hover:text-gray-900"></a></li>
+                        </ul> */}
                     </div>
 
                     <div>
@@ -69,7 +61,7 @@ const Footer = () => {
 
                 <div className="mt-8 pt-8 border-t border-gray-200">
                     <div className="flex items-center justify-between">
-                        <p className="text-sm text-gray-600">© 2023 관리자 기능 와이어프레임. All rights reserved.</p>
+                        <p className="text-sm text-gray-600">©PassMaker. All rights reserved.</p>
                         <div className="flex items-center space-x-4 text-sm text-gray-600">
                             <a href="#" className="hover:text-gray-900">개인정보처리방침</a>
                             <a href="#" className="hover:text-gray-900">이용약관</a>
@@ -83,4 +75,4 @@ const Footer = () => {
     );
 };
 
-export default Footer;
+export default FooterMain;
