@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 
-const SearchBar = ({searchText, setSearchText, statusFilter, setStatusFilter, typeFilter, setTypeFilter, sortOrder, setSortOrder, resetFilters}) => {
+const SearchBar = ({searchText, setSearchText, statusFilter, setStatusFilter, typeFilter, setTypeFilter, resetFilters}) => {
 
         return(
         <div className="w-full mx-auto bg-white p-4 rounded-lg shadow-sm border mb-6">
@@ -43,9 +43,6 @@ const SearchBar = ({searchText, setSearchText, statusFilter, setStatusFilter, ty
                         필터 초기화
                     </button>
                 </div>
-                {/*<button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors">*/}
-                {/*    엑셀 다운로드*/}
-                {/*</button>*/}
             </div>
         </div>
     )

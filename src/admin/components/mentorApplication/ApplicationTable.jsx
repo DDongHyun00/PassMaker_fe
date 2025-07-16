@@ -12,14 +12,20 @@ const ApplicationTable = ({applications =[], searchText, statusFilter, typeFilte
     };
 
     const filteredApplications = applications.filter((application) => {
-        const keyword = searchText.toLowerCase();
+        const keyword = (searchText || '').toLowerCase();
 
-        const matchSearch = application.name.toLowerCase().includes(keyword)
-            || application.email.toLowerCase().includes(keyword)
-            || application.id.toLowerCase().includes(keyword);
+        const matchSearch =
+            !keyword ||
+            application.name?.toLowerCase().includes(keyword) ||
+            application.email?.toLowerCase().includes(keyword);
 
-        const matchStatus = statusFilter === '전체 상태' || application.status === statusFilter;
-        const matchField = typeFilter === '전체 분야' || application.field.includes(typeFilter); // 부분 일치 허용
+        const matchStatus =
+            statusFilter === '전체 상태' ||
+            ((application.status?? '').trim() === statusFilter?.trim());
+
+        const matchField =
+            typeFilter === '전체 분야' ||
+            application.field?.toLowerCase().includes(typeFilter?.toLowerCase());
 
         return matchSearch && matchStatus && matchField;
     });
