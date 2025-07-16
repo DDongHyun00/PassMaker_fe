@@ -45,7 +45,7 @@ const MentorChart = ({ applications }) => {
                     })}
                 </div>
                 <div className="mt-4 text-center text-sm text-gray-600">
-                    최근 12개월 신청 추이
+                    올해 신청 건수 추이
                 </div>
             </div>
         );

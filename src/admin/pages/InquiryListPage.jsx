@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import Header from "../common/Header.jsx";
 import Footer from "../common/Footer.jsx";
 import InquiryTable from "../components/inquiryList/InquiryTable.jsx";
@@ -9,48 +10,21 @@ const InquiryListPage = () => {
     const [searchText, setSearchText] = useState("");
     const [typeFilter, setTypeFilter] = useState("전체 구분");
     const [statusFilter, setStatusFilter] = useState("전체 상태");
-    const [inquiries, setInquiries] = React.useState([
-        {
-            id: 1,
-            title: '제품 문의',
-            inquirer: '김철수',
-            content: '제품에 대해 궁금한 점이 있습니다. 배송은 얼마나 걸리나요?',
-            type: "멘토링",
-            date: '2023-10-15',
-            status: '처리중',
-            isProcessed: false,
-        },
-        {
-            id: 2,
-            title: '사용법 질문',
-            inquirer: '박지영',
-            content: '사용 설명서가 너무 간단해서 자세한 방법이 궁금합니다.',
-            type: "기타",
-            date: '2023-10-14',
-            status: '처리완료',
-            isProcessed: true,
-        },
-        {
-            id: 3,
-            title: '환불 요청',
-            inquirer: '이수민',
-            content: '환불을 원합니다. 제품이 기대와 달랐습니다.',
-            type: "결제",
-            date: '2023-10-12',
-            status: '대기',
-            isProcessed: false,
-        },
-        {
-            id: 4,
-            title: '환불 요청',
-            inquirer: '이수민',
-            content: '환불을 원합니다. 제품이 기대와 달랐습니다.',
-            type: "계정",
-            date: '2023-10-12',
-            status: '처리중',
-            isProcessed: false,
-        }
-    ]);
+    const [inquiries, setInquiries] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        setLoading(true);
+        axios.get('http://localhost:8080/admin/inquiries')  // 실제 API 주소로 변경하세요
+            .then(response => {
+                setInquiries(response.data);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error('문의 목록 불러오기 실패:', error);
+                setLoading(false);
+            });
+    }, []);
 
     const filteredInquiries = inquiries.filter((inquiry) => {
         const matchesText = inquiry.title.includes(searchText) || inquiry.inquirer.includes(searchText);
