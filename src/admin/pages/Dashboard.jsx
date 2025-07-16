@@ -7,30 +7,6 @@ import BarChartCompo from "../components/dashboard/BarChartCompo.jsx";
 
 
 const Dashboard = () => {
-    // 데이터 설정
-    const lineChartData = [
-        {name: '1월', value1: 4000, value2: 2400},
-        {name: '2월', value1: 3000, value2: 1398},
-        {name: '3월', value1: 2000, value2: 9800},
-        {name: '4월', value1: 2780, value2: 3908},
-        {name: '5월', value1: 1890, value2: 4800},
-        {name: '6월', value1: 2390, value2: 3800},
-    ];
-
-    const pieChartData = [
-        {name: '완료', value: 65, color: '#3b82f6'},
-        {name: '진행중', value: 25, color: '#f59e0b'},
-        {name: '대기', value: 10, color: '#ef4444'},
-    ];
-
-    const tableData = [
-        {name: '프로젝트 A', status: '정상', quantity: '150개', date: '2024.1.15', note: '완료'},
-        {name: '프로젝트 B', status: '대기', quantity: '75개', date: '2024.1.14', note: '검토중'},
-        {name: '프로젝트 C', status: '정상', quantity: '200개', date: '2024.1.13', note: '진행중'},
-        {name: '프로젝트 D', status: '오류', quantity: '50개', date: '2024.1.12', note: '수정필요'},
-        {name: '프로젝트 E', status: '정상', quantity: '125개', date: '2024.1.11', note: '완료'},
-    ];
-
     const barChartData = [
         {name: '1주', value: 4000},
         {name: '2주', value: 3000},
@@ -39,15 +15,6 @@ const Dashboard = () => {
         {name: '5주', value: 1890},
         {name: '6주', value: 2390},
     ];
-
-    const horizontalBarData = [
-        {name: '마케팅', value: 84, percentage: 84},
-        {name: '개발', value: 72, percentage: 72},
-        {name: '디자인', value: 68, percentage: 68},
-        {name: '기획', value: 56, percentage: 56},
-        {name: '운영', value: 42, percentage: 42},
-    ];
-
 
     const [totalUsers, setTotalUsers] = useState(null);
     const [mentorCount, setMentorCount] = useState(null);
