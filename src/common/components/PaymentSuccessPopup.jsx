@@ -9,9 +9,8 @@ export default function PaymentSuccessPopup({ data, onClose }) {
     menteeNickname,
     amount,
     approvedAt,
-    reservationId,
+    reserveId,
     status,
-    reservationStatus,
   } = data;
 
   const formatDateTime = (dateStr) => {
@@ -40,11 +39,8 @@ export default function PaymentSuccessPopup({ data, onClose }) {
         <p className="text-gray-800">
           <strong>결제 금액:</strong> {amount.toLocaleString()}원
         </p>
-        {/*<p className="text-gray-800">*/}
-        {/*  <strong>예약 ID:</strong> {reservationId}*/}
-        {/*</p>*/}
         <p className="text-gray-800">
-          <strong>결제 상태:</strong> {status}
+          <strong>예약 ID:</strong> {reserveId}
         </p>
         <p className="text-gray-800 mb-4">
           <strong>승인 시각:</strong> {formatDateTime(approvedAt)}
