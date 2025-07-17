@@ -23,7 +23,6 @@ export function AuthProvider({ children }) {
       .finally(() => setLoading(false)); // 로딩 종료
   }, []);
 
-  const value = { user, setUser, isLoggedIn, loading };
 
   // 로딩이 끝날 때까지 children 렌더링하지 않음
   if (loading) return null;
@@ -76,8 +75,10 @@ export function AuthProvider({ children }) {
     setIsLoggedIn(false);
   };
 
+  const value = { user, setUser, isLoggedIn, loading, login, logout };
+
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn, loading, login, logout }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

@@ -37,6 +37,7 @@ const Router = () => {
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/reservation/:mentorId" element={<ReservationPage />} />
       <Route path="/payment/success" element={<MentorDetailPage />} />
+      <Route path="/mypage" element={<MyPage />} />
 
       {/* 공통 레이아웃이 필요한 페이지 */}
       <Route element={<Layout />}>
