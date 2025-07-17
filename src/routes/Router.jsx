@@ -31,15 +31,18 @@ const Router = () => {
 
   return (
     <Routes>
-      {/* 로그인 안 해도 접근 가능한 페이지 */}
+      {/* ───── 로그인 없이 접근 가능 ───── */}
       <Route path="/login-select" element={<LoginSelectPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/reservation/:mentorId" element={<ReservationPage />} />
-      <Route path="/payment/success" element={<MentorDetailPage />} />
+
+      <Route path="/payment/success" element={<MentorDetailPage />} /> {/* ✅ 결제 후 리다이렉트 */}
+
       <Route path="/mypage" element={<MyPage />} />
 
-      {/* 공통 레이아웃이 필요한 페이지 */}
+
+      {/* ───── 공통 레이아웃 적용 ───── */}
       <Route element={<Layout />}>
         <Route path="/" element={<MainPage />} />
         <Route
@@ -54,7 +57,10 @@ const Router = () => {
         />
         <Route path="/mentor/:mentorId" element={<MentorDetailPage />} />
 
-        {/* 관리자 페이지 */}
+        {/* ✅ 멘토 상세 페이지 (nickname 기준) */}
+        <Route path="/mentors/:nickname" element={<MentorDetailPage />} />
+
+        {/* ───── 관리자 전용 ───── */}
         <Route path="/admin/users" element={<UserListPage />} />
         <Route path="/admin/users/id" element={<UserDetailPage />} />
         <Route
@@ -71,24 +77,16 @@ const Router = () => {
         <Route path="/admin/inquiries/id" element={<InquiryDetailPage />} />
         <Route path="/admin" element={<Dashboard />} />
 
-        {/* 관리자 페이지도 추후 권한 체크 확장 가능 */}
-        <Route path="/admin/users" element={<UserListPage />} />
+        {/* ───── 관리자 상세 페이지 (동적 파라미터 경로) 중복 제거 ───── */}
         <Route path="/admin/users/:userId" element={<UserDetailPage />} />
-        <Route
-          path="/admin/mentor-application"
-          element={<MentorApplicationPage />}
-        />
         <Route
           path="/admin/mentor-application/:applyId"
           element={<MentorApplDetailPage />}
         />
-        <Route path="/admin/report-review" element={<ReportsReviewPage />} />
-        <Route path="/admin/report-review/:id" element={<ReportsDetailPage />} />
-        <Route path="/admin/inquiries" element={<InquiryListPage />} />
-        <Route path="/admin/inquiries/:inquiryId" element={<InquiryDetailPage />} />
-        <Route path="/admin" element={<Dashboard />} />
+
       </Route>
     </Routes>
   );
 };
+
 export default Router;
