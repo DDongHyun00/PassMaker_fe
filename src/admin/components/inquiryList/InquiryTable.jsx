@@ -78,7 +78,7 @@ const InquiryTable = ({inquiries, searchText, statusFilter, typeFilter}) => {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 <Link
-                                    to="/admin/inquiries/id"
+                                    to={`/admin/inquiries/${inq.id}`}
                                     className="text-blue-600 hover:text-blue-500">
                                     상세보기
                                 </Link>

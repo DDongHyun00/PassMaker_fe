@@ -14,7 +14,7 @@ const InquiryDetailPage= () => {
             <div className="mb-4 px-12">
                 <Back to="/admin/inquiries"/>
             </div>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
+            <div className="max-w-7xl px-4 sm:px-6 lg:px-8 ">
                     <div className="lg:col-span-2 space-y-6">
                         <InquiryContents />
                     </div>

@@ -44,8 +44,14 @@ const LoginPage = () => {
       navigate("/");
 
     } catch (err) {
+
       console.error("로그인 실패:", err);
-      setError("이메일 또는 비밀번호가 올바르지 않습니다.");
+      const msg = err?.response?.data?.message;
+      if (msg?.includes("탈퇴한 회원")){
+        setError("탈퇴한 회원입니다. 관리자에게 문의하세요.")
+      } else{
+        setError("이메일 또는 비밀번호가 올바르지 않습니다.");
+      }
     }
   };
 

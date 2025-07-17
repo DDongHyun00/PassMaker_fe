@@ -52,9 +52,9 @@ const VideoArea = ({ timer, cameraEnabled, micEnabled, setLocalStream, userId })
                 ref={remoteVideoRef}
                 autoPlay
                 playsInline
-                className="absolute top-1/2 left-1/2 w-full max-h-[30%] -translate-x-1/2 -translate-y-1/2 object-cover"
+                className="absolute top-0 left-0 w-full h-full object-cover"
             />
-
+            {/*className="absolute top-1/2 left-1/2 w-full max-h-[30%] -translate-x-1/2 -translate-y-1/2 object-cover"*/}
             {/* 나의 화면 - 드래그 및 리사이징 가능 */}
             <Rnd
                 default={{ x: 20, y: 100, width: 320, height: 180 }} // 16:9 비율
