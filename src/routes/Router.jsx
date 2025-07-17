@@ -52,7 +52,7 @@ const Router = () => {
             user ? <MentoringRoomPage /> : <Navigate to="/login" replace />
           }
         />
-        <Route path="/mentors/:mentorId" element={<MentorDetailPage />} />
+        <Route path="/mentor/:mentorId" element={<MentorDetailPage />} />
 
         {/* 관리자 페이지 */}
         <Route path="/admin/users" element={<UserListPage />} />
