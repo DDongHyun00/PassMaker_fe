@@ -55,6 +55,7 @@ const Router = () => {
             user ? <MentoringRoomPage /> : <Navigate to="/login" replace />
           }
         />
+        <Route path="/mentor/:mentorId" element={<MentorDetailPage />} />
 
         {/* ✅ 멘토 상세 페이지 (nickname 기준) */}
         <Route path="/mentors/:nickname" element={<MentorDetailPage />} />
