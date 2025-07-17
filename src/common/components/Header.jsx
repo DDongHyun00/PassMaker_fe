@@ -17,12 +17,16 @@ export default function Header() {
             <div className="flex space-x-4">
                 {user ? (
                     <>
-                        <button onClick={logout} className="px-4 py-1 rounded hover:bg-gray-100">
+                        <button onClick={logout} className="px-4 py-1 bg-purple-600 text-white rounded hover:bg-purple-700">
                             로그아웃
                         </button>
-                        <button onClick={() => navigate('/mypage')} className="px-4 py-1 rounded hover:bg-gray-100">
+                        <button
+                            onClick={() => navigate('/mypage')}
+                            className="px-4 py-1 bg-purple-600 text-white rounded hover:bg-purple-700"
+                        >
                             마이페이지
                         </button>
+
                     </>
                 ) : (
                     <>
