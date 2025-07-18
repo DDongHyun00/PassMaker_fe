@@ -20,9 +20,11 @@ import ReportsDetailPage from "../admin/pages/ReportsDetailPage.jsx";
 import InquiryListPage from "../admin/pages/InquiryListPage.jsx";
 import InquiryDetailPage from "../admin/pages/InquiryDetailPage.jsx";
 import Dashboard from "../admin/pages/Dashboard.jsx";
+import InquiryPage from "../common/pages/InquiryPage.jsx"
 
 import ReservationPage from "../common/pages/ReservationPage.jsx";
 import MentorDetailPage from "../mentor/pages/MentorDetailPage.jsx";
+import ReservedMentoringPage from "../common/pages/ReservedMentoringPage.jsx"
 
 const Router = () => {
   const { user, loading } = useAuth();
@@ -40,6 +42,8 @@ const Router = () => {
       <Route path="/payment/success" element={<MentorDetailPage />} /> {/* ✅ 결제 후 리다이렉트 */}
 
       <Route path="/mypage" element={<MyPage />} />
+      <Route path="/inquiry" element={<InquiryPage/>} />
+      <Route path="/ReservedMentoring" element={<ReservedMentoringPage/>} />
 
 
       {/* ───── 공통 레이아웃 적용 ───── */}

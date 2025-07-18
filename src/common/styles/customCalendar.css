@@ -6,8 +6,8 @@
 }
 
 .react-calendar__tile--active {
-  background: #E9D5FF !important;
-  color: #7C3AED !important;
+  background: #e9d5ff !important;
+  color: #7c3aed !important;
   border-radius: 6px;
   font-weight: 600;
 }

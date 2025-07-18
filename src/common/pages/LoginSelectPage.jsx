@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CenterWrapper from "../styles/CenterWrapper.jsx";
 import logo from '../../assets/PassMakerLogo.webp';
-import AuthModal from "../components/AuthModal";
+import AuthModal from "../modal/AuthModal.jsx";
 
 
 const LoginSelectPage = () => {
@@ -13,12 +13,12 @@ const LoginSelectPage = () => {
 
   const handleKakaoLogin = () => {
     // 백엔드 카카오 OAuth 시작 URL로 리디렉트
-    window.location.href = "http://localhost:8080/oauth/kakao";
+    window.location.href = "/oauth/kakao";
   };
 
   const handleGoogleLogin = () => {
     // 백엔드 카카오 OAuth 시작 URL로 리디렉트
-    window.location.href = "http://localhost:8080/oauth/google";
+    window.location.href = "/oauth/google";
   };
 
   return (

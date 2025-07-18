@@ -19,7 +19,7 @@ export default function MentorList() {
   const [selected, setSelected] = useState("전체");
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/mentors", {
+    fetch("/api/mentors", {
       credentials: "include",
     })
       .then((res) => {

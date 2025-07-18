@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/auth/me", { withCredentials: true })
+      .get("/api/auth/me", { withCredentials: true })
       .then((res) => {
         setUser(res.data);
         setIsLoggedIn(true);
@@ -30,7 +30,7 @@ export function AuthProvider({ children }) {
   // 로그인 성공 후 상태 설정 (localStorage x)
   const login = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/auth/me", {
+      const res = await axios.get("/api/auth/me", {
         withCredentials: true,
       });
       setUser(res.data);
@@ -45,20 +45,20 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     try {
       await axios.post(
-        "http://localhost:8080/api/auth/logout",
+        "/api/auth/logout",
         {},
         { withCredentials: true }
       );
       await axios
         .post(
-          "http://localhost:8080/api/oauth/google/logout",
+          "/api/oauth/google/logout",
           {},
           { withCredentials: true }
         )
         .catch(() => {});
       await axios
         .post(
-          "http://localhost:8080/api/oauth/kakao/logout",
+          "/api/oauth/kakao/logout",
           {},
           { withCredentials: true }
         )

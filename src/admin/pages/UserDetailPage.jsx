@@ -13,7 +13,7 @@ const UserDetailPage = () => {
     const [userStatus, setUserStatus] = useState('');
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/admin/users/${userId}`)
+        axios.get(`/admin/users/${userId}`)
             .then(res => {
                 setUserData(res.data);
                 setLoading(false);
@@ -30,7 +30,7 @@ const UserDetailPage = () => {
 
     const handleStatusChange = (status) => {
         setUserStatus(status);
-        axios.get(`http://localhost:8080/admin/users/${userId}`)
+        axios.get(`/admin/users/${userId}`)
             .then(res => {
                 setUserData(res.data);  // 유저 데이터를 새로 갱신
             })

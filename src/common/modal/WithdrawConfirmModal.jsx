@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import MyPageButton from "../components/MyPageButton";
-import authApi from "../lib/axios";
+import MyPageButton from "../components/MyPageButton.jsx";
+import authApi from "../lib/axios.js";
 
 const WithdrawConfirmModal = ({ onClose, onSuccess }) => {
     const [password, setPassword] = useState("");
@@ -12,7 +12,7 @@ const WithdrawConfirmModal = ({ onClose, onSuccess }) => {
         }
 
         try {
-            await authApi.delete("http://localhost:8080/api/users/delete", {
+            await authApi.delete("/api/users/delete", {
                 data: { password }, // 백엔드에서 @RequestBody PasswordDto 로 받을 수 있게 해야 함
             });
             alert("회원 탈퇴가 완료되었습니다.");

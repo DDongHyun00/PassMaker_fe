@@ -30,7 +30,7 @@ const LoginPage = () => {
     try {
       // 1. 로그인 요청 (AccessToken/RefreshToken은 HttpOnly 쿠키로 저장됨)
       const response = await axios.post(
-          "http://localhost:8080/api/auth/login",
+          "/api/auth/login",
           form,
           { withCredentials: true }
       );

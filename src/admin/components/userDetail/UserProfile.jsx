@@ -19,10 +19,10 @@ const UserProfile = ({ user, onStatusChange, onUserUpdate }) => {
     const restoreAccount = async () => {
         setIsSuspendLoading(true);  // 로딩 상태 설정
         try {
-            await axios.put(`http://localhost:8080/admin/users/${user.id}/restore`);  // 복원 API 호출
+            await axios.put(`/admin/users/${user.id}/restore`);  // 복원 API 호출
             alert('계정이 복원되었습니다.');
             onStatusChange('ACTIVE');
-            const updatedUser = await axios.get(`http://localhost:8080/admin/users/${user.id}`);
+            const updatedUser = await axios.get(`/admin/users/${user.id}`);
             onUserUpdate(updatedUser.data);
         } catch (error) {
             console.error('계정 복원 실패', error);
@@ -35,7 +35,7 @@ const UserProfile = ({ user, onStatusChange, onUserUpdate }) => {
     const suspendAccount = async () => {
         setIsSuspendLoading(true);
         try {
-            await axios.put(`http://localhost:8080/admin/users/${user.id}/suspend`);
+            await axios.put(`/admin/users/${user.id}/suspend`);
             alert('계정이 정지되었습니다.');
             onStatusChange('SUSPENDED');  // 상태 변경 후 상위 컴포넌트에 전달
         } catch (error) {
@@ -49,7 +49,7 @@ const UserProfile = ({ user, onStatusChange, onUserUpdate }) => {
     const deleteAccount = async () => {
         setIsDeleteLoading(true);
         try {
-            await axios.delete(`http://localhost:8080/admin/users/${user.id}`);
+            await axios.delete(`/admin/users/${user.id}`);
             alert('계정이 삭제되었습니다.');
             onStatusChange('DELETED');  // 상태 변경 후 상위 컴포넌트에 전달
         } catch (error) {
