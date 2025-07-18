@@ -54,7 +54,7 @@ const Router = () => {
           element={
             user ? <MentoringRoomPage /> : <Navigate to="/login" replace />
           }
-        /
+        />
 
         {/* ✅ 멘토 상세 페이지 (nickname 기준) */}
         <Route path="/mentors/:nickname" element={<MentorDetailPage />} />
@@ -62,14 +62,8 @@ const Router = () => {
         {/* ───── 관리자 전용 ───── */}
         <Route path="/admin/users" element={<UserListPage />} />
         <Route path="/admin/users/id" element={<UserDetailPage />} />
-        <Route
-          path="/admin/mentor-application"
-          element={<MentorApplicationPage />}
-        />
-        <Route
-          path="/admin/mentor-application/id"
-          element={<MentorApplDetailPage />}
-        />
+        <Route path="/admin/mentor-application" element={<MentorApplicationPage />}/>
+        <Route path="/admin/mentor-application/id" element={<MentorApplDetailPage />}/>
         <Route path="/admin/report-review" element={<ReportsReviewPage />} />
         <Route path="/admin/report-review/id" element={<ReportsDetailPage />} />
         <Route path="/admin/inquiries" element={<InquiryListPage />} />
@@ -78,11 +72,8 @@ const Router = () => {
 
         {/* ───── 관리자 상세 페이지 (동적 파라미터 경로) 중복 제거 ───── */}
         <Route path="/admin/users/:userId" element={<UserDetailPage />} />
-        <Route
-          path="/admin/mentor-application/:applyId"
-          element={<MentorApplDetailPage />}
-        />
-
+        <Route path="/admin/mentor-application/:applyId" element={<MentorApplDetailPage />}/>
+        <Route path="/admin/inquiries/:inquiryId" element={<InquiryDetailPage />} />
       </Route>
     </Routes>
   );

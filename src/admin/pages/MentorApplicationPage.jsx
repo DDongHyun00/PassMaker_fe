@@ -10,6 +10,9 @@ import Pagination from "../common/Pagination.jsx";
 
 const MentorApplicationPage = () => {
     const [applications, setApplications] = useState([]);
+    const [fullApplications, setFullApplications] = useState([]);
+    const [totalItems, setTotalItems] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchText, setSearchText] = useState('');
@@ -27,32 +30,49 @@ const MentorApplicationPage = () => {
         }
     };
 
+    const mapApplication = (item) => ({
+        id: item.applyId,
+        name: item.name,
+        email: item.email,
+        field: item.fields.join('/'),
+        experience: item.experiences.join(', '),
+        status: translateStatus(item.status),
+        applicationDate: item.applicationDate?.split('T')[0],
+        processedDate: item.processedDate?.split('T')[0] || ''
+    });
+
+    useEffect(() => {
+        const fetchAllApplications = async () => {
+            try {
+                const allRes = await axios.get('http://localhost:8080/admin/mentor-application/all');
+                setFullApplications(allRes.data.map(mapApplication));
+            } catch (error) {
+                console.error('전체 신청 데이터 요청 실패:', error);
+            }
+        };
+
+        fetchAllApplications();
+    }, []);
+
     useEffect(() => {
         const fetchApplications = async () => {
+            setLoading(true);
             try {
                 const response = await axios.get('http://localhost:8080/admin/mentor-application', {
                     params: {
                         searchText,
                         status: statusFilter === '전체 상태' ? '' : statusFilter,
-                        type: typeFilter  === '전체 분야' ? '' : typeFilter,
+                        type: typeFilter === '전체 분야' ? '' : typeFilter,
                         page: currentPage - 1, // 백엔드는 0부터 시작
                         size: usersPerPage
                     }
                 });
+                const { content, totalElements, totalPages } = response.data;
 
-                const mapped = response.data.map(item => ({
-                    id: item.applyId, // 실제 ID 포맷 조정
-                    name: item.name,
-                    email: item.email,
-                    field: item.fields.join('/'), // ["개발", "디자인"] → "개발/디자인"
-                    experience: item.experiences.join(', '), // ["3년", "5년"] → "3년, 5년"
-                    status: translateStatus(item.status), // 영어 상태 → 한글로 변경
-                    applicationDate: item.applicationDate?.split('T')[0], // 날짜 포맷 정리
-                    processedDate: item.processedDate?.split('T')[0] || '' // null 처리
-                }));
+                setApplications(content.map(mapApplication));
+                setTotalItems(totalElements);
+                setTotalPages(totalPages);
 
-                setApplications(mapped);
-                setError(null);
             } catch (err) {
                 console.error('데이터 요청 실패:', err);
                 setError('멘토 신청 목록을 불러오는 데 실패했습니다.');
@@ -64,8 +84,6 @@ const MentorApplicationPage = () => {
 
         fetchApplications();
     }, [searchText, statusFilter, typeFilter, currentPage]);
-
-    const totalPages = Math.ceil(applications.length / usersPerPage);
 
     const resetFilters = () => {
         setSearchText('');
@@ -80,44 +98,44 @@ const MentorApplicationPage = () => {
     return(
         <div className="fixed inset-0 flex justify-center overflow-auto items-start bg-gray-50 mt-12">
             <div className="w-full max-w-7xl  rounded p-6">
-        <div className="w-full mx-auto min-h-screen bg-gray-50 flex flex-col">
-            <Header />
-            <div className="flex-grow">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="max-w-7xl mx-auto px-4 py-8">
-                        <div className="mb-8">
-                            <h1 className="text-2xl font-bold text-gray-900 mb-2">멘토 신청 현황</h1>
-                            <p className="text-gray-600">멘토 신청자를 확인하고 승인 여부를 결정할 수 있습니다</p>
-                        </div>
-                        <ApplicationStatus
-                            applications={applications} />
-                        <SearchBar
-                            searchText={searchText}
-                            setSearchText={setSearchText}
-                            statusFilter={statusFilter}
-                            setStatusFilter={setStatusFilter}
-                            typeFilter={typeFilter}
-                            setTypeFilter={setTypeFilter}
-                            resetFilters={resetFilters}/>
-                        <ApplicationTable
-                            applications={applications}
-                            searchText={searchText}
-                            statusFilter={statusFilter}
-                            typeFilter={typeFilter}
-                            />
-                        <Pagination
-                            currentPage={currentPage}
-                            setCurrentPage={setCurrentPage}
-                            totalPages={totalPages}
-                            totalItems={applications.length}
-                            usersPerPage={usersPerPage} />
+                <div className="w-full mx-auto min-h-screen bg-gray-50 flex flex-col">
+                    <Header />
+                    <div className="flex-grow">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="max-w-7xl mx-auto px-4 py-8">
+                                <div className="mb-8">
+                                    <h1 className="text-2xl font-bold text-gray-900 mb-2">멘토 신청 현황</h1>
+                                    <p className="text-gray-600">멘토 신청자를 확인하고 승인 여부를 결정할 수 있습니다</p>
+                                </div>
+                                <ApplicationStatus
+                                    applications={fullApplications} />
+                                <SearchBar
+                                    searchText={searchText}
+                                    setSearchText={setSearchText}
+                                    statusFilter={statusFilter}
+                                    setStatusFilter={setStatusFilter}
+                                    typeFilter={typeFilter}
+                                    setTypeFilter={setTypeFilter}
+                                    resetFilters={resetFilters}/>
+                                <ApplicationTable
+                                    applications={applications}
+                                    searchText={searchText}
+                                    statusFilter={statusFilter}
+                                    typeFilter={typeFilter}
+                                />
+                                <Pagination
+                                    currentPage={currentPage}
+                                    setCurrentPage={setCurrentPage}
+                                    totalPages={totalPages}
+                                    totalItems={totalItems}
+                                    usersPerPage={usersPerPage} />
 
-                        <MentorChart applications={applications} />
+                                <MentorChart applications={fullApplications} />
+                            </div>
+                        </div>
                     </div>
+                    <Footer />
                 </div>
-            </div>
-            <Footer />
-        </div>
             </div>
         </div>
     );

@@ -12,33 +12,49 @@ const InquiryListPage = () => {
     const [statusFilter, setStatusFilter] = useState("전체 상태");
     const [inquiries, setInquiries] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
+    const [totalItems, setTotalItems] = useState(0);
+    const itemsPerPage = 10;
+
+    const fetchInquiries = async () => {
+        setLoading(true);
+        try {
+            const res = await axios.get('http://localhost:8080/admin/inquiries', {
+                params: {
+                    searchText,
+                    status: statusFilter,
+                    type: typeFilter,
+                    page: currentPage - 1,
+                    size: itemsPerPage
+                }
+            });
+            setInquiries(res.data.content);
+            setTotalPages(res.data.totalPages);
+            setTotalItems(res.data.totalElements);
+        } catch (err) {
+            console.error('문의 목록 요청 실패:', err);
+            setError('문의 목록을 불러오지 못했습니다.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        setLoading(true);
-        axios.get('http://localhost:8080/admin/inquiries')  // 실제 API 주소로 변경하세요
-            .then(response => {
-                setInquiries(response.data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('문의 목록 불러오기 실패:', error);
-                setLoading(false);
-            });
-    }, []);
-
-    const filteredInquiries = inquiries.filter((inquiry) => {
-        const matchesText = inquiry.title.includes(searchText) || inquiry.inquirer.includes(searchText);
-        const matchesStatus = statusFilter === '전체 상태' || inquiry.status === statusFilter;
-        const matchesType = typeFilter === '전체 구분' || inquiry.type === typeFilter; // 필요하면 나중에
-
-        return matchesText && matchesStatus && matchesType;
-    });
+        fetchInquiries();
+    }, [searchText, typeFilter, statusFilter, currentPage]);
 
     const resetFilters = () => {
         setSearchText("");
         setStatusFilter("전체 상태");
         setTypeFilter("전체 구분");
+        setCurrentPage(1);
     };
+
+    if (loading) return <div className="text-center p-10">로딩 중...</div>;
+    if (error) return <div className="text-center p-10 text-red-500">{error}</div>;
 
     return (
         <div className="fixed inset-0 flex justify-center overflow-auto items-start bg-gray-50 mt-12">
@@ -65,8 +81,13 @@ const InquiryListPage = () => {
                     setTypeFilter={setTypeFilter}
                     resetFilters={resetFilters}/>
                 <InquiryTable
-                    inquiries={filteredInquiries}/>
-                <Pagination />
+                    inquiries={inquiries}/>
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    totalItems={totalItems}
+                    usersPerPage={itemsPerPage}
+                    setCurrentPage={setCurrentPage}/>
 
             </div>
             </div>

@@ -46,16 +46,6 @@ const UserListPage = () => {
         fetchUsers();
     }, [searchName, roleFilter, sortOrder, currentPage]);
 
-    useEffect(() => {
-        console.log('🚀 users:', users); // 👉 확인
-    }, [users]);
-    useEffect(() => {
-        console.log('🔥 users:', users);
-        users.forEach(u => {
-            console.log(`${u.name}, ${u.status}, ${u.type}, ${u.joinDate}`);
-        });
-    }, [users]);
-
     const resetFilters = () => {
         setSearchText('');
         setStatusFilter('모든 상태');
@@ -102,6 +92,8 @@ const UserListPage = () => {
                             currentPage={currentPage}
                             setCurrentPage={setCurrentPage}
                             totalPages={totalPages}
+                            totalItems={totalUsers}
+                            usersPerPage={usersPerPage}
                         />
                     </div>
                 </div>
