@@ -52,8 +52,7 @@ const UserTable = ({users, searchText, statusFilter, roleFilter, sortOrder, curr
         return 0;
     });
 
-    const startIndex = (currentPage -1)*usersPerPage;
-    const pageUsers = sortedUsers.slice(startIndex, startIndex + usersPerPage);
+    const pageUsers = sortedUsers;
 
     return (
         <div className="w-full mx-auto bg-white rounded-lg shadow-sm border">

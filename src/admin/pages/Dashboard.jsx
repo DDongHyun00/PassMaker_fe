@@ -7,24 +7,18 @@ import BarChartCompo from "../components/dashboard/BarChartCompo.jsx";
 
 
 const Dashboard = () => {
-    const barChartData = [
-        {name: '1주', value: 4000},
-        {name: '2주', value: 3000},
-        {name: '3주', value: 2000},
-        {name: '4주', value: 2780},
-        {name: '5주', value: 1890},
-        {name: '6주', value: 2390},
-    ];
-
     const [totalUsers, setTotalUsers] = useState(null);
     const [mentorCount, setMentorCount] = useState(null);
     const [dailyData, setDailyData] = useState([]);
+    const [unresolvedInquiries, setUnresolvedInquiries] = useState(null);
+    const [weeklyData, setWeeklyData] = useState([]);
 
     useEffect(() => {
         axios.get("http://localhost:8080/admin/stats")
             .then(res => {
                 setTotalUsers(res.data.totalUserCount);
                 setMentorCount(res.data.mentorCount);
+                setUnresolvedInquiries(res.data.unresolvedInquiries);
             })
             .catch(err => {
                 console.error("관리자 통계 데이터 가져오기 실패", err);
@@ -34,6 +28,28 @@ const Dashboard = () => {
         axios.get("http://localhost:8080/admin/daily")
             .then(res => {
                 setDailyData(res.data);
+            })
+            .catch(err => {
+                console.error("매출 요약 데이터 가져오기 실패", err);
+            });
+
+        axios.get("http://localhost:8080/admin/weekly")
+            .then(res => {
+                // 서버에서 받은 데이터 예: [{dayName: "일", sales: 30000}, ...]
+                // 요일 순서: 월(1), 화(2), 수(3), 목(4), 금(5), 토(6), 일(0)
+                const dayOrder = { "월": 1, "화": 2, "수": 3, "목": 4, "금": 5, "토": 6, "일": 0 };
+
+                // 서버 데이터 매핑 (없으면 0)
+                const salesMap = new Map(res.data.map(item => [item.dayName, item.sales]));
+
+                // 차트용 배열을 월~일 순서로 만듦
+                const orderedDayNames = ["월", "화", "수", "목", "금", "토", "일"];
+                const chartData = orderedDayNames.map(dayName => ({
+                    name: dayName,
+                    value: salesMap.get(dayName) ?? 0,
+                }));
+
+                setWeeklyData(chartData);
             })
             .catch(err => {
                 console.error("매출 요약 데이터 가져오기 실패", err);
@@ -78,10 +94,10 @@ const Dashboard = () => {
                                 />
                                 <StatCard
                                     title="미해결 문의"
-                                    value="42"
+                                    value={unresolvedInquiries !== null ? unresolvedInquiries : "로딩 중..."}
                                     // change="↑ 5.2% 지난 달 대비"
                                     // changeType="increase"
-                                    icon="💰"
+                                    icon="💬"
                                 />
                             </div>
 
@@ -105,7 +121,7 @@ const Dashboard = () => {
                                     title="당일 매출 현황"
                                 />
                                 <BarChartCompo
-                                    data={barChartData}
+                                    data={weeklyData}
                                     title="일별 매출 현황"
                                 />
                             </div>

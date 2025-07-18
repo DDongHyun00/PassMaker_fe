@@ -14,13 +14,13 @@ const Header = () => {
                     </div>
 
                     <div className="flex items-center space-x-4">
-                        <div className="relative">
-                            <input
-                                type="text"
-                                placeholder="검색어를 입력하세요"
-                                className="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
+                        {/*<div className="relative">*/}
+                        {/*    <input*/}
+                        {/*        type="text"*/}
+                        {/*        placeholder="검색어를 입력하세요"*/}
+                        {/*        className="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"*/}
+                        {/*    />*/}
+                        {/*</div>*/}
 
                         {/*<button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">*/}
                         {/*    유저 관리*/}
