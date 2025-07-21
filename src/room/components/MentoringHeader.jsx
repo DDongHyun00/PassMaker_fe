@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MentoringHeader = () => {
+const MentoringHeader = ({ roomId }) => {
   const handleHelp = () => {
     alert('도움말 페이지로 이동합니다.');
   };
@@ -9,9 +9,21 @@ const MentoringHeader = () => {
     alert('회원 공유 기능입니다.');
   };
 
-  const handleExit = () => {
-    if (window.confirm('정말로 인터뷰를 종료하시겠습니까?')) {
-      window.location.href = '/';
+  const handleExit = async () => {
+    if (!window.confirm('정말로 인터뷰를 종료하시겠습니까?')) return;
+
+    try {
+      const response = await fetch(`/api/rooms/exit?roomId=${roomId}`, {
+        method: 'POST',
+        credentials: 'include', // ✅ 쿠키 기반 인증 사용 시 필요
+      });
+
+      if (!response.ok) throw new Error('서버 오류');
+
+      alert('방 종료 및 요약이 완료되었습니다.');
+      window.location.href = '/'; // ✅ 홈으로 이동
+    } catch (error) {
+      alert('종료 중 오류가 발생했습니다: ' + error.message);
     }
   };
 
@@ -26,8 +38,8 @@ const MentoringHeader = () => {
             </div>
             <span className="text-xl font-bold text-gray-900">PassMaker</span>
           </div>
-          
-          <button 
+
+          <button
             onClick={handleHelp}
             className="text-purple-600 hover:text-purple-700 font-medium"
           >
@@ -37,14 +49,14 @@ const MentoringHeader = () => {
 
         {/* 오른쪽 버튼 및 프로필 영역 */}
         <div className="flex items-center space-x-4">
-          <button 
+          <button
             onClick={handleShare}
             className="px-4 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors font-medium"
           >
             화면 공유
           </button>
-          
-          <button 
+
+          <button
             onClick={handleExit}
             className="px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors font-medium"
           >

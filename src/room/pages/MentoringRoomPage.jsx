@@ -3,10 +3,11 @@ import MentoringHeader from '../components/MentoringHeader.jsx';
 import VideoArea from '../components/VideoArea.jsx';
 import MentoringPreparation from '../components/MentoringPreparation.jsx';
 import { useAuth } from "../../auth/AuthContext.jsx"; //
-
+import { useParams } from "react-router-dom"; // ✅ URL 파라미터 추출
 
 const MentoringRoomPage = () => {
     const { user, loading } = useAuth();
+    const { roomId } = useParams(); // ✅ /room/:roomId 형태에서 추출
 
     if (loading || !user || !user.userId) {
         return <div>로딩 중...</div>;  // 혹은 return null
@@ -64,7 +65,7 @@ const MentoringRoomPage = () => {
 
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col">
-            <MentoringHeader />
+            <MentoringHeader roomId={roomId} /> {/* ✅ roomId 전달 */}
             {user && (
                 <VideoArea
                     userId={user.userId}
