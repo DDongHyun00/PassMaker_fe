@@ -67,13 +67,9 @@ const Router = () => {
 tn
         {/* ───── 관리자 전용 ───── */}
         <Route path="/admin/users" element={<UserListPage />} />
-        <Route path="/admin/users/id" element={<UserDetailPage />} />
         <Route path="/admin/mentor-application" element={<MentorApplicationPage />}/>
-        <Route path="/admin/mentor-application/id" element={<MentorApplDetailPage />}/>
         <Route path="/admin/report-review" element={<ReportsReviewPage />} />
-        <Route path="/admin/report-review/id" element={<ReportsDetailPage />} />
         <Route path="/admin/inquiries" element={<InquiryListPage />} />
-        <Route path="/admin/inquiries/id" element={<InquiryDetailPage />} />
         <Route path="/admin" element={<Dashboard />} />
 
         {/* ───── 멘토 전용 ───── */}
@@ -84,6 +80,7 @@ tn
         <Route path="/admin/users/:userId" element={<UserDetailPage />} />
         <Route path="/admin/mentor-application/:applyId" element={<MentorApplDetailPage />}/>
         <Route path="/admin/inquiries/:inquiryId" element={<InquiryDetailPage />} />
+        <Route path="/admin/report-review/:reportReviewId" element={<ReportsDetailPage />} />
       </Route>
     </Routes>
   );

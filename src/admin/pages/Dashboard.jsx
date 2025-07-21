@@ -9,25 +9,31 @@ import BarChartCompo from "../components/dashboard/BarChartCompo.jsx";
 const Dashboard = () => {
     const [totalUsers, setTotalUsers] = useState(null);
     const [mentorCount, setMentorCount] = useState(null);
+    const [reportedReviewsCount, setReportedReviewsCount] = useState(null);
     const [dailyData, setDailyData] = useState([]);
     const [unresolvedInquiries, setUnresolvedInquiries] = useState(null);
     const [weeklyData, setWeeklyData] = useState([]);
 
     useEffect(() => {
-        axios.get("/admin/stats")
+        const today = new Date().toISOString().split('T')[0];
+
+        axios.get("http://localhost:8080/admin/stats")
             .then(res => {
                 setTotalUsers(res.data.totalUserCount);
                 setMentorCount(res.data.mentorCount);
                 setUnresolvedInquiries(res.data.unresolvedInquiries);
+                setReportedReviewsCount(res.data.reportedReviewsCount);
             })
             .catch(err => {
                 console.error("관리자 통계 데이터 가져오기 실패", err);
             });
 
         // 매출 요약 데이터 불러오기
-        axios.get("/admin/daily")
+        axios.get("http://localhost:8080/admin/daily")
             .then(res => {
-                setDailyData(res.data);
+                const today = new Date().toISOString().split("T")[0]; // 'yyyy-MM-dd'
+                const todayData = res.data.filter(item => item.date === today);
+                setDailyData(todayData);
             })
             .catch(err => {
                 console.error("매출 요약 데이터 가져오기 실패", err);
@@ -73,28 +79,26 @@ const Dashboard = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                                 <StatCard
                                     title="총 사용자 수"
-                                    value={totalUsers !== null ? totalUsers.toLocaleString() : "로딩 중..."}
-                                    // change="↑ 12.5% 지난 달 대비"
-                                    // changeType="increase"
+                                    value={totalUsers?.toLocaleString() ?? "로딩 중..."}
                                     icon="👥"
                                 />
                                 <StatCard
                                     title="활동 멘토 수"
-                                    value={mentorCount !== null ? mentorCount.toLocaleString() : "로딩 중..."}
+                                    value={mentorCount?.toLocaleString() ?? "로딩 중..."}
                                     // change="↑ 8.3% 지난 달 대비"
                                     // changeType="increase"
                                     icon="👤"
                                 />
                                 <StatCard
                                     title="신고된 리뷰"
-                                    value="187"
+                                    value={reportedReviewsCount?.toLocaleString() ?? "로딩 중..."}
                                     // change="↓ 2.4% 지난 달 대비"
                                     // changeType="decrease"
                                     icon="⚡"
                                 />
                                 <StatCard
                                     title="미해결 문의"
-                                    value={unresolvedInquiries !== null ? unresolvedInquiries : "로딩 중..."}
+                                    value={unresolvedInquiries ?? "로딩 중..."}
                                     // change="↑ 5.2% 지난 달 대비"
                                     // changeType="increase"
                                     icon="💬"
@@ -122,7 +126,7 @@ const Dashboard = () => {
                                 />
                                 <BarChartCompo
                                     data={weeklyData}
-                                    title="일별 매출 현황"
+                                    title="주간 매출 현황"
                                 />
                             </div>
 

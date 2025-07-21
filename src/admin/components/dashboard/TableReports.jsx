@@ -22,10 +22,10 @@ const TableReports = ({ data, title }) => (
                 <tbody>
                 {data.map((item, index) => (
                     <tr key={index} className="border-b">
-                        <td className="w-1/4 text-center py-2">{item.id}</td>
-                        <td className="w-1/4 text-center py-2">{item.mentor}</td>
-                        <td className="w-1/4 text-center py-2">{item.mentee}</td>
-                        <td className="w-1/4 text-center py-2">{item.amount}</td>
+                        <td className="w-1/4 text-center py-2">{item.payId}</td>
+                        <td className="w-1/4 text-center py-2">{item.mentorName}</td>
+                        <td className="w-1/4 text-center py-2">{item.userName}</td>
+                        <td className="w-1/4 text-center py-2">{item.amount.toLocaleString()}원</td>
                     </tr>
                 ))}
                 </tbody>
