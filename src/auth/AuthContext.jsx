@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import axios from "../common/lib/axios"; // 인터셉터 포함된 axios여야 함
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 // AuthProvider.jsx
 export function AuthProvider({ children }) {
