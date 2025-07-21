@@ -44,7 +44,7 @@ const MentorApplicationPage = () => {
     useEffect(() => {
         const fetchAllApplications = async () => {
             try {
-                const allRes = await axios.get('http://localhost:8080/admin/mentor-application/all');
+                const allRes = await axios.get('/api/admin/mentor-application/all');
                 setFullApplications(allRes.data.map(mapApplication));
             } catch (error) {
                 console.error('전체 신청 데이터 요청 실패:', error);
