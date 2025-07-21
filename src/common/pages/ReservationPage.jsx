@@ -4,6 +4,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../styles/customCalendar.css";
 import { loadTossPayments } from "@tosspayments/payment-sdk";
+import axios from "axios";
 
 const ReservationPage = () => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -26,13 +27,11 @@ const ReservationPage = () => {
   useEffect(() => {
     const fetchNickname = async () => {
       try {
-        const res = await fetch(
+        const res = await axios.get(
           `http://localhost:8080/api/mentors/id/${mentorId}`,
-          { credentials: "include" }
+          { withCredentials: true }
         );
-        if (!res.ok) throw new Error("닉네임 조회 실패");
-        const data = await res.json();
-        setMentorNickname(data.nickname);
+        setMentorNickname(res.data.nickname);
       } catch (err) {
         console.error("멘토 닉네임 불러오기 실패", err);
       }
@@ -45,14 +44,11 @@ const ReservationPage = () => {
   useEffect(() => {
     const fetchUnavailableTimes = async () => {
       try {
-        const res = await fetch(
+        const res = await axios.get(
           `http://localhost:8080/api/reservations/mentor/${mentorId}/unavailable-times`,
-          { credentials: "include" }
+          { withCredentials: true }
         );
-
-        if (!res.ok) throw new Error(`에러 발생: ${res.status}`);
-        const data = await res.json();
-        setUnavailableTimes(data);
+        setUnavailableTimes(res.data);
       } catch (err) {
         console.error("예약된 시간 목록 불러오기 실패", err);
         setUnavailableTimes([]);
@@ -76,24 +72,25 @@ const ReservationPage = () => {
 
     try {
       // ✅ 중복 예약 체크
-      const checkRes = await fetch(
+      await axios.post(
         "http://localhost:8080/api/reservations/check-duplicate",
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({
-            mentorId: Number(mentorId),
-            reservationTime,
-          }),
-        }
+          mentorId: Number(mentorId),
+          reservationTime,
+        },
+        { withCredentials: true }
       );
-
-      if (checkRes.status === 409) {
+    } catch (err) {
+      if (err.response && err.response.status === 409) {
         alert("이미 예약된 시간입니다.");
-        return;
+      } else {
+        console.error("중복 예약 체크 에러:", err);
+        alert("예약 가능 여부 확인 중 문제가 발생했습니다.");
       }
+      return;
+    }
 
+    try {
       const toss = await loadTossPayments(import.meta.env.VITE_TOSS_CLIENT_KEY);
       const orderId = `reserve_${mentorId}_${orderId_set}`;
       const amount = mockPrice;

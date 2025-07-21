@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MentorCard from "./MentorCard";
+import axios from "axios"; // axios import 추가
 
 import defaultAvatar from "../../assets/default_user.png";
 
@@ -19,17 +20,17 @@ export default function MentorList() {
   const [selected, setSelected] = useState("전체");
 
   useEffect(() => {
-    fetch("/api/mentors", {
-      credentials: "include",
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("서버 오류: " + res.status);
-        return res.json();
-      })
-      .then((data) => setMentors(data))
-      .catch((err) => {
+    const fetchMentors = async () => {
+      try {
+        const res = await axios.get("http://localhost:8080/api/mentors", {
+          withCredentials: true,
+        });
+        setMentors(res.data);
+      } catch (err) {
         console.error("MentorList fetch 실패:", err.message);
-      });
+      }
+    };
+    fetchMentors();
   }, []);
 
   // 1) 직무별 필터

@@ -20,7 +20,9 @@ import ReportsDetailPage from "../admin/pages/ReportsDetailPage.jsx";
 import InquiryListPage from "../admin/pages/InquiryListPage.jsx";
 import InquiryDetailPage from "../admin/pages/InquiryDetailPage.jsx";
 import Dashboard from "../admin/pages/Dashboard.jsx";
-import InquiryPage from "../common/pages/InquiryPage.jsx"
+import MentorIntroSection from "../mentor/components/MentorIntroSection.jsx";
+import MentorSettingsPage from "../mentor/pages/MentorSettingsPage.jsx";
+import MentorPreviewPage from "../mentor/pages/MentorPreviewPage.jsx"; // [추가] MentorPreviewPage 임포트 // <-- 이 라인을 추가합니다.
 
 import ReservationPage from "../common/pages/ReservationPage.jsx";
 import MentorDetailPage from "../mentor/pages/MentorDetailPage.jsx";
@@ -62,7 +64,7 @@ const Router = () => {
 
         {/* ✅ 멘토 상세 페이지 (nickname 기준) */}
         <Route path="/mentors/:nickname" element={<MentorDetailPage />} />
-
+tn
         {/* ───── 관리자 전용 ───── */}
         <Route path="/admin/users" element={<UserListPage />} />
         <Route path="/admin/users/id" element={<UserDetailPage />} />
@@ -73,6 +75,10 @@ const Router = () => {
         <Route path="/admin/inquiries" element={<InquiryListPage />} />
         <Route path="/admin/inquiries/id" element={<InquiryDetailPage />} />
         <Route path="/admin" element={<Dashboard />} />
+
+        {/* ───── 멘토 전용 ───── */}
+        <Route path="/mentor/settings" element={user && user.isMentor ? <MentorSettingsPage /> : <Navigate to="/login" replace />} />
+        <Route path="/mentor/settings/preview" element={user && user.isMentor ? <MentorPreviewPage /> : <Navigate to="/login" replace />} /> {/* [추가] 미리보기 페이지 라우트 */}
 
         {/* ───── 관리자 상세 페이지 (동적 파라미터 경로) 중복 제거 ───── */}
         <Route path="/admin/users/:userId" element={<UserDetailPage />} />
