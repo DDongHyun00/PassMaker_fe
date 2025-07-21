@@ -16,7 +16,7 @@ const MentorApplDetailPage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get(`/admin/mentor-application/${applyId}`)
+        axios.get(`/api/admin/mentor-application/${applyId}`)
             .then(res => setData(res.data))
             .catch(err => {
                 console.error(err);

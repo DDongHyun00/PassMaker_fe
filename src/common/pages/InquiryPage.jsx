@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import ModalInquiryWrite from "../modal/ModalInquiryWrite";
 import ModalInquiryList from "../modal/ModalInquiryList";
 import inquiry_svg from "../../assets/inquiry_svg.png";
-export default function ContactPage() {
+
+export default function InquiryPage() {
   const [isWriteOpen, setIsWriteOpen] = useState(false);
   const [isListOpen, setIsListOpen] = useState(false);
 

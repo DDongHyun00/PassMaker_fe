@@ -58,7 +58,7 @@ const MentorApplicationPage = () => {
         const fetchApplications = async () => {
             setLoading(true);
             try {
-                const response = await axios.get('/admin/mentor-application', {
+                const response = await axios.get('/api/admin/mentor-application', {
                     params: {
                         searchText,
                         status: statusFilter === '전체 상태' ? '' : statusFilter,
