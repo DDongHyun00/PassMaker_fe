@@ -13,7 +13,8 @@ export function AuthProvider({ children }) {
     axios
       .get("http://localhost:8080/api/auth/me", { withCredentials: true })
       .then((res) => {
-        setUser(res.data);
+        console.log("Raw res.data (useEffect):", res.data); // <-- 이 라인을 추가합니다.
+        setUser({ ...res.data, isMentor: res.data.mentor }); // 'mentor' 값을 'isMentor'로 매핑
         setIsLoggedIn(true);
       })
       .catch(() => {
@@ -33,7 +34,9 @@ export function AuthProvider({ children }) {
       const res = await axios.get("http://localhost:8080/api/auth/me", {
         withCredentials: true,
       });
-      setUser(res.data);
+      console.log("Raw res.data (login):", res.data); // <-- 이 라인을 추가합니다.
+      setUser({ ...res.data, isMentor: res.data.mentor }); // 'mentor' 값을 'isMentor'로 매핑
+      console.log("AuthContext user after mapping (login):", { ...res.data, isMentor: res.data.mentor }); // <-- 이 라인을 추가합니다.
       setIsLoggedIn(true);
     } catch {
       setUser(null);

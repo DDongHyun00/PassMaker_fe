@@ -6,8 +6,10 @@ import MyInfoView from "../components/MyInfoView";
 import MyInfoEdit from "../components/MyInfoEdit";
 import MyPageButton from "../components/MyPageButton";
 import MyPageCard from "../components/MyPageCard";
-import WithdrawConfirmModal from "../components/WithdrawConfirmModal"
+import MentoringTogglePanel from "../../mentor/components/MentoringTogglePanel"
+import WithdrawConfirmModal from "../components/WithdrawConfirmModal";
 import { useAuth } from "../../auth/AuthContext.jsx";
+import defaultUserImage from '../../assets/default_user.png'; // [추가] 기본 이미지 임포트
 
 const MyPage = () => {
     const [profile, setProfile] = useState(null);
@@ -24,6 +26,29 @@ const MyPage = () => {
     const [thumbnailPreview, setThumbnailPreview] = useState("");
     const [uploading, setUploading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [mentoringEnabled, setMentoringEnabled] = useState(false); // 멘토링 활성화 상태
+    const [toggleLoading, setToggleLoading] = useState(false); // 토글 로딩 상태
+
+    // 멘토링 토글 핸들러
+    const handleMentoringToggle = async () => {
+        // Optimistic update: UI를 먼저 업데이트하고, API 실패 시 되돌립니다.
+        const previousState = mentoringEnabled;
+        setMentoringEnabled(prev => !prev); // UI 먼저 변경
+
+        setToggleLoading(true); // 로딩 시작
+        try {
+            // MPR-006 API 사용: PATCH /api/mentors/me/status
+            await authApi.patch("/api/mentors/me/status", { isActive: !previousState });
+            console.log("멘토링 활성화 상태 업데이트 성공:", !previousState);
+            // 성공 시 별도 처리 없음 (이미 UI 업데이트됨)
+        } catch (err) {
+            console.error("멘토링 활성화 상태 업데이트 실패:", err);
+            alert("멘토링 상태 변경에 실패했습니다. 다시 시도해주세요.");
+            setMentoringEnabled(previousState); // API 실패 시 UI 상태 되돌리기
+        } finally {
+            setToggleLoading(false); // 로딩 종료
+        }
+    };
 
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -43,12 +68,15 @@ const MyPage = () => {
     const loadProfile = async () => {
         try {
             const res = await authApi.get("http://localhost:8080/api/mypage/profile");
-            setProfile(res.data);
+            console.log("프론트엔드 profile 객체:", res.data); // [추가] 응답 데이터 콘솔 출력
+            setProfile({ ...res.data, isMentor: res.data.mentor });
             setFormData({
                 nickname: res.data.nickname || "",
                 phone: res.data.phone || "",
                 thumbnail: res.data.thumbnail ?? "",
             });
+            // 프로필 로드 시 멘토링 활성화 상태도 설정 (isActive 필드 사용)
+            setMentoringEnabled(res.data.active || false); // 백엔드에서 active 필드를 받아와 설정
         } catch (err) {
             console.error("유저 정보 조회 실패", err);
         }
@@ -160,7 +188,7 @@ const MyPage = () => {
                     {/* 오른쪽 썸네일 이미지 */}
                     <div>
                         <img
-                            src={thumbnailPreview || profile.thumbnail}
+                            src={thumbnailPreview || profile.thumbnail || defaultUserImage} // [수정] 기본 이미지 폴백 추가
                             alt="프로필 썸네일"
                             className="w-40 h-40 rounded-full object-cover border cursor-pointer"
                             onClick={() => setIsModalOpen(true)}
@@ -174,7 +202,7 @@ const MyPage = () => {
                     >
                         <div className="bg-white p-4 rounded shadow-lg">
                             <img
-                                src={thumbnailPreview || profile.thumbnail}
+                                src={thumbnailPreview || profile.thumbnail || defaultUserImage} // [수정] 기본 이미지 폴백 추가
                                 alt="확대 프로필 썸네일"
                                 className="max-w-full max-h-[90vh] object-contain"
                             />
@@ -183,8 +211,18 @@ const MyPage = () => {
                 )}
             </MyPageCard>
 
-
-
+        {/* 멘토링 토글 패널 */}
+        {profile.isMentor && (
+            <MentoringTogglePanel
+                enabled={mentoringEnabled}
+                onToggle={handleMentoringToggle}
+                title="멘토링 활성화" // 제목 변경
+                onCommentClick={() => {
+                    /* 댓글 모달 열기 */
+                }}
+                onSettingsClick={() => navigate("/mentor/settings")}
+            />
+        )}
 
             {/* 계정 설정 카드 */}
             <MyPageCard>
@@ -202,7 +240,16 @@ const MyPage = () => {
                         </li>
                         <li><MyPageButton className="w-full justify-start">결제 정보 관리</MyPageButton></li>
                         <li><MyPageButton className="w-full justify-start">찜한 멘토 조회</MyPageButton></li>
-
+                        {profile.isMentor && (
+                            <li>
+                                <MyPageButton
+                                    className="w-full justify-start"
+                                    onClick={() => navigate("/mentor/settings")}
+                                >
+                                    멘토링 설정
+                                </MyPageButton>
+                            </li>
+                        )}
                         <li>
                             <MyPageButton
                                 className="w-full justify-start text-red-600"
