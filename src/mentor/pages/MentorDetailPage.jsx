@@ -65,28 +65,7 @@ export default function MentorDetailPage() {
     fetchMentorAndReviews();
   }, [nickname]);
 
-  // // ✅ 결제 성공 → 예약 저장 → 팝업 준비
-  // useEffect(() => {
-  //   if (mentor?.mentorId && paymentKey && amount && orderId) {
-  //     const reserveAfterPayment = async () => {
-  //       try {
-  //         const res = await axios.post(
-  //           "http://localhost:8080/api/payments/toss/reserve",
-  //           { orderId, paymentKey, amount: Number(amount) },
-  //           { withCredentials: true }
-  //         );
-
-  //         navigate(`/mentors/${nickname}`, {
-  //           replace: true,
-  //           state: {
-  //             fromPaymentSuccess: true,
-  //             paymentData: res.data,
-  //           },
-  //         });
-  //       } catch (err) {
-  //         console.error("결제 처리 실패:", err);
-  //         alert("결제 처리 중 오류가 발생했습니다.");
-  //         navigate(`/mentors/${nickname}`, { replace: true });
+  
   // ✅ paymentKey 등의 조건만 체크
   const reservationTime = searchParams.get("reservationTime"); // ✅ URL 쿼리에서 가져오기
   useEffect(() => {
