@@ -10,7 +10,7 @@ const Blindness = ({ reportReviewId }) => {
     const handleApprove = async () => {
         setLoading(true);
         try {
-            await axios.patch(`http://localhost:8080/admin/report-review/${reportReviewId}?status=REVIEWED`);
+            await axios.patch(`/api/admin/report-review/${reportReviewId}?status=REVIEWED`);
             alert('신고 처리가 승인되었습니다.');
         } catch (error) {
             setErrorMessage('승인 처리 중 오류가 발생했습니다.');
@@ -27,7 +27,7 @@ const Blindness = ({ reportReviewId }) => {
         }
         setLoading(true);
         try {
-            await axios.patch(`http://localhost:8080/admin/report-review/${reportReviewId}?status=REJECTED&reason=${encodeURIComponent(rejectionReason)}`);
+            await axios.patch(`/api/admin/report-review/${reportReviewId}?status=REJECTED&reason=${encodeURIComponent(rejectionReason)}`);
             alert('신고 처리가 반려되었습니다.');
         } catch (error) {
             setErrorMessage('반려 처리 중 오류가 발생했습니다.');

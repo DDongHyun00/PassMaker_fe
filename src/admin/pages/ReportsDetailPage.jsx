@@ -16,7 +16,7 @@ const ReportsDetailPage = () => {
     useEffect(() => {
         const fetchReportedReviewDetail = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/admin/report-review/${reportReviewId}`);
+                const response = await axios.get(`/api/admin/report-review/${reportReviewId}`);
                 setReportData(response.data);
             } catch (error) {
                 console.error("신고 상세 정보를 가져오는 데 실패했습니다.", error);
