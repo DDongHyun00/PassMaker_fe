@@ -7,9 +7,9 @@ import MyInfoEdit from "../components/MyInfoEdit";
 import MyPageButton from "../components/MyPageButton";
 import MyPageCard from "../components/MyPageCard";
 import MentoringTogglePanel from "../../mentor/components/MentoringTogglePanel"
-import WithdrawConfirmModal from "../components/WithdrawConfirmModal";
 import { useAuth } from "../../auth/AuthContext.jsx";
 import defaultUserImage from '../../assets/default_user.png'; // [추가] 기본 이미지 임포트
+import WithdrawConfirmModal from "../modal/WithdrawConfirmModal.jsx";
 
 const MyPage = () => {
     const [profile, setProfile] = useState(null);
@@ -206,7 +206,7 @@ const MyPage = () => {
                 <div className="p-4">
                     <h3 className="text-lg font-semibold mb-2">계정 설정</h3>
                     <ul className="space-y-2">
-                        <li><MyPageButton className="w-full justify-start">알림 설정</MyPageButton></li>
+                        <li><MyPageButton className="w-full justify-start">요약 목록</MyPageButton></li>
                         <li>
                             <MyPageButton
                                 className="w-full justify-start"
