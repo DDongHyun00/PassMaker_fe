@@ -11,7 +11,7 @@ const BarChartCompo = ({ data, title }) => (
             <BarChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" tickMargin={12}/>
-                <YAxis tickMargin={12}/>
+                <YAxis tickMargin={4}/>
                 <Bar dataKey="value" fill="#3b82f6" />
             </BarChart>
         </ResponsiveContainer>

@@ -46,9 +46,6 @@ const FilterBar = ({searchText, setSearchText, statusFilter, setStatusFilter, ty
                         필터 초기화
                     </button>
                 </div>
-                {/*<button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors">*/}
-                {/*    엑셀 다운로드*/}
-                {/*</button>*/}
             </div>
         </div>
     )
