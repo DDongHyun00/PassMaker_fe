@@ -25,7 +25,7 @@ const UserListPage = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/admin/users', {
+            const response = await axios.get('/admin/users', {
                 params: {
                     name: searchName || '',
                     nickname: '',

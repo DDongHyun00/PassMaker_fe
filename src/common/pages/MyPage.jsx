@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import authApi from "../lib/axios";
-import Modal from "../components/MyPageModal";
+import Modal from "../modal/MyPageModal.jsx";
 import MyInfoView from "../components/MyInfoView";
 import MyInfoEdit from "../components/MyInfoEdit";
 import MyPageButton from "../components/MyPageButton";
@@ -50,20 +50,20 @@ const MyPage = () => {
         }
     };
 
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === "Escape") {
-                setIsModalOpen(false);
-            }
-        };
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setIsModalOpen(false);
+      }
+    };
 
-        if (isModalOpen) {
-            window.addEventListener("keydown", handleKeyDown);
-        }
-        return () => {
-            window.removeEventListener("keydown", handleKeyDown);
-        };
-    }, [isModalOpen]);
+    if (isModalOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isModalOpen]);
 
     const loadProfile = async () => {
         try {
@@ -82,86 +82,63 @@ const MyPage = () => {
         }
     };
 
-    const handleUpdate = async () => {
+  const handleUpdate = async () => {
+    const { nickname, phone, thumbnail } = formData;
+    if (!nickname.trim()) return alert("닉네임을 입력해주세요.");
+    if (!phone.trim()) return alert("전화번호를 입력해주세요.");
+    if (!thumbnail.trim()) return alert("썸네일 URL을 입력해주세요.");
 
-        const { nickname, phone, thumbnail } = formData;
-        // 1. 공백 검사
-        if (!nickname.trim()) {
-            alert("닉네임을 입력해주세요.");
-            return;
+    const phoneRegex = /^01[016789]-\d{3,4}-\d{4}$/;
+    if (!phoneRegex.test(phone))
+      return alert("전화번호 형식이 올바르지 않습니다. 예: 010-1234-5678");
+
+    try {
+      const res = await authApi.patch("/api/mypage/profile/edit", formData);
+      setProfile(res.data);
+      setEditOpen(false);
+    } catch (err) {
+      console.error("정보 수정 실패", err);
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  useEffect(() => {
+    loadProfile();
+  }, []);
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formDataFile = new FormData();
+    formDataFile.append("file", file);
+
+    try {
+      setUploading(true);
+      const res = await authApi.post(
+        "/api/mypage/upload-thumbnail",
+        formDataFile,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
         }
-        if (!phone.trim()) {
-            alert("전화번호를 입력해주세요.");
-            return;
-        }
-        if (!thumbnail.trim()) {
-            alert("썸네일 URL을 입력해주세요.");
-            return;
-        }
+      );
+      const imageUrl = res.data;
+      setFormData((prev) => ({ ...prev, thumbnail: imageUrl }));
+      setThumbnailPreview(imageUrl);
+    } catch (err) {
+      console.error("썸네일 업로드 실패", err);
+    } finally {
+      setUploading(false);
+    }
+  };
 
-        // 2. 전화번호 형식 검사 (예: 010-1234-5678)
-        const phoneRegex = /^01[016789]-\d{3,4}-\d{4}$/;
-        if (!phoneRegex.test(phone)) {
-            alert("전화번호 형식이 올바르지 않습니다. 예: 010-1234-5678");
-            return;
-        }
-
-        try {
-            const res = await authApi.patch("http://localhost:8080/api/mypage/profile/edit", formData);
-            setProfile(res.data);
-            setEditOpen(false);
-        } catch (err) {
-            console.error("정보 수정 실패", err);
-        }
-    };
-
-    const handleChange = (e) => {
-        setFormData((prev) => ({
-            ...prev,
-            [e.target.name]: e.target.value,
-        }));
-    };
-
-    useEffect(() => {
-        loadProfile();
-    }, []);
-
-    // 썸네일 파일 업로드 추가
-    const handleFileChange = async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const formDataFile = new FormData();
-        formDataFile.append("file", file);
-
-        try {
-            setUploading(true);
-            const res = await authApi.post(
-                "http://localhost:8080/api/mypage/upload-thumbnail",
-                formDataFile,
-                { headers: { "Content-Type": "multipart/form-data" } }
-            );
-
-            const imageUrl = res.data; // S3 업로드된 URL
-
-            // formData에 URL 저장 (서버로 PATCH할 때 필요)
-            setFormData(prev => ({
-                ...prev,
-                thumbnail: imageUrl,
-            }));
-
-            // 썸네일 미리보기에도 적용
-            setThumbnailPreview(imageUrl);
-
-        } catch (err) {
-            console.error("썸네일 업로드 실패", err);
-        } finally {
-            setUploading(false);
-        }
-    };
-
-
-    if (!profile) return <div className="p-6">불러오는 중...</div>;
+  if (!profile) return <div className="p-6">불러오는 중...</div>;
 
     return (
         <div className="p-6 max-w-6xl mx-auto">

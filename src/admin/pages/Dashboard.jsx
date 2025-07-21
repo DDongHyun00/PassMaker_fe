@@ -14,7 +14,7 @@ const Dashboard = () => {
     const [weeklyData, setWeeklyData] = useState([]);
 
     useEffect(() => {
-        axios.get("http://localhost:8080/admin/stats")
+        axios.get("/admin/stats")
             .then(res => {
                 setTotalUsers(res.data.totalUserCount);
                 setMentorCount(res.data.mentorCount);
@@ -25,7 +25,7 @@ const Dashboard = () => {
             });
 
         // 매출 요약 데이터 불러오기
-        axios.get("http://localhost:8080/admin/daily")
+        axios.get("/admin/daily")
             .then(res => {
                 setDailyData(res.data);
             })

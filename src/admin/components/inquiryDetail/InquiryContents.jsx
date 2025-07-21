@@ -9,7 +9,7 @@ const InquiryContents = () => {
     const [replyContent, setReplyContent] = useState("");
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/admin/inquiries/${inquiryId}`)
+        axios.get(`/admin/inquiries/${inquiryId}`)
             .then(res => {
                 setInquiry(res.data);
                 setReplyTitle(res.data.respondTitle);
@@ -19,7 +19,7 @@ const InquiryContents = () => {
     }, [inquiryId]);
 
     const handleReplySubmit = () => {
-        axios.post(`http://localhost:8080/admin/inquiries/${inquiryId}/response`, {
+        axios.post(`/admin/inquiries/${inquiryId}/response`, {
             respondTitle: replyTitle,
             respondContent: replyContent
         }).then(() => {

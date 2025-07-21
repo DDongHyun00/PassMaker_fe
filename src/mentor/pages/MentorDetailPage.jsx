@@ -94,7 +94,7 @@ export default function MentorDetailPage() {
       const reserveAfterPayment = async () => {
         try {
           const res = await axios.post(
-            "http://localhost:8080/api/payments/toss/reserve",
+            "/api/payments/toss/reserve",
             { orderId, paymentKey, amount: Number(amount),reservationTime,mentorId: mentor.mentorId, },
             { withCredentials: true }
           );

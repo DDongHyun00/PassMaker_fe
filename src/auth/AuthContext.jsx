@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/auth/me", { withCredentials: true })
+      .get("/api/auth/me", { withCredentials: true })
       .then((res) => {
         console.log("Raw res.data (useEffect):", res.data); // <-- 이 라인을 추가합니다.
         setUser({ ...res.data, isMentor: res.data.mentor }); // 'mentor' 값을 'isMentor'로 매핑
@@ -31,7 +31,7 @@ export function AuthProvider({ children }) {
   // 로그인 성공 후 상태 설정 (localStorage x)
   const login = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/auth/me", {
+      const res = await axios.get("/api/auth/me", {
         withCredentials: true,
       });
       console.log("Raw res.data (login):", res.data); // <-- 이 라인을 추가합니다.
@@ -48,20 +48,20 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     try {
       await axios.post(
-        "http://localhost:8080/api/auth/logout",
+        "/api/auth/logout",
         {},
         { withCredentials: true }
       );
       await axios
         .post(
-          "http://localhost:8080/api/oauth/google/logout",
+          "/api/oauth/google/logout",
           {},
           { withCredentials: true }
         )
         .catch(() => {});
       await axios
         .post(
-          "http://localhost:8080/api/oauth/kakao/logout",
+          "/api/oauth/kakao/logout",
           {},
           { withCredentials: true }
         )

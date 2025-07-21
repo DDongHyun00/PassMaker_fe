@@ -1,7 +1,7 @@
 // src/components/PaymentModal.jsx
 import React from "react";
 import { loadTossPayments } from "@tosspayments/payment-sdk";
-import axios from "../../common/lib/axios";
+import axios from "../lib/axios.js";
 import { useNavigate } from "react-router-dom";
 
 const PaymentModal = ({ reservation, onClose }) => {

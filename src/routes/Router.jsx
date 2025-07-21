@@ -26,6 +26,7 @@ import MentorPreviewPage from "../mentor/pages/MentorPreviewPage.jsx"; // [추�
 
 import ReservationPage from "../common/pages/ReservationPage.jsx";
 import MentorDetailPage from "../mentor/pages/MentorDetailPage.jsx";
+import ReservedMentoringPage from "../common/pages/ReservedMentoringPage.jsx"
 
 const Router = () => {
   const { user, loading } = useAuth();
@@ -43,6 +44,8 @@ const Router = () => {
       <Route path="/payment/success" element={<MentorDetailPage />} /> {/* ✅ 결제 후 리다이렉트 */}
 
       <Route path="/mypage" element={<MyPage />} />
+      <Route path="/inquiry" element={<InquiryPage/>} />
+      <Route path="/ReservedMentoring" element={<ReservedMentoringPage/>} />
 
 
       {/* ───── 공통 레이아웃 적용 ───── */}

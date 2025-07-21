@@ -60,12 +60,15 @@ export default function MainPage() {
         {/* 🔹 멘토 리스트 */}
         <MentorList />
 
-
         {/* ✅ [임시] 멘토 수락/거절 테스트 영역 */}
         {userRole === "MENTOR" && (
           <div className="mt-8 p-4 border border-gray-300 rounded">
-            <h2 className="text-lg font-semibold mb-2">🧪 멘토 수락/거절 테스트 (임시)</h2>
-            <p className="text-sm text-gray-600 mb-2">※ 추후 마이페이지에서 관리 예정</p>
+            <h2 className="text-lg font-semibold mb-2">
+              🧪 멘토 수락/거절 테스트 (임시)
+            </h2>
+            <p className="text-sm text-gray-600 mb-2">
+              ※ 추후 마이페이지에서 관리 예정
+            </p>
             <input
               type="text"
               placeholder="예약 ID 입력"

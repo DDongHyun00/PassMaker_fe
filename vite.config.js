@@ -7,7 +7,15 @@ import rollupNodePolyFill from 'rollup-plugin-node-polyfills';
 export default defineConfig({
   server:{
     port:5173,
-    strictPort: true
+    strictPort: true,
+    proxy: {
+      // 프론트에서 /api로 시작하는 요청은 백엔드로 프록시
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
   plugins: [react()],
   resolve: {
