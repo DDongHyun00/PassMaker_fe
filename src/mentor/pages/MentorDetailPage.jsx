@@ -47,6 +47,9 @@ export default function MentorDetailPage() {
       try {
         const mentorRes = await axios.get(`/api/mentors/${nickname}`);
         const fetchedMentor = mentorRes.data;
+        console.log("상세 멘토 응답:", fetchedMentor);
+
+
         setMentor(fetchedMentor);
 
         if (fetchedMentor?.mentorId) {
@@ -132,13 +135,14 @@ export default function MentorDetailPage() {
             {/* ─── 좌측: 프로필, 평점, 버튼, 액션 ─── */}
             <div className="flex flex-col items-center md:items-start text-center md:text-left">
               <img
-                src={mentor.avatarUrl || defaultAvatar}
-                alt={`${mentor.nickname} 아바타`}
-                onError={(e) => {
-                  e.currentTarget.src = defaultAvatar;
-                }}
-                className="w-32 h-32 rounded-full border-2 border-purple-600 mb-4"
+                  src={mentor.thumbnail || defaultAvatar}
+                  alt={`${mentor.nickname} 아바타`}
+                  onError={(e) => {
+                    e.currentTarget.src = defaultAvatar;
+                  }}
+                  className="w-32 h-32 rounded-full border-2 border-purple-600 mb-4"
               />
+
               <h2 className="text-2xl font-bold mb-2">{mentor.nickname}</h2>
               <div className="flex items-center mb-4">
                 <User className="w-5 h-5 text-yellow-400" />
@@ -194,8 +198,7 @@ export default function MentorDetailPage() {
                 <ul className="space-y-4 ml-4">
                   {(mentor.careers || []).map((c, i) => (
                     <li key={i}>
-                      <p className="font-medium">{c.title}</p>
-                      <p className="text-gray-500 text-sm">{c.period}</p>
+                      <p className="text-gray-700">{c}</p>
                     </li>
                   ))}
                 </ul>
@@ -206,7 +209,7 @@ export default function MentorDetailPage() {
                   <Code className="w-5 h-5 text-purple-600 mr-2" /> 기술 스택
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {(mentor.skills || []).map((s) => (
+                  {(mentor.fields || []).map((s) => (
                     <span
                       key={s}
                       className="text-sm px-3 py-1 border border-gray-300 rounded-full"

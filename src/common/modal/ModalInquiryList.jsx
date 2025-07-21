@@ -178,6 +178,23 @@ export default function ModalInquiryList({ onClose }) {
                 minute: "2-digit",
               })}
             </p>
+
+            {/* 답변 정보 표시 추가 */}
+            <hr className="my-4" />
+            <p className="text-sm font-bold mb-2 text-purple-700">관리자 답변</p>
+
+            {detail.respondTitle || detail.respondContent ? (
+                <>
+                  <p className="text-sm font-medium mb-1">답변 제목:</p>
+                  <p className="mb-2">{detail.respondTitle || "(제목 없음)"}</p>
+
+                  <p className="text-sm font-medium mb-1">답변 내용:</p>
+                  <p className="whitespace-pre-wrap">{detail.respondContent || "(내용 없음)"}</p>
+                </>
+            ) : (
+                <p className="text-gray-500 italic">아직 답변이 등록되지 않았습니다.</p>
+            )}
+
           </div>
         )}
 

@@ -44,7 +44,7 @@ const Router = () => {
       <Route path="/payment/success" element={<MentorDetailPage />} /> {/* ✅ 결제 후 리다이렉트 */}
 
       <Route path="/mypage" element={<MyPage />} />
-      {/*<Route path="/inquiry" element={<InquiryPage/>} />*/}
+      <Route path="/inquiry" element={<InquiryPage/>} />
       <Route path="/ReservedMentoring" element={<ReservedMentoringPage/>} />
 
 
