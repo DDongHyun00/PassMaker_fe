@@ -68,7 +68,7 @@ export default function MentorList() {
               key={m.id ?? i}
               id={m.nickname}
               nickname={m.nickname} // ✅ 이거 하나만 추가!
-              avatarUrl={defaultAvatar}
+              avatarUrl={m.thumbnail ? m.thumbnail : defaultAvatar}
               role={m.fieldName}
               experience={m.careerDesc}
               name={m.nickname}

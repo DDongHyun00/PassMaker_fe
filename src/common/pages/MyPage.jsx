@@ -10,6 +10,7 @@ import MentoringTogglePanel from "../../mentor/components/MentoringTogglePanel"
 import WithdrawConfirmModal from "../modal/WithdrawConfirmModal";
 import { useAuth } from "../../auth/AuthContext.jsx";
 import defaultUserImage from '../../assets/default_user.png'; // [추가] 기본 이미지 임포트
+import ReservedMentoringPage from "./ReservedMentoringPage.jsx";
 
 const MyPage = () => {
     const [profile, setProfile] = useState(null);
@@ -215,7 +216,7 @@ const MyPage = () => {
                                 내 정보 수정
                             </MyPageButton>
                         </li>
-                        <li><MyPageButton className="w-full justify-start">결제 정보 관리</MyPageButton></li>
+                        {/*<li><MyPageButton className="w-full justify-start">결제 정보 관리</MyPageButton></li>*/}
                         <li><MyPageButton className="w-full justify-start">찜한 멘토 조회</MyPageButton></li>
                         {profile.isMentor && (
                             <li>
@@ -239,21 +240,29 @@ const MyPage = () => {
                     </ul>
                 </div>
             </MyPageCard>
+            {/* 1:1문의 카드 */}
+            <MyPageCard>
+                <div className="p-4">
+                    <h3 className="text-lg font-semibold mb-4">1:1 문의</h3>
+                    <div className="flex justify-between items-center">
+                        <span className="text-gray-700">문의사항이 있다면 여기를 눌러주세요</span>
+                        <MyPageButton className="text-sm" onClick={() => navigate("/inquiry")}>
+                            문의하러 가기
+                        </MyPageButton>
+                    </div>
+                </div>
+            </MyPageCard>
 
             {/* 예약된 멘토링 카드 */}
             <MyPageCard>
                 <div className="p-4">
-                    <h3 className="text-lg font-semibold mb-2">예약된 멘토링</h3>
-                    <ul className="space-y-2">
-                        <li className="flex justify-between items-center">
-                            <span>UX/UI 포트폴리오 리뷰 - 김지연 멘토 (11/20)</span>
-                            <MyPageButton className="text-sm">세션 입장</MyPageButton>
-                        </li>
-                        <li className="flex justify-between items-center">
-                            <span>개발자 커리어 상담 - 박지성 멘토 (11/18)</span>
-                            <MyPageButton className="text-sm">준비하기</MyPageButton>
-                        </li>
-                    </ul>
+                    <h3 className="text-lg font-semibold mb-4">멘토링</h3>
+                    <div className="flex justify-between items-center">
+                        <span className="text-gray-700">예약된 멘토링을 확인하세요</span>
+                        <MyPageButton className="text-sm" onClick={() => navigate("/ReservedMentoring")}>
+                            예약 내역 보기
+                        </MyPageButton>
+                    </div>
                 </div>
             </MyPageCard>
 
