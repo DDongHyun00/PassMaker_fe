@@ -17,9 +17,15 @@ jobs:
         with:
           node-version: 20
 
+      - name: Create .env
+        run: |
+          cat <<EOF > .env
+          VITE_API_URL=${{ secrets.VITE_API_URL }}
+          VITE_TOSS_CLIENT_KEY=${{ secrets.VITE_TOSS_CLIENT_KEY }}
+          EOF
+
       - name: Build Frontend
         run: |
-          cd frontend
           npm install
           npm run build
 
@@ -31,7 +37,7 @@ jobs:
 
       - name: Docker Build & Push
         run: |
-          docker build -t ${{ secrets.DOCKER_USER }}/passmaker-fe:latest -f frontend/Dockerfile frontend
+          docker build -t ${{ secrets.DOCKER_USER }}/passmaker-fe:latest -f Dockerfile .
           docker push ${{ secrets.DOCKER_USER }}/passmaker-fe:latest
 
   deploy:
@@ -39,18 +45,79 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy Frontend via Bastion
+      - name: Deploy to Frontend EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.PRIVATE_EC2_HOST }}
-          username: ${{ secrets.PRIVATE_EC2_USER }}
-          key: ${{ secrets.PRIVATE_EC2_KEY }}
-          proxy_host: ${{ secrets.EC2_HOST }}
-          proxy_username: ${{ secrets.EC2_USER }}
-          proxy_key: ${{ secrets.EC2_KEY }}
+          host: ${{ secrets.FRONTEND_EC2_HOST }}
+          username: ${{ secrets.FRONTEND_EC2_USER }}
+          key: ${{ secrets.FRONTEND_EC2_KEY }}
 
           script: |
             docker pull ${{ secrets.DOCKER_USER }}/passmaker-fe:latest
             docker stop passmaker-fe || true
             docker rm passmaker-fe || true
             docker run -d --name passmaker-fe -p 80:80 ${{ secrets.DOCKER_USER }}/passmaker-fe:latest
+
+
+#name: frontend-auto-deploy
+#
+#on:
+#  push:
+#    branches: [ pass50 ]
+#
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout Code
+#        uses: actions/checkout@v4
+#
+#      - name: Set up Node.js
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: 20
+#
+#      - name: Create .env
+#        run: |
+#          cat <<EOF > .env
+#          VITE_API_URL=${{ secrets.VITE_API_URL }}
+#          VITE_TOSS_CLIENT_KEY=${{ secrets.VITE_TOSS_CLIENT_KEY }}
+#          EOF
+#
+#      - name: Build Frontend
+#        run: |
+#          npm install
+#          npm run build
+#
+#      - name: Docker Login
+#        uses: docker/login-action@v3
+#        with:
+#          username: ${{ secrets.DOCKER_USER }}
+#          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+#
+#      - name: Docker Build & Push
+#        run: |
+#          docker build -t ${{ secrets.DOCKER_USER }}/passmaker-fe:latest -f Dockerfile .
+#          docker push ${{ secrets.DOCKER_USER }}/passmaker-fe:latest
+#
+#  deploy:
+#    needs: build
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Deploy Frontend via Bastion
+#        uses: appleboy/ssh-action@v1.0.3
+#        with:
+#          host: ${{ secrets.PRIVATE_EC2_HOST }}
+#          username: ${{ secrets.PRIVATE_EC2_USER }}
+#          key: ${{ secrets.PRIVATE_EC2_KEY }}
+#          proxy_host: ${{ secrets.EC2_HOST }}
+#          proxy_username: ${{ secrets.EC2_USER }}
+#          proxy_key: ${{ secrets.EC2_KEY }}
+#
+#          script: |
+#            docker pull ${{ secrets.DOCKER_USER }}/passmaker-fe:latest
+#            docker stop passmaker-fe || true
+#            docker rm passmaker-fe || true
+#            docker run -d --name passmaker-fe -p 80:80 ${{ secrets.DOCKER_USER }}/passmaker-fe:latest
