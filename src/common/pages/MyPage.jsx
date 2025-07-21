@@ -7,7 +7,7 @@ import MyInfoEdit from "../components/MyInfoEdit";
 import MyPageButton from "../components/MyPageButton";
 import MyPageCard from "../components/MyPageCard";
 import MentoringTogglePanel from "../../mentor/components/MentoringTogglePanel"
-import WithdrawConfirmModal from "../components/WithdrawConfirmModal";
+import WithdrawConfirmModal from "../modal/WithdrawConfirmModal.jsx";
 import { useAuth } from "../../auth/AuthContext.jsx";
 import defaultUserImage from '../../assets/default_user.png'; // [추가] 기본 이미지 임포트
 
