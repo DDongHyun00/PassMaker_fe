@@ -23,7 +23,7 @@ import Dashboard from "../admin/pages/Dashboard.jsx";
 import MentorIntroSection from "../mentor/components/MentorIntroSection.jsx";
 import MentorSettingsPage from "../mentor/pages/MentorSettingsPage.jsx";
 import MentorPreviewPage from "../mentor/pages/MentorPreviewPage.jsx"; // [추가] MentorPreviewPage 임포트 // <-- 이 라인을 추가합니다.
-
+import InquiryPage from "../common/pages/InquiryPage.jsx"
 import ReservationPage from "../common/pages/ReservationPage.jsx";
 import MentorDetailPage from "../mentor/pages/MentorDetailPage.jsx";
 import ReservedMentoringPage from "../common/pages/ReservedMentoringPage.jsx"

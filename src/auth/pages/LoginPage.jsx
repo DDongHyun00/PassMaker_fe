@@ -7,7 +7,7 @@ import { useAuth } from "../AuthContext.jsx";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login,user } = useAuth();
 
   const [form, setForm] = useState({
     email: "",
@@ -41,8 +41,11 @@ const LoginPage = () => {
       await login(); // AuthContext → /auth/me 호출됨
 
       console.log("AuthContext login 함수 호출됨");
-      navigate("/");
-
+      if (user?.role === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
 
       console.error("로그인 실패:", err);
