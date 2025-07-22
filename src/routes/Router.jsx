@@ -10,11 +10,11 @@ import SignupPage from "../auth/pages/SignupPage.jsx";
 import MyPage from "../common/pages/MyPage.jsx";
 import MentoringRoomPage from "../room/pages/MentoringRoomPage.jsx";
 import Layout from "../common/components/Layout.jsx";
-
 import UserListPage from "../admin/pages/UserListPage.jsx";
 import UserDetailPage from "../admin/pages/UserDetailPage.jsx";
 import AdminMentorApplicationPage from "../admin/pages/MentorApplicationPage.jsx";
 import MentorApplDetailPage from "../admin/pages/MentorApplDetailPage.jsx";
+import MentorApplicationPage from "../user/pages/MentorApplicationPage.jsx";
 import ReportsReviewPage from "../admin/pages/ReportsReviewPage.jsx";
 import ReportsDetailPage from "../admin/pages/ReportsDetailPage.jsx";
 import InquiryListPage from "../admin/pages/InquiryListPage.jsx";
@@ -26,7 +26,10 @@ import MentorPreviewPage from "../mentor/pages/MentorPreviewPage.jsx"; // [추�
 import InquiryPage from "../common/pages/InquiryPage.jsx"
 import ReservationPage from "../common/pages/ReservationPage.jsx";
 import MentorDetailPage from "../mentor/pages/MentorDetailPage.jsx";
+
 import ReservedMentoringPage from "../common/pages/ReservedMentoringPage.jsx"
+import ReservedMentoringTestPage from "../common/pages/ReservedMentoringTestPage.jsx"
+
 import WithdrawConfirmModal from "../common/modal/WithdrawConfirmModal.jsx";
 const Router = () => {
   const { user, loading } = useAuth();
@@ -48,6 +51,8 @@ const Router = () => {
       {/* ───── 공통 레이아웃 적용 ───── */}
       <Route element={<Layout />}>
         <Route path="/reserved" element={<ReservedMentoringPage/>} />
+        <Route path="/reserved-test" element={<ReservedMentoringTestPage/>} />
+
         <Route path="/" element={<MainPage />} />
         <Route
           path="/mypage"

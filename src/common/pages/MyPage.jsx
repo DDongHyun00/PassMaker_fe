@@ -242,6 +242,14 @@ const MyPage = () => {
                 멘토링 설정
               </button>
             )}
+            {!profile.isMentor && (
+              <button
+                className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full"
+                onClick={() => navigate("/mentor/apply")}
+              >
+                멘토 신청
+              </button>
+            )}
             <button
               className="px-8 py-3 bg-white text-red-600 font-semibold border-2 border-red-200 rounded-md shadow-md hover:bg-red-50 transition-all duration-150 w-full"
               onClick={() => setWithdrawOpen(true)}
@@ -282,6 +290,12 @@ const MyPage = () => {
             onClick={() => navigate("/ReservedMentoring")}
           >
             예약 내역 보기
+          </button>
+          <button
+            className="mypage-btn-main flex-shrink-0 py-3 px-10 text-lg shadow-md"
+            onClick={() => navigate("/reserved-test")}
+          >
+            예약 내역 보기-테스트페이지
           </button>
         </div>
       </div>
