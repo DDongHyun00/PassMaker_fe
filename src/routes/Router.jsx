@@ -13,6 +13,7 @@ import Layout from "../common/components/Layout.jsx";
 import UserListPage from "../admin/pages/UserListPage.jsx";
 import UserDetailPage from "../admin/pages/UserDetailPage.jsx";
 import AdminMentorApplicationPage from "../admin/pages/MentorApplicationPage.jsx";
+import MentorApplicationPage from "../admin/pages/MentorApplicationPage.jsx"
 import MentorApplDetailPage from "../admin/pages/MentorApplDetailPage.jsx";
 import MentorApplicationPage from "../user/pages/MentorApplicationPage.jsx";
 import ReportsReviewPage from "../admin/pages/ReportsReviewPage.jsx";
@@ -45,14 +46,14 @@ const Router = () => {
       <Route path="/reservation/:mentorId" element={<ReservationPage />} />
       <Route path="/payment/success" element={<MentorDetailPage />} /> {/* ✅ 결제 후 리다이렉트 */}
       {/* <Route path="/mypage" element={<MyPage />} /> */}
-      {/*<Route path="/inquiry" element={<InquiryPage/>} />*/}
+      <Route path="/inquiry" element={<InquiryPage/>} />
       {/* ───── 멘티 전용 ───── */}
 
       {/* ───── 공통 레이아웃 적용 ───── */}
       <Route element={<Layout />}>
-        <Route path="/reserved" element={<ReservedMentoringPage/>} />
-        <Route path="/reserved-test" element={<ReservedMentoringTestPage/>} />
 
+        <Route element={<Layout />}>
+        {/*<Route path="/reserved" element={<ReservedMentoringPage/>} />*/}
         <Route path="/" element={<MainPage />} />
         <Route
           path="/mypage"
@@ -70,7 +71,7 @@ const Router = () => {
 
         {/* ───── 멘티 전용 ───── */}
         <Route path="/mentor/apply" element={user && !user.isMentor ? <MentorApplicationPage /> : <Navigate to="/login" replace />} />
-
+        <Route path="/ReservedMentoring" element={<ReservedMentoringPage />} />
         {/* ───── 관리자 전용 ───── */}
         <Route path="/admin/users" element={<UserListPage />} />
         

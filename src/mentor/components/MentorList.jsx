@@ -19,6 +19,7 @@ export default function MentorList() {
   const [mentors, setMentors] = useState([]);
   const [selected, setSelected] = useState("전체");
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetchMentors = async () => {
@@ -40,9 +41,18 @@ export default function MentorList() {
       ? mentors
       : mentors.filter((m) => m.fieldName === selected);
 
+  // 2) 검색어 필터
+  const searched = search.trim()
+    ? filtered.filter(
+        (m) =>
+          m.mentoringTitle &&
+          m.mentoringTitle.toLowerCase().includes(search.toLowerCase())
+      )
+    : filtered;
+
   // 페이징 처리
-  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
-  const pagedMentors = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const totalPages = Math.ceil(searched.length / PAGE_SIZE);
+  const pagedMentors = searched.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   // 페이지 변경 시 스크롤 상단 이동
   const handlePageChange = (p) => {
@@ -53,10 +63,19 @@ export default function MentorList() {
   return (
     <div className="w-full bg-transparent mentorlist-bg space-y-16">
       <section className="w-full">
-        <h1 className="text-2xl md:text-3xl font-extrabold text-primary mb-8 tracking-tight drop-shadow text-left">
+        <h1 className="text-2xl md:text-3xl font-extrabold text-primary mb-8 tracking-tight drop-shadow text-center">
           직무별 멘토 찾기
         </h1>
-        <div className="flex flex-wrap gap-4 mb-10">
+        <div className="w-full flex justify-center mb-8">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="멘토링 제목으로 검색"
+            className="w-full md:w-1/2 px-4 py-2 border border-black rounded-lg shadow-sm focus:ring-primary focus:border-primary transition text-base"
+          />
+        </div>
+        <div className="flex flex-wrap gap-4 mb-10 justify-center">
           {categories.map((cat) => (
             <button
               key={cat}
@@ -71,7 +90,9 @@ export default function MentorList() {
             </button>
           ))}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 xl:gap-8 items-stretch">
+        {/* 카테고리 아래 구분선 */}
+        <div className="border-b border-gray-200 w-full mb-6" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 xl:gap-8 items-stretch justify-center">
           {pagedMentors.map((m, i) => (
             <MentorCard
               key={m.id ?? i}
