@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import MentorCard from "./MentorCard";
 import axios from "axios"; // axios import 추가
 
-import defaultAvatar from "../../assets/default_user.png";
-
 const categories = [
   "전체",
   "Frontend",
