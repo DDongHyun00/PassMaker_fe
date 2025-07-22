@@ -13,7 +13,7 @@ import main_banner_3 from "../../assets/main_banner_3.png";
 
 export default function MainPage() {
   const navigate = useNavigate();
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, user } = useAuth();
 
   const handleLogin = () => navigate("/login");
   const handleSignup = () => navigate("/signup");
@@ -103,11 +103,20 @@ export default function MainPage() {
                   {/* 버튼 영역 */}
                   <div className="flex gap-6 mt-2">
                     <button
-                      className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150"
-                      onClick={() => navigate("/mentor/apply")}
+                        className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150"
+                        onClick={() => {
+                          if (!user) {
+                            navigate("/login");
+                          } else if (!user.isMentor) {
+                            navigate("/mentor/apply");
+                          } else {
+                            alert("이미 멘토입니다.");
+                          }
+                        }}
                     >
                       멘토 신청
                     </button>
+
                     <button className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150">
                       멘토링방 입장하기
                     </button>

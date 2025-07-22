@@ -100,10 +100,9 @@ const VideoArea = ({
         controls
         className="absolute bottom-2 left-2 w-[200px] z-50 bg-white rounded"
       />
-      {/* ✅ STT 오디오 레코더 연결 */}
-      {roomId && localStreamRef.current && (
-        <AudioRecorder localStream={localStreamRef.current} roomId={roomId} />
-      )}
+      {/* STT 오디오 레코더 연결 */}
+      <AudioRecorder localStream={localStreamRef.current} roomId={roomId} />
+
     </div>
   );
 };

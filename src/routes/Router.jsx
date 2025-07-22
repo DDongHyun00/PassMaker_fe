@@ -14,7 +14,7 @@ import Layout from "../common/components/Layout.jsx";
 import UserListPage from "../admin/pages/UserListPage.jsx";
 import UserDetailPage from "../admin/pages/UserDetailPage.jsx";
 import AdminMentorApplicationPage from "../admin/pages/MentorApplicationPage.jsx";
-import MentorApplicationPage from "../admin/pages/MentorApplicationPage.jsx"
+import MentorApplicationPage from "../user/pages/MentorApplicationPage.jsx"
 import MentorApplDetailPage from "../admin/pages/MentorApplDetailPage.jsx";
 import ReportsReviewPage from "../admin/pages/ReportsReviewPage.jsx";
 import ReportsDetailPage from "../admin/pages/ReportsDetailPage.jsx";
