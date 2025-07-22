@@ -18,6 +18,7 @@ const Modal = ({ onClose, children, className = '' }) => {
       <div
         className="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-lg border border-primary/10 relative transform transition-all duration-300"
         style={{ animation: "slideUp 0.3s ease-out" }}
+        onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
