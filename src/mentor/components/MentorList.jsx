@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import MentorCard from "./MentorCard";
 import axios from "axios"; // axios import 추가
 
-import defaultAvatar from "../../assets/default_user.png";
-
 const categories = [
   "전체",
   "Frontend",
@@ -37,11 +35,14 @@ export default function MentorList() {
     fetchMentors();
   }, []);
 
+  // ✅ 0) 활성화된 멘토만 필터링
+  const activeMentors = mentors.filter(m => m.active === true);
+
   // 1) 직무별 필터
   const filtered =
     selected === "전체"
-      ? mentors
-      : mentors.filter((m) => m.fieldName === selected);
+      ? activeMentors
+      : activeMentors.filter((m) => m.fieldName === selected);
 
   // 2) 검색어 필터
   const searched = search.trim()
