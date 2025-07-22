@@ -144,8 +144,8 @@ const MyPage = () => {
   if (!profile) return <div className="p-6">불러오는 중...</div>;
 
   return (
-    <div className="min-h-screen pt-32 pb-16 px-2 flex flex-col items-center bg-gray-50">
-      <div className="w-full max-w-3xl">
+    <div className="min-h-screen pt-8 pb-16 px-2 flex flex-col items-center bg-gray-50">
+      <div className="w-full max-w-[1400px] bg-white rounded-2xl shadow-xl p-6 md:p-12 my-2">
         {/* 상단 인사 */}
         <div className="mb-12 text-center">
           <h2 className="text-4xl font-extrabold text-primary mb-3 tracking-tight drop-shadow">

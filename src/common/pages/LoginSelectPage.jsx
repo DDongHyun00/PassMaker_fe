@@ -12,12 +12,12 @@ const LoginSelectPage = () => {
 
   const handleKakaoLogin = () => {
     // 백엔드 카카오 OAuth 시작 URL로 리디렉트
-    window.location.href = "/oauth/kakao";
+    window.location.href = `${import.meta.env.VITE_API_URL}/oauth/kakao`;
   };
 
   const handleGoogleLogin = () => {
     // 백엔드 카카오 OAuth 시작 URL로 리디렉트
-    window.location.href = "/oauth/google";
+    window.location.href = `${import.meta.env.VITE_API_URL}/oauth/google`;
   };
 
   return (
