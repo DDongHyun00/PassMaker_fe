@@ -13,7 +13,7 @@ import Layout from "../common/components/Layout.jsx";
 
 import UserListPage from "../admin/pages/UserListPage.jsx";
 import UserDetailPage from "../admin/pages/UserDetailPage.jsx";
-import MentorApplicationPage from "../admin/pages/MentorApplicationPage.jsx";
+import AdminMentorApplicationPage from "../admin/pages/MentorApplicationPage.jsx";
 import MentorApplDetailPage from "../admin/pages/MentorApplDetailPage.jsx";
 import ReportsReviewPage from "../admin/pages/ReportsReviewPage.jsx";
 import ReportsDetailPage from "../admin/pages/ReportsDetailPage.jsx";
@@ -40,16 +40,14 @@ const Router = () => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/reservation/:mentorId" element={<ReservationPage />} />
-
       <Route path="/payment/success" element={<MentorDetailPage />} /> {/* ✅ 결제 후 리다이렉트 */}
-
-      <Route path="/mypage" element={<MyPage />} />
-      <Route path="/inquiry" element={<InquiryPage/>} />
-      <Route path="/ReservedMentoring" element={<ReservedMentoringPage/>} />
-
+      {/* <Route path="/mypage" element={<MyPage />} /> */}
+      {/*<Route path="/inquiry" element={<InquiryPage/>} />*/}
+      {/* ───── 멘티 전용 ───── */}
 
       {/* ───── 공통 레이아웃 적용 ───── */}
       <Route element={<Layout />}>
+        <Route path="/reserved" element={<ReservedMentoringPage/>} />
         <Route path="/" element={<MainPage />} />
         <Route
           path="/mypage"
@@ -64,10 +62,15 @@ const Router = () => {
 
         {/* ✅ 멘토 상세 페이지 (nickname 기준) */}
         <Route path="/mentors/:nickname" element={<MentorDetailPage />} />
-tn
+
+        {/* ───── 멘티 전용 ───── */}
+        <Route path="/mentor/apply" element={user && !user.isMentor ? <MentorApplicationPage /> : <Navigate to="/login" replace />} />
+
         {/* ───── 관리자 전용 ───── */}
         <Route path="/admin/users" element={<UserListPage />} />
-        <Route path="/admin/mentor-application" element={<MentorApplicationPage />}/>
+        
+        <Route path="/admin/mentor-application" element={<AdminMentorApplicationPage />}/>
+        
         <Route path="/admin/report-review" element={<ReportsReviewPage />} />
         <Route path="/admin/inquiries" element={<InquiryListPage />} />
         <Route path="/admin" element={<Dashboard />} />

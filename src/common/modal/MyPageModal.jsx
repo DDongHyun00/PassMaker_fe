@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 
-const Modal = ({ onClose, children }) => {
+const Modal = ({ onClose, children, className = '' }) => {
+  // ESC 키를 눌렀을 때 모달을 닫는 기능은 유지합니다.
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") onClose();
@@ -11,8 +12,8 @@ const Modal = ({ onClose, children }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 transition-opacity duration-300"
-      style={{ animation: "fadeIn 0.3s ease-out" }}
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      onClick={onClose}
     >
       <div
         className="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-lg border border-primary/10 relative transform transition-all duration-300"

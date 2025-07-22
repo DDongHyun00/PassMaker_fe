@@ -279,7 +279,7 @@ const MyPage = () => {
           </div>
           <button
             className="mypage-btn-main flex-shrink-0 py-3 px-10 text-lg shadow-md"
-            onClick={() => navigate("/ReservedMentoring")}
+            onClick={() => navigate("/reserved")}
           >
             예약 내역 보기
           </button>
