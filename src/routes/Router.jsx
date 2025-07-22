@@ -27,7 +27,7 @@ import InquiryPage from "../common/pages/InquiryPage.jsx"
 import ReservationPage from "../common/pages/ReservationPage.jsx";
 import MentorDetailPage from "../mentor/pages/MentorDetailPage.jsx";
 import ReservedMentoringPage from "../common/pages/ReservedMentoringPage.jsx"
-
+import WithdrawConfirmModal from "../common/modal/WithdrawConfirmModal.jsx";
 const Router = () => {
   const { user, loading } = useAuth();
 

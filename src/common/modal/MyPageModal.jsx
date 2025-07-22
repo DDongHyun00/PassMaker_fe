@@ -15,19 +15,17 @@ const Modal = ({ onClose, children }) => {
       style={{ animation: "fadeIn 0.3s ease-out" }}
     >
       <div
-        className="bg-white p-6 rounded shadow-lg w-full max-w-md relative transform transition-all duration-300"
+        className="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-lg border border-primary/10 relative transform transition-all duration-300"
         style={{ animation: "slideUp 0.3s ease-out" }}
       >
         <button
           onClick={onClose}
-          className="absolute top-2 right-3 text-gray-500 hover:text-black text-xl"
+          className="absolute top-6 right-8 text-gray-400 hover:text-primary text-2xl font-bold"
         >
           &times;
         </button>
         {children}
       </div>
-
-      {/* 인라인 keyframes 추가 */}
       <style>
         {`
           @keyframes fadeIn {

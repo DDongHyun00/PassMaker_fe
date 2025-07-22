@@ -8,11 +8,7 @@ const MyPageButton = ({
   className = "",
 }) => {
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      className={`px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-600 transition ${className}`}
-    >
+    <button type={type} onClick={onClick} className={`mypage-btn ${className}`}>
       {children}
     </button>
   );
