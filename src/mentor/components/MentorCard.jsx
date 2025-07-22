@@ -16,13 +16,13 @@ const MentorCard = ({
 }) => {
   return (
     <Link to={`/mentors/${nickname}`} className="block h-full"> {/* ✅ 수정 */}
-      <div className="w-full h-full bg-white rounded-xl shadow-md overflow-hidden flex flex-col transition-transform hover:-translate-y-1 cursor-pointer">
+      <div className="mentor-card">
         <img
           src={avatarUrl}
           alt={name}
-          className="w-full h-48 object-cover"
+          className="mentor-card-img"
         />
-        <div className="p-4 md:p-6 flex flex-col flex-1">
+        <div className="w-full flex flex-col flex-1">
           <h3 className="text-lg font-bold text-gray-800 truncate my-2">
             {mentoringTitle}
           </h3>

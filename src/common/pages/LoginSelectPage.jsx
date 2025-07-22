@@ -3,9 +3,8 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CenterWrapper from "../styles/CenterWrapper.jsx";
-import logo from '../../assets/PassMakerLogo.webp';
+import logo from "../../assets/PassMakerLogo.webp";
 import AuthModal from "../modal/AuthModal.jsx";
-
 
 const LoginSelectPage = () => {
   const navigate = useNavigate();
@@ -22,71 +21,65 @@ const LoginSelectPage = () => {
   };
 
   return (
-    <CenterWrapper>
-      {/* 콘텐츠 박스 */}
-      <div className="text-center">
-        <img src={logo} alt="PassMakerLogo" className="mx-auto w-40 mb-4" />
-        <h1 className="text-3xl font-bold mb-2 text-white">PassMaker</h1>
-        <p className="mb-6 text-white">환영합니다!</p>
-        {/* 기본 로그인/회원가입 버튼 */}
-        <div>
+    <div className="loginselect-bg min-h-screen flex items-center justify-center py-16 px-2">
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-10 border border-primary/10 flex flex-col items-center">
+        <img
+          src={logo}
+          alt="PassMakerLogo"
+          className="mx-auto w-32 mb-6 rounded-xl shadow"
+        />
+        <h1 className="text-3xl font-extrabold mb-2 text-primary tracking-tight">
+          PassMaker
+        </h1>
+        <p className="mb-8 text-gray-500 text-lg">환영합니다!</p>
+        <div className="flex gap-4 w-full mb-6">
           <button
             onClick={() => navigate("/signup")}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="mypage-btn flex-1 py-3 text-lg"
           >
             회원가입
           </button>
           <button
             onClick={() => navigate("/login")}
-            className="ml-4 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+            className="mypage-btn-outline flex-1 py-3 text-lg"
           >
             로그인
           </button>
         </div>
-        {/* 구분선 */}
-        <div className="text-white text-sm mt-2 mb-2">또는</div>
-        {/* 카카오 소셜 로그인 버튼 */}
-        <div className="w-[300px] mx-auto">
-          <button onClick={handleKakaoLogin} className="w-full">
-            <img
-              src="src/assets/kakao_Login__Button_large.png" // 경로 확인 필수!
-              alt="카카오 로그인"
-              className="w-full h-10 object-cover"
-            />
+        <div className="text-gray-400 text-sm mb-4 w-full text-center">
+          또는
+        </div>
+        <div className="w-full mb-3">
+          <button
+            onClick={handleKakaoLogin}
+            className="w-full h-12 rounded-xl font-bold text-lg bg-yellow-400 text-gray-900 flex items-center justify-center gap-2 shadow hover:bg-yellow-300 transition"
+          >
+            <span className="inline-block w-6 h-6 bg-[url('/src/assets/kakao_Login_Button.png')] bg-contain bg-no-repeat" />
+            카카오 로그인
           </button>
         </div>
-        {/* 구분선 */}
-        <div className="text-white text-sm mt-2 mb-2"></div>
-        {/* 구글 소셜 로그인 버튼 */}
-        <div className="w-[300px] mx-auto">
+        <div className="w-full mb-3">
           <button
             onClick={handleGoogleLogin}
-            className="relative w-full h-10 rounded font-bold text-[14px] bg-white text-black hover:bg-gray-100"
+            className="relative w-full h-12 rounded-xl font-bold text-lg bg-white text-black flex items-center justify-center gap-2 border border-gray-200 shadow hover:bg-gray-100 transition"
           >
-            {/* 로고: 절대 위치로 왼쪽에 고정 */}
             <img
               src="https://developers.google.com/identity/images/g-logo.png"
               alt="Google"
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5"
+              className="w-6 h-6"
             />
-
-            {/* 텍스트: flex 안 쓰고 그냥 가운데 */}
-            <span className="block text-center w-full leading-none ml-2 text-sm font-medium tracking-tight">
-              구글 로그인
-            </span>
+            구글 로그인
           </button>
         </div>
-        {/* 이메일/비밀번호 찾기 버튼 */}
         <button
-            onClick={() => setShowAuthModal(true)}
-            className="mt-3 text-sm underline text-white"
+          onClick={() => setShowAuthModal(true)}
+          className="mt-2 text-sm underline text-primary hover:text-primary-dark"
         >
           이메일 / 비밀번호 찾기
         </button>
       </div>
-      {/* 모달 렌더링 */}
       {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
-    </CenterWrapper>
+    </div>
   );
 };
 

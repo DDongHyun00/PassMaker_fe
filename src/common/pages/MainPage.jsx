@@ -47,49 +47,62 @@ export default function MainPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* 헤더 추가 */}
+    <div className="main-bg min-h-screen flex flex-col">
+      {/* 헤더 */}
       <Header isLoggedIn={isLoggedIn} onLogout={logout} />
-      <Header />
 
-      {/* ─── 메인 컨텐츠 ─── */}
-      <main className="flex-1 bg-gray-50 p-4">
-        {/* 🔹 멘토링방 입장 컴포넌트 */}
-        <RoomEntryBox />
+      {/* 메인 컨텐츠 */}
+      <main className="flex-1 flex flex-col items-center py-10 px-2">
+        {/* 멘토링방 입장 */}
+        <section className="main-section w-full max-w-3xl mb-10 p-8 rounded-3xl shadow-xl bg-white flex flex-col items-center">
+          <h1 className="text-3xl font-extrabold text-gray-900 mb-4 tracking-tight">
+            멘토링방 입장하기
+          </h1>
+          <RoomEntryBox />
+        </section>
 
-        {/* 🔹 멘토 리스트 */}
-        <MentorList />
+        {/* 멘토 리스트 */}
+        <section className="main-section w-full max-w-5xl mb-10 p-8 rounded-3xl shadow-xl bg-white">
+          <h2 className="text-2xl font-bold text-primary mb-6">
+            직무별 멘토 찾기
+          </h2>
+          <MentorList />
+        </section>
 
-        {/* ✅ [임시] 멘토 수락/거절 테스트 영역 */}
+        {/* 임시 멘토 수락/거절 테스트 */}
         {userRole === "MENTOR" && (
-          <div className="mt-8 p-4 border border-gray-300 rounded">
-            <h2 className="text-lg font-semibold mb-2">
+          <section className="main-section w-full max-w-2xl mb-10 p-8 rounded-3xl shadow-xl bg-white">
+            <h2 className="text-lg font-semibold mb-2 text-gray-900">
               🧪 멘토 수락/거절 테스트 (임시)
             </h2>
-            <p className="text-sm text-gray-600 mb-2">
+            <p className="text-sm text-gray-500 mb-2">
               ※ 추후 마이페이지에서 관리 예정
             </p>
-            <input
-              type="text"
-              placeholder="예약 ID 입력"
-              value={reservationId}
-              onChange={(e) => setReservationId(e.target.value)}
-              className="border px-2 py-1 mr-2"
-            />
-            <button
-              onClick={() => handleAction("ACCEPT")}
-              className="bg-green-500 text-white px-3 py-1 rounded mr-2"
-            >
-              수락
-            </button>
-            <button
-              onClick={() => handleAction("REJECT")}
-              className="bg-red-500 text-white px-3 py-1 rounded"
-            >
-              거절
-            </button>
-            {actionResult && <p className="mt-2 text-sm">{actionResult}</p>}
-          </div>
+            <div className="flex gap-2 mb-2">
+              <input
+                type="text"
+                placeholder="예약 ID 입력"
+                value={reservationId}
+                onChange={(e) => setReservationId(e.target.value)}
+                className="border px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary outline-none flex-1"
+              />
+              <button
+                onClick={() => handleAction("ACCEPT")}
+                className="mypage-btn flex-1"
+              >
+                수락
+              </button>
+              <button
+                onClick={() => handleAction("REJECT")}
+                className="mypage-btn-outline flex-1"
+              >
+                거절
+              </button>
+            </div>
+            {actionResult && (
+              <p className="mt-2 text-sm text-primary">{actionResult}</p>
+            )}
+          </section>
         )}
       </main>
     </div>

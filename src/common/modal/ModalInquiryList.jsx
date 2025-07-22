@@ -87,32 +87,33 @@ export default function ModalInquiryList({ onClose }) {
 
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black/50 z-50 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg w-full max-w-3xl shadow-lg relative">
-        <h2 className="text-xl font-bold mb-4">문의 내역</h2>
-
-        <div className="max-h-64 overflow-y-auto border rounded mb-4">
-          <table className="w-full text-sm">
+      <div className="bg-white p-10 rounded-3xl w-full max-w-3xl shadow-2xl border border-primary/10 relative">
+        <h2 className="text-2xl font-extrabold mb-8 text-primary text-center tracking-tight">
+          문의 내역
+        </h2>
+        <div className="max-h-64 overflow-y-auto border rounded-2xl mb-8 shadow-sm">
+          <table className="w-full text-base">
             <thead>
-              <tr className="bg-gray-100">
-                <th className="p-2">번호</th>
-                <th className="p-2">제목</th>
-                <th className="p-2">작성일시</th>
-                <th className="p-2">수정</th>
-                <th className="p-2">삭제</th>
+              <tr className="bg-primary/10 text-primary">
+                <th className="p-3">번호</th>
+                <th className="p-3">제목</th>
+                <th className="p-3">작성일시</th>
+                <th className="p-3">수정</th>
+                <th className="p-3">삭제</th>
               </tr>
             </thead>
             <tbody>
               {Array.isArray(inquiries) && inquiries.length > 0 ? (
                 inquiries.map((inq, idx) => (
-                  <tr key={inq.id}>
-                    <td className="p-2 text-center">{idx + 1}</td>
+                  <tr key={inq.id} className="hover:bg-primary/5 transition">
+                    <td className="p-3 text-center font-semibold">{idx + 1}</td>
                     <td
-                      className="p-2 text-purple-700 hover:underline cursor-pointer"
+                      className="p-3 text-primary font-bold hover:underline cursor-pointer text-center"
                       onClick={() => handleSelect(inq.id, idx + 1)}
                     >
                       {inq.inquiryTitle}
                     </td>
-                    <td className="p-2 text-center">
+                    <td className="p-3 text-center text-gray-500">
                       {new Date(inq.createdAt).toLocaleString("ko-KR", {
                         year: "numeric",
                         month: "2-digit",
@@ -121,7 +122,7 @@ export default function ModalInquiryList({ onClose }) {
                         minute: "2-digit",
                       })}
                     </td>
-                    <td className="p-2 text-center">
+                    <td className="p-3 text-center">
                       <button
                         onClick={() => {
                           setEditId(inq.id);
@@ -130,15 +131,15 @@ export default function ModalInquiryList({ onClose }) {
                           setSelectedNumber(idx + 1);
                           setIsEditOpen(true);
                         }}
-                        className="text-blue-500 hover:underline"
+                        className="mypage-btn-outline px-4 py-1 text-sm"
                       >
                         수정
                       </button>
                     </td>
-                    <td className="p-2 text-center">
+                    <td className="p-3 text-center">
                       <button
                         onClick={() => handleDelete(inq.id)}
-                        className="text-red-500 hover:underline"
+                        className="mypage-btn-outline px-4 py-1 text-sm text-red-500 border-red-200 hover:bg-red-50"
                       >
                         삭제
                       </button>
@@ -147,7 +148,7 @@ export default function ModalInquiryList({ onClose }) {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="5" className="text-center text-gray-400 p-4">
+                  <td colSpan="5" className="text-center text-gray-400 p-6">
                     문의 내역이 없습니다.
                   </td>
                 </tr>
@@ -155,94 +156,109 @@ export default function ModalInquiryList({ onClose }) {
             </tbody>
           </table>
         </div>
-
         {/* 상세 내용 */}
         {!isEditOpen && detail && (
-          <div className="bg-gray-50 p-4 border rounded mt-6">
-            <p className="text-sm font-medium mb-1">문의 번호:</p>
-            <p className="mb-3">{selectedNumber}</p>
-
-            <p className="text-sm font-medium mb-1">문의 제목:</p>
-            <p className="mb-3">{detail.inquiryTitle}</p>
-
-            <p className="text-sm font-medium mb-1">문의 내용:</p>
-            <p className="mb-3 whitespace-pre-wrap">{detail.inquiryContent}</p>
-
-            <p className="text-sm font-medium mb-1">작성 일시:</p>
-            <p>
-              {new Date(detail.createdAt).toLocaleString("ko-KR", {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </p>
-
-            {/* 답변 정보 표시 추가 */}
-            <hr className="my-4" />
-            <p className="text-sm font-bold mb-2 text-purple-700">관리자 답변</p>
-
-            {detail.respondTitle || detail.respondContent ? (
-                <>
-                  <p className="text-sm font-medium mb-1">답변 제목:</p>
-                  <p className="mb-2">{detail.respondTitle || "(제목 없음)"}</p>
-
-                  <p className="text-sm font-medium mb-1">답변 내용:</p>
-                  <p className="whitespace-pre-wrap">{detail.respondContent || "(내용 없음)"}</p>
-                </>
-            ) : (
-                <p className="text-gray-500 italic">아직 답변이 등록되지 않았습니다.</p>
-            )}
-
+          <div className="bg-primary/5 p-6 border border-primary/10 rounded-2xl mt-8 shadow">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <p className="text-sm font-medium mb-1 text-primary">
+                  문의 번호
+                </p>
+                <p className="mb-3 font-bold">{selectedNumber}</p>
+                <p className="text-sm font-medium mb-1 text-primary">
+                  문의 제목
+                </p>
+                <p className="mb-3 font-bold">{detail.inquiryTitle}</p>
+                <p className="text-sm font-medium mb-1 text-primary">
+                  문의 내용
+                </p>
+                <p className="mb-3 whitespace-pre-wrap">
+                  {detail.inquiryContent}
+                </p>
+                <p className="text-sm font-medium mb-1 text-primary">
+                  작성 일시
+                </p>
+                <p className="mb-3">
+                  {new Date(detail.createdAt).toLocaleString("ko-KR", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-bold mb-2 text-primary">
+                  관리자 답변
+                </p>
+                {detail.respondTitle || detail.respondContent ? (
+                  <>
+                    <p className="text-sm font-medium mb-1 text-primary">
+                      답변 제목
+                    </p>
+                    <p className="mb-2 font-bold">
+                      {detail.respondTitle || "(제목 없음)"}
+                    </p>
+                    <p className="text-sm font-medium mb-1 text-primary">
+                      답변 내용
+                    </p>
+                    <p className="whitespace-pre-wrap">
+                      {detail.respondContent || "(내용 없음)"}
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-gray-400 italic">
+                    아직 답변이 등록되지 않았습니다.
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
         )}
-
         {/* 수정 모달 */}
         {isEditOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
-              <h2 className="text-xl font-semibold mb-4">문의 수정</h2>
-
-              {/* 글 번호 표시 (읽기 전용) */}
+            <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border border-primary/10">
+              <h2 className="text-xl font-extrabold mb-6 text-primary text-center">
+                문의 수정
+              </h2>
               <div className="mb-4">
-                <p className="text-sm font-medium text-gray-600">글 번호</p>
-                <p className="text-md">{selectedNumber}</p>
+                <p className="text-sm font-medium text-primary">글 번호</p>
+                <p className="text-md font-bold">{selectedNumber}</p>
               </div>
-
-              {/* 제목 */}
               <div className="mb-4">
-                <label className="block mb-1 font-medium">제목</label>
+                <label className="block mb-1 font-semibold text-primary">
+                  제목
+                </label>
                 <input
                   type="text"
-                  className="w-full border px-3 py-2 rounded"
+                  className="w-full border border-primary/30 px-4 py-3 rounded-xl text-lg focus:ring-2 focus:ring-primary outline-none bg-primary/5 placeholder:text-primary/40"
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
                 />
               </div>
-
-              {/* 내용 */}
               <div className="mb-4">
-                <label className="block mb-1 font-medium">내용</label>
+                <label className="block mb-1 font-semibold text-primary">
+                  내용
+                </label>
                 <textarea
-                  className="w-full border px-3 py-2 rounded resize-none"
+                  className="w-full border border-primary/30 px-4 py-3 rounded-xl resize-none text-lg focus:ring-2 focus:ring-primary outline-none bg-primary/5 placeholder:text-primary/40"
                   rows={5}
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
                 />
               </div>
-
-              {/* 버튼 */}
-              <div className="flex justify-end space-x-2">
+              <div className="flex justify-end space-x-2 mt-4">
                 <button
                   onClick={handleCancelEdit}
-                  className="px-4 py-2 bg-gray-300 text-gray-800 rounded"
+                  className="mypage-btn-outline px-6 py-2 text-base"
                 >
                   취소
                 </button>
                 <button
                   onClick={handleUpdate}
-                  className="px-4 py-2 bg-purple-500 text-white rounded"
+                  className="mypage-btn px-6 py-2 text-base"
                 >
                   완료
                 </button>
@@ -250,11 +266,9 @@ export default function ModalInquiryList({ onClose }) {
             </div>
           </div>
         )}
-
-        {/* 닫기 버튼 */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-4 text-gray-500 hover:text-gray-700 text-xl"
+          className="absolute top-6 right-8 text-gray-400 hover:text-primary text-2xl font-bold"
         >
           ×
         </button>
