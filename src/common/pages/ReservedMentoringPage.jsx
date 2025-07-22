@@ -55,45 +55,61 @@ const ReservedMentoringPage = () => {
   return (
     <div className="bg-gray-50 min-h-screen pt-20">
       <h2 className="text-xl font-bold mb-4">예약된 멘토링</h2>
-      {upcoming.length === 0 && <p>예약된 멘토링이 없습니다.</p>}
-      {upcoming.map((res) => (
-        <div
-          key={res.reservationId}
-          className="flex justify-between items-center bg-gray-100 p-4 rounded mb-2"
-        >
-          <div>
-            <div className="font-semibold">{res.mentorNickname}</div>
-            <div className="text-sm text-gray-500">
-              {dayjs(res.startedAt).format("YYYY-MM-DD HH:mm")} ~{" "}
-              {dayjs(res.endedAt).format("HH:mm")}
-            </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center">
+        {upcoming.length === 0 && (
+          <div className="col-span-full text-center text-gray-400 py-12 text-lg font-semibold">
+            예약된 멘토링이 없습니다.
           </div>
-          <button
-            onClick={() => handleEnterClick(res)}
-            className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+        )}
+        {upcoming.map((res) => (
+          <div
+            key={res.reservationId}
+            className="bg-white/80 rounded-2xl shadow-xl border-2 border-primary/10 p-6 md:p-8 mb-2 max-w-md w-full mx-auto flex items-center justify-between transition-all duration-200 hover:shadow-2xl hover:-translate-y-1"
           >
-            입장하기
-          </button>
-        </div>
-      ))}
+            <div className="flex flex-col justify-center">
+              <div className="font-semibold text-base text-primary mb-1">
+                {res.mentorNickname}
+              </div>
+              <div className="text-sm text-gray-500">
+                {dayjs(res.startedAt).format("YYYY-MM-DD HH:mm")} ~{" "}
+                {dayjs(res.endedAt).format("HH:mm")}
+              </div>
+            </div>
+            <button
+              onClick={() => handleEnterClick(res)}
+              className="mypage-btn w-20 py-1 text-sm rounded-md shadow-sm font-semibold transition-all"
+            >
+              입장하기
+            </button>
+          </div>
+        ))}
+      </div>
 
       <h2 className="text-xl font-bold mt-10 mb-4">완료된 멘토링</h2>
-      {completed.length === 0 && <p>완료된 멘토링이 없습니다.</p>}
-      {completed.map((res) => (
-        <div
-          key={res.reservationId}
-          className="flex justify-between items-center bg-gray-200 p-4 rounded mb-2"
-        >
-          <div>
-            <div className="font-semibold">{res.mentorNickname}</div>
-            <div className="text-sm text-gray-500">
-              {dayjs(res.startedAt).format("YYYY-MM-DD HH:mm")} ~{" "}
-              {dayjs(res.endedAt).format("HH:mm")}
-            </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center">
+        {completed.length === 0 && (
+          <div className="col-span-full text-center text-gray-400 py-12 text-lg font-semibold">
+            완료된 멘토링이 없습니다.
           </div>
-          <span className="text-gray-500 text-sm">완료됨</span>
-        </div>
-      ))}
+        )}
+        {completed.map((res) => (
+          <div
+            key={res.reservationId}
+            className="bg-white/80 rounded-2xl shadow-xl border-2 border-primary/10 p-6 md:p-8 mb-2 max-w-md w-full mx-auto flex items-center justify-between transition-all duration-200 hover:shadow-2xl hover:-translate-y-1"
+          >
+            <div className="flex flex-col justify-center">
+              <div className="font-semibold text-base text-primary mb-1">
+                {res.mentorNickname}
+              </div>
+              <div className="text-sm text-gray-500">
+                {dayjs(res.startedAt).format("YYYY-MM-DD HH:mm")} ~{" "}
+                {dayjs(res.endedAt).format("HH:mm")}
+              </div>
+            </div>
+            <span className="text-gray-400 text-sm font-semibold">완료됨</span>
+          </div>
+        ))}
+      </div>
 
       {/* 비밀코드 입력 모달 */}
       {showModal && (

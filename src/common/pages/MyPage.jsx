@@ -144,7 +144,7 @@ const MyPage = () => {
   if (!profile) return <div className="p-6">불러오는 중...</div>;
 
   return (
-    <div className="mypage-bg min-h-screen pt-32 pb-16 px-2 flex flex-col items-center">
+    <div className="min-h-screen pt-32 pb-16 px-2 flex flex-col items-center bg-gray-50">
       <div className="w-full max-w-3xl">
         {/* 상단 인사 */}
         <div className="mb-12 text-center">
@@ -157,7 +157,7 @@ const MyPage = () => {
         </div>
 
         {/* 프로필 카드 */}
-        <div className="mypage-card flex flex-col md:flex-row items-center md:items-start gap-12 p-12 mb-14 shadow-2xl border-2 border-primary/10">
+        <div className="bg-white/80 rounded-2xl flex flex-col md:flex-row items-center md:items-start gap-12 px-12 py-16 md:py-20 mb-10 shadow-xl border-2 border-primary/10 transition-all duration-200 hover:shadow-2xl hover:-translate-y-1 max-w-5xl mx-auto">
           {/* 프로필 이미지 */}
           <div className="flex-shrink-0">
             <img
@@ -175,13 +175,13 @@ const MyPage = () => {
             <span className="text-lg text-gray-500 mb-2">님 환영합니다!</span>
             <div className="flex gap-4 w-full">
               <button
-                className="mypage-btn-main flex-1 py-3 text-lg shadow-md"
+                className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 flex-1"
                 onClick={() => setViewOpen(true)}
               >
                 내 정보 조회
               </button>
               <button
-                className="mypage-btn-sub flex-1 py-3 text-lg shadow-md"
+                className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 flex-1"
                 onClick={() => setEditOpen(true)}
               >
                 내 정보 수정
@@ -217,33 +217,33 @@ const MyPage = () => {
         )}
 
         {/* 계정 설정 카드 */}
-        <div className="mypage-card p-12 mb-12 shadow-2xl border-2 border-primary/10">
+        <div className="bg-white/80 rounded-2xl px-12 py-16 md:py-20 mb-10 shadow-xl border-2 border-primary/10 transition-all duration-200 hover:shadow-2xl hover:-translate-y-1 max-w-5xl mx-auto">
           <h3 className="text-2xl font-extrabold mb-8 text-primary drop-shadow">
             계정 설정
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <button className="mypage-btn-main w-full py-3 text-lg shadow-md">
+            <button className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full">
               요약 목록
             </button>
             <button
-              className="mypage-btn-main w-full py-3 text-lg shadow-md"
+              className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full"
               onClick={() => setEditOpen(true)}
             >
               내 정보 수정
             </button>
-            <button className="mypage-btn-main w-full py-3 text-lg shadow-md">
+            <button className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full">
               찜한 멘토 조회
             </button>
             {profile.isMentor && (
               <button
-                className="mypage-btn-main w-full py-3 text-lg shadow-md"
+                className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full"
                 onClick={() => navigate("/mentor/settings")}
               >
                 멘토링 설정
               </button>
             )}
             <button
-              className="mypage-btn-main w-full py-3 text-lg text-red-600 border-red-200 hover:bg-red-50 shadow-md"
+              className="px-8 py-3 bg-white text-red-600 font-semibold border-2 border-red-200 rounded-md shadow-md hover:bg-red-50 transition-all duration-150 w-full"
               onClick={() => setWithdrawOpen(true)}
             >
               회원탈퇴
@@ -252,7 +252,7 @@ const MyPage = () => {
         </div>
 
         {/* 1:1 문의 카드 */}
-        <div className="mypage-card p-12 mb-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl border-2 border-primary/10">
+        <div className="bg-white/80 rounded-2xl px-12 py-16 md:py-20 mb-10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl border-2 border-primary/10 transition-all duration-200 hover:shadow-2xl hover:-translate-y-1 max-w-5xl mx-auto">
           <div className="flex-1 text-left">
             <h3 className="text-2xl font-extrabold mb-2 text-primary drop-shadow">
               1:1 문의
@@ -262,7 +262,7 @@ const MyPage = () => {
             </span>
           </div>
           <button
-            className="mypage-btn-main flex-shrink-0 py-3 px-10 text-lg shadow-md"
+            className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 flex-shrink-0"
             onClick={() => navigate("/inquiry")}
           >
             문의하러 가기
@@ -270,7 +270,7 @@ const MyPage = () => {
         </div>
 
         {/* 예약된 멘토링 카드 */}
-        <div className="mypage-card p-12 mb-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl border-2 border-primary/10">
+        <div className="bg-white/80 rounded-2xl px-12 py-16 md:py-20 mb-10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl border-2 border-primary/10 transition-all duration-200 hover:shadow-2xl hover:-translate-y-1 max-w-5xl mx-auto">
           <div className="flex-1 text-left">
             <h3 className="text-2xl font-extrabold mb-2 text-primary drop-shadow">
               멘토링
@@ -278,8 +278,8 @@ const MyPage = () => {
             <span className="text-gray-700">예약된 멘토링을 확인하세요</span>
           </div>
           <button
-            className="mypage-btn-main flex-shrink-0 py-3 px-10 text-lg shadow-md"
-            onClick={() => navigate("/reserved")}
+            className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 flex-shrink-0"
+            onClick={() => navigate("/ReservedMentoring")}
           >
             예약 내역 보기
           </button>
