@@ -15,9 +15,12 @@ const categories = [
   "영업",
 ];
 
+const PAGE_SIZE = 15;
+
 export default function MentorList() {
   const [mentors, setMentors] = useState([]);
   const [selected, setSelected] = useState("전체");
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const fetchMentors = async () => {
@@ -39,34 +42,44 @@ export default function MentorList() {
       ? mentors
       : mentors.filter((m) => m.fieldName === selected);
 
-  // 2) 인기 멘토 (백엔드에서 isPopular 필드 제공 가정)
-  const popular = mentors.filter((m) => m.isPopular);
+  // 페이징 처리
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const pagedMentors = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  // 페이지 변경 시 스크롤 상단 이동
+  const handlePageChange = (p) => {
+    setPage(p);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
-    <div className="mentorlist-bg px-2 space-y-20 pt-32">
+    <div className="w-full bg-transparent mentorlist-bg space-y-16">
       <section className="w-full">
-        <h1 className="text-4xl font-extrabold text-primary mb-10 tracking-tight drop-shadow">
+        <h1 className="text-2xl md:text-3xl font-extrabold text-primary mb-8 tracking-tight drop-shadow text-left">
           직무별 멘토 찾기
         </h1>
-        <div className="flex flex-wrap gap-5 mb-12">
+        <div className="flex flex-wrap gap-4 mb-10">
           {categories.map((cat) => (
             <button
               key={cat}
-              onClick={() => setSelected(cat)}
-              className={`mentor-filter-btn px-10 py-3 rounded-2xl font-bold text-lg transition-all shadow-lg border-2 ${selected === cat ? "selected" : ""}`}
-              style={{ minWidth: 120 }}
+              onClick={() => {
+                setSelected(cat);
+                setPage(1);
+              }}
+              className={`border-2 border-primary font-semibold rounded-md shadow-md px-6 py-2 transition-all duration-150 ${selected === cat ? "bg-primary text-black" : "bg-white text-primary hover:bg-black hover:text-white"}`}
+              style={{ minWidth: 100 }}
             >
               {cat}
             </button>
           ))}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
-          {filtered.map((m, i) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 xl:gap-8 items-stretch">
+          {pagedMentors.map((m, i) => (
             <MentorCard
               key={m.id ?? i}
               id={m.nickname}
               nickname={m.nickname}
-              avatarUrl={m.thumbnail ? m.thumbnail : defaultAvatar}
+              avatarUrl={m.thumbnail}
               role={m.fieldName}
               experience={m.careerDesc}
               name={m.nickname}
@@ -75,9 +88,24 @@ export default function MentorList() {
               reviewCount={m.reviewCount}
               mentoringTitle={m.mentoringTitle}
               hourlyRate={m.hourlyRate}
+              className="w-full"
             />
           ))}
         </div>
+        {/* 페이지네이션 */}
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-10 gap-2">
+            {Array.from({ length: totalPages }, (_, idx) => (
+              <button
+                key={idx + 1}
+                onClick={() => handlePageChange(idx + 1)}
+                className={`w-10 h-10 rounded-full font-bold border-2 transition text-lg flex items-center justify-center ${page === idx + 1 ? "bg-primary text-black border-primary" : "bg-white text-primary border-primary hover:bg-primary hover:text-white"}`}
+              >
+                {idx + 1}
+              </button>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

@@ -63,6 +63,7 @@ body {
 .mypage-btn:hover {
   background: linear-gradient(90deg, #7c3aed 0%, #a259e6 100%);
   box-shadow: 0 4px 16px 0 rgba(124, 58, 237, 0.12);
+  color: #222;
 }
 .mypage-btn-outline {
   background: #fff;
@@ -79,7 +80,7 @@ body {
 }
 .mypage-btn-outline:hover {
   background: var(--secondary);
-  color: #fff;
+  color: #222;
 }
 
 .text-primary {

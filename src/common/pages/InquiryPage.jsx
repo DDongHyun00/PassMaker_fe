@@ -8,8 +8,8 @@ export default function InquiryPage() {
   const [isListOpen, setIsListOpen] = useState(false);
 
   return (
-    <div className="inquiry-bg min-h-screen flex items-center justify-center py-16 px-2">
-      <div className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl p-12 border border-primary/10 text-center flex flex-col items-center">
+    <div className="min-h-screen bg-gray-50 inquiry-bg flex items-center justify-center py-16 px-2">
+      <div className="w-full max-w-3xl bg-white/80 rounded-2xl shadow-xl border-2 border-primary/10 p-12 text-center flex flex-col items-center transition-all duration-200 hover:shadow-2xl hover:-translate-y-1">
         <div className="flex justify-center mb-8">
           <img
             src={inquiry_svg}
