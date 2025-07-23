@@ -74,7 +74,7 @@ const ReservationPage = () => {
     const timeStr = selectedTime.split("~")[0];
     const safeTime = timeStr.replace(/[:\-T]/g, "");
     const orderId_set = `${dateStr}T${safeTime}`;
-    const reservationTime = dayjs.tz(`${dateStr}T${timeStr}:00`, "Asia/Seoul").format("YYYY-MM-DDTHH:mm:ss");
+    const reservationTime = dayjs.tz(`${dateStr}T${timeStr}:00`, "Asia/Seoul").add(1, "day").format("YYYY-MM-DDTHH:mm:ss");
 
 
     // const reservationTime = dayjs.tz(`${dateStr}T${timeStr}:00`, "Asia/Seoul").format("YYYY-MM-DDTHH:mm:ss");
