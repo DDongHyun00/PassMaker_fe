@@ -64,7 +64,7 @@ const AudioRecorder = ({ localStream, roomId }) => {
         formData.append("partIndex", 0);
 
         try {
-          const res = await fetch("/stt/upload-audio", {
+          const res = await fetch("/api/stt/upload-audio", {
             method: "POST",
             body: formData,
           });
