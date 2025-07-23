@@ -1,6 +1,6 @@
 import React,{ useState } from "react";
 import {CheckCircle, XCircle} from "lucide-react";
-import axios from "axios";
+import axios from "../../../common/lib/axios.js";
 
 const Blindness = ({ reportReviewId }) => {
     const [loading, setLoading] = useState(false);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from '../../common/lib/axios';
+import axios from "../../common/lib/axios.js";
 import BasicInfoSection from '../components/BasicInfoSection';
 import MentoringInfoSection from '../components/MentoringInfoSection';
 import DetailedDescriptionSection from '../components/DetailedDescriptionSection';

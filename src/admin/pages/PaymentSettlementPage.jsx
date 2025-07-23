@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from "axios";
+import axios from "../../common/lib/axios.js";
 import { DollarSign, CreditCard, Users, AlertTriangle } from 'lucide-react';
 import Footer from "../common/Footer.jsx";
 import StatsCard from "../components/paymentSettlement/StatsCard.jsx";

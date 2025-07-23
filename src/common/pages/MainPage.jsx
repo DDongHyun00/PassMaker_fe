@@ -5,7 +5,7 @@ import RoomEntryBox from "../components/RoomEntryBox";
 import { useAuth } from "../../auth/AuthContext";
 import React, { useState, useEffect } from "react";
 import MentorList from "../../mentor/components/MentorList";
-import axios from "axios";
+import axios from "../../common/lib/axios.js";
 import inquiry from "../../assets/inquiry_svg.png";
 import main_banner_1 from "../../assets/main_banner_1.png";
 import main_banner_2 from "../../assets/main_banner_2.png";

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import axios from "../../common/lib/axios.js";
 import Header from '../common/Header.jsx';
 import Footer from '../common/Footer.jsx';
 import UserProfile from "../components/userDetail/UserProfile.jsx";

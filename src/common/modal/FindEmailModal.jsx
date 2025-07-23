@@ -1,6 +1,6 @@
 // src/components/FindEmailModal.jsx
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "../../common/lib/axios.js";
 
 const FindEmailModal = ({ onClose }) => {
   const [name, setName] = useState("");

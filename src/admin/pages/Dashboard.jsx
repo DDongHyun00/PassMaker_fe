@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react';
-import axios from 'axios';
+import axios from "../../common/lib/axios.js";
 import StatCard from "../components/dashboard/StatCard.jsx";
 import Footer from "../common/Footer.jsx";
 import TableReports from "../components/dashboard/TableReports.jsx";

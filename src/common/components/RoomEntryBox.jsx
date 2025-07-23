@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../common/lib/axios.js";
 
 const RoomEntryBox = () => {
   const [roomId, setRoomId] = useState("");

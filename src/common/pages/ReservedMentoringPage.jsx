@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../common/lib/axios.js";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { useAuth } from "../../auth/AuthContext";

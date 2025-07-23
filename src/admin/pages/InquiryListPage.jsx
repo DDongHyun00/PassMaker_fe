@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import axios from 'axios';
+import axios from "../../common/lib/axios.js";
 import Header from "../common/Header.jsx";
 import Footer from "../common/Footer.jsx";
 import InquiryTable from "../components/inquiryList/InquiryTable.jsx";

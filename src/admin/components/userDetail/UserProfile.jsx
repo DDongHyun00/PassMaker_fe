@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import axios from 'axios';
+import axios from "../../../common/lib/axios.js";
 
 const UserProfile = ({ user, onStatusChange, onUserUpdate }) => {
     const [isSuspendLoading, setIsSuspendLoading] = useState(false); // 계정 정지 로딩 상태

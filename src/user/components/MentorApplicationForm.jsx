@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from "../../common/lib/axios.js";
 
 const MentorApplicationForm = ({ onClose }) => {
   const [intro, setIntro] = useState('');

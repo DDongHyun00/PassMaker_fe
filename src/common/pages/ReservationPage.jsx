@@ -4,7 +4,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../styles/customCalendar.css";
 import { loadTossPayments } from "@tosspayments/payment-sdk";
-import axios from "axios";
+import axios from "../../common/lib/axios.js";
 
 const ReservationPage = () => {
   const [selectedDate, setSelectedDate] = useState(null);

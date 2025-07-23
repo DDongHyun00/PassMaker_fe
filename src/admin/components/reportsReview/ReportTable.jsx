@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../../common/lib/axios.js";
 import {Link} from "react-router-dom";
 
 const ReportTable = ({ searchText, statusFilter, typeFilter, currentPage, itemsPerPage}) => {

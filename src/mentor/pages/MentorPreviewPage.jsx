@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from '../../common/lib/axios';
+import axios from "../../common/lib/axios.js";
 
 const MentorPreviewPage = () => {
   const location = useLocation();

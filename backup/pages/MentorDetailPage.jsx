@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import PaymentSuccessPopup from "../../common/components/PaymentSuccessPopup";
-import axios from "axios";
+import axios from "../../src/common/lib/axios.js";
 
 const MentorDetailPage = () => {
   const location = useLocation();

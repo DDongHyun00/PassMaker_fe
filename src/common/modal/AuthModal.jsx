@@ -1,6 +1,6 @@
 // src/components/AuthModal.jsx
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "../../common/lib/axios.js";
 
 const AuthModal = ({ onClose }) => {
   const [activeTab, setActiveTab] = useState("email"); // "email" 또는 "password"
