@@ -87,6 +87,9 @@ const ReservationPage = () => {
         .tz(`${dateStr}T${timeStr}:00`, "Asia/Seoul")
         .format("YYYY-MM-DDTHH:mm:ss"); // 예: "2025-07-26T16:00:00"
 
+    const safeTime = timeStr.replace(/[:\-T]/g, "");
+    const orderId_set = `${dateStr}T${safeTime}`;
+
     console.log("👉 최종 예약 시간:", reservationTime); // ✅ 이거 꼭 확인해봐
     // const reservationTime = dayjs.tz(`${dateStr}T${timeStr}:00`, "Asia/Seoul").format("YYYY-MM-DDTHH:mm:ss");
     // dayjs로 Asia/Seoul 기준의 날짜로 명시
