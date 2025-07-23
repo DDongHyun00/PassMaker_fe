@@ -204,8 +204,8 @@ const ReservedMentoringPage = () => {
                   {res.mentorNickname}
                 </div>
                 <div className="text-sm text-gray-500">
-                  {dayjs(res.startedAt).format("YYYY-MM-DD HH:mm")} ~{" "}
-                  {dayjs(res.endedAt).format("HH:mm")}
+                  {dayjs.utc(res.startedAt).local().format("YYYY-MM-DD HH:mm")} ~{" "}
+                  {dayjs.utc(res.endedAt).local().format("HH:mm")}
                 </div>
               </div>
               <span className="text-gray-400 text-sm font-semibold">
