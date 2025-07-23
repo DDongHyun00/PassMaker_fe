@@ -39,8 +39,8 @@ export default function MentorList() {
   }, []);
 
   // ✅ 0) 활성화된 멘토만 필터링
-  const activeMentors = mentors.filter(m => m.active === true);
-
+  // const activeMentors = mentors.filter(m => m.active === true);
+  const activeMentors = mentors.filter(m => m.active !== false); // false만 제외
   // 1) 직무별 필터
   const filtered =
     selected === "전체"
