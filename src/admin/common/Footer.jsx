@@ -20,9 +20,18 @@ const Footer = () => {
               관리자 기능
             </h3>
             <div className="text-sm text-gray-600 mb-8 leading-relaxed max-w-[180px]">
-              <Link to="/admin" className="hover:text-gray-900 ">
-                관리자 대시보드
-              </Link>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li>
+                  <Link to="/admin" className="hover:text-gray-900 ">
+                    관리자 대시보드
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/admin/payments" className="hover:text-gray-900">
+                    정산 관리
+                  </Link>
+                </li>
+              </ul>
             </div>
             <div className="flex space-x-4">
               <Facebook />
@@ -68,6 +77,7 @@ const Footer = () => {
                   1:1 문의 관리
                 </Link>
               </li>
+
             </ul>
           </div>
 
