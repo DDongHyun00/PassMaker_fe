@@ -145,7 +145,7 @@ const ReservedMentoringPage = () => {
                       </>
                   ) : res.reservationTime ? (
                       <>
-                        {dayjs(res.reservationTime).format("YYYY-MM-DD HH:mm")} (예약 시간)
+                        {dayjs(res.reservationTime).tz("Asia/Seoul").format("YYYY-MM-DD HH:mm")} (예약 시간)
                       </>
                   ) : (
                       <>예약 시간 미정</>
