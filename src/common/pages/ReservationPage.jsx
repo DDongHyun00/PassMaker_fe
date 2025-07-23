@@ -74,9 +74,9 @@ const ReservationPage = () => {
     const timeStr = selectedTime.split("~")[0];
     const safeTime = timeStr.replace(/[:\-T]/g, "");
     const orderId_set = `${dateStr}T${safeTime}`;
+    const reservationTime = dayjs.tz(`${dateStr}T${timeStr}:00`, "Asia/Seoul").format("YYYY-MM-DDTHH:mm:ss");
     // dayjs로 Asia/Seoul 기준의 날짜로 명시
-    const reservationTime = dayjs.tz(`${dateStr}T${timeStr}:00`, "Asia/Seoul").toISOString();
-
+    // const reservationTime = dayjs.tz(`${dateStr}T${timeStr}:00`, "Asia/Seoul").toISOString();
     // const reservationTime = `${dateStr}T${timeStr}:00`;
 
     try {
