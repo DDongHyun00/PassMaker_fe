@@ -13,7 +13,7 @@ const MentoringHeader = ({ roomId }) => {
     if (!window.confirm('정말로 인터뷰를 종료하시겠습니까?')) return;
 
     try {
-      const response = await fetch(`/rooms/exit?roomId=${roomId}`, {
+      const response = await fetch(`/api/rooms/exit?roomId=${roomId}`, {
         method: 'POST',
         credentials: 'include', // ✅ 쿠키 기반 인증 사용 시 필요
       });
