@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MentorCard from "./MentorCard";
-import axios from "axios"; // axios import 추가
+import axios from "../../common/lib/axios.js"; // axios import 추가
 
 const categories = [
   "전체",
