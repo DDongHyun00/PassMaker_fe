@@ -31,7 +31,7 @@ export default function MentorList() {
           withCredentials: true,
         });
         console.log("mentor 응답", res.data);
-        setMentors(res.data.data);
+        setMentors(res.data);
       } catch (err) {
         console.error("MentorList fetch 실패:", err.message);
       }
