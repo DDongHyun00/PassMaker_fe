@@ -26,6 +26,7 @@ export const getInquiryDetail = async (id) => {
     return response.data;
 };
 
+
 // 문의 글 수정
 export const updateInquiry = async (id, data) => {
     try {
