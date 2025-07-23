@@ -18,7 +18,7 @@ const Dashboard = () => {
     useEffect(() => {
         const today = new Date().toISOString().split('T')[0];
 
-        authApi.get("api/admin/stats")
+        authApi.get("/admin/stats")
             .then(res => {
                 setTotalUsers(res.data.totalUserCount);
                 setMentorCount(res.data.mentorCount);
@@ -30,7 +30,7 @@ const Dashboard = () => {
             });
 
         // 매출 요약 데이터 불러오기
-        authApi.get("api/admin/daily")
+        authApi.get("/admin/daily")
             .then(res => {
                 const today = new Date().toISOString().split("T")[0]; // 'yyyy-MM-dd'
                 const todayData = res.data.filter(item => item.date === today);
@@ -40,7 +40,7 @@ const Dashboard = () => {
                 console.error("매출 요약 데이터 가져오기 실패", err);
             });
 
-        authApi.get("api/admin/weekly")
+        authApi.get("/admin/weekly")
             .then(res => {
                 // 서버에서 받은 데이터 예: [{dayName: "일", sales: 30000}, ...]
                 // 요일 순서: 월(1), 화(2), 수(3), 목(4), 금(5), 토(6), 일(0)
