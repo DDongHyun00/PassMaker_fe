@@ -33,6 +33,7 @@ import ReservedMentoringPage from "../common/pages/ReservedMentoringPage.jsx"
 // import ReservedMentoringTestPage from "../common/pages/ReservedMentoringTestPage.jsx" // 내용 중복으로 주석처리
 
 import WithdrawConfirmModal from "../common/modal/WithdrawConfirmModal.jsx";
+import PaymentSettlementPage from "../admin/pages/PaymentSettlementPage.jsx";
 const Router = () => {
   const { user, loading } = useAuth();
 
@@ -73,14 +74,13 @@ const Router = () => {
         {/* ───── 멘티 전용 ───── */}
         <Route path="/mentor/apply" element={user && !user.isMentor ? <MentorApplicationPage /> : <Navigate to="/login" replace />} />
         <Route path="/reserved" element={<ReservedMentoringPage />} /> {/* /reserved 주소 정리  */}
-        
+
         {/* ───── 관리자 전용 ───── */}
         <Route path="/admin/users" element={<UserListPage />} />
-        
         <Route path="/admin/mentor-application" element={<AdminMentorApplicationPage />}/>
-        
         <Route path="/admin/report-review" element={<ReportsReviewPage />} />
         <Route path="/admin/inquiries" element={<InquiryListPage />} />
+        <Route path="/admin/payments" element={<PaymentSettlementPage />} />
         <Route path="/admin" element={<Dashboard />} />
 
         {/* ───── 멘토 전용 ───── */}

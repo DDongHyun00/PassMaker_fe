@@ -85,38 +85,19 @@ const Dashboard = () => {
                                 <StatCard
                                     title="활동 멘토 수"
                                     value={mentorCount?.toLocaleString() ?? "로딩 중..."}
-                                    // change="↑ 8.3% 지난 달 대비"
-                                    // changeType="increase"
                                     icon="👤"
                                 />
                                 <StatCard
                                     title="신고된 리뷰"
                                     value={reportedReviewsCount?.toLocaleString() ?? "로딩 중..."}
-                                    // change="↓ 2.4% 지난 달 대비"
-                                    // changeType="decrease"
                                     icon="⚡"
                                 />
                                 <StatCard
                                     title="미해결 문의"
                                     value={unresolvedInquiries ?? "로딩 중..."}
-                                    // change="↑ 5.2% 지난 달 대비"
-                                    // changeType="increase"
                                     icon="💬"
                                 />
                             </div>
-
-                            {/*/!* Charts Row 1 *!/*/}
-                            {/*<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">*/}
-                            {/*    <LineUserNum*/}
-                            {/*        data={lineChartData}*/}
-                            {/*        title="사용자 증가 추이"*/}
-                            {/*    />*/}
-                            {/*    <HorizontalMentor*/}
-                            {/*        data={horizontalBarData}*/}
-                            {/*        title="분야별 멘토 분포"*/}
-                            {/*    />*/}
-
-                            {/*</div>*/}
 
                             {/* Data Table */}
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -129,22 +110,6 @@ const Dashboard = () => {
                                     title="주간 매출 현황"
                                 />
                             </div>
-
-                            {/*/!* Charts Row 2 *!/*/}
-                            {/*<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">*/}
-                            {/*    <PieChartCompo*/}
-                            {/*        data={pieChartData}*/}
-                            {/*        title="분야별 매출 현황"*/}
-                            {/*    />*/}
-                            {/*    <PieChartCompo*/}
-                            {/*        data={pieChartData}*/}
-                            {/*        title="신고 현황 분석"*/}
-                            {/*    />*/}
-                            {/*    <PieChartCompo*/}
-                            {/*        data={pieChartData}*/}
-                            {/*        title="문의 유형 분석"*/}
-                            {/*    />*/}
-                            {/*</div>*/}
                         </div>
                         <Footer/>
                     </div>

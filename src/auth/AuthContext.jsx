@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
       .get("/api/auth/me", { withCredentials: true })
       .then((res) => {
         console.log("Raw res.data (useEffect):", res.data); // <-- 이 라인을 추가합니다.
-        setUser({ ...res.data, isMentor: res.data.mentor }); // 'mentor' 값을 'isMentor'로 매핑
+        setUser({ ...res.data, isMentor: res.data.mentor, role: res.data.role }); // 'mentor' 값을 'isMentor'로 매핑
         setIsLoggedIn(true);
       })
       .catch(() => {
@@ -35,8 +35,8 @@ export function AuthProvider({ children }) {
         withCredentials: true,
       });
       console.log("Raw res.data (login):", res.data); // <-- 이 라인을 추가합니다.
-      setUser({ ...res.data, isMentor: res.data.mentor }); // 'mentor' 값을 'isMentor'로 매핑
-      console.log("AuthContext user after mapping (login):", { ...res.data, isMentor: res.data.mentor }); // <-- 이 라인을 추가합니다.
+      setUser({ ...res.data, isMentor: res.data.mentor, role: res.data.role }); // 'mentor' 값을 'isMentor'로 매핑
+      console.log("AuthContext user after mapping (login):", { ...res.data, isMentor: res.data.mentor, role: res.data.role }); // <-- 이 라인을 추가합니다.
       setIsLoggedIn(true);
     } catch {
       setUser(null);

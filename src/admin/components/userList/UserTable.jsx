@@ -24,11 +24,13 @@ const UserTable = ({users, searchText, statusFilter, roleFilter, sortOrder, curr
     };
 
     const filteredUsers = users.filter(user => {
+        const id = String(user.id || '').toLowerCase();
         const name = (user.name || '').toLowerCase();
         const email = (user.email || '').toLowerCase();
         const search = (searchText || '').toLowerCase();
 
         return (
+            id.includes(search) ||
             name.includes(search) ||
             email.includes(search)
         );

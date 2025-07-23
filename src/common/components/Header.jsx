@@ -24,18 +24,27 @@ export default function Header() {
       <div className="flex items-center gap-4">
         {user ? (
           <>
-            <button
-              onClick={logout}
-              className="nav-btn-sub px-7 py-1 text-base rounded-md shadow-md border border-primary/30 font-semibold transition-all duration-150"
-            >
-              로그아웃
-            </button>
+               {/*관리자 버튼 추가*/}
+              {user.role === "ADMIN" && (
+                  <button
+                      onClick={() => navigate("/admin")}
+                      className="nav-btn-sub px-7 py-1 text-base rounded-md shadow-md border border-primary/30 font-semibold transition-all duration-150"
+                  >
+                      관리자 페이지
+                  </button>
+              )}
             <button
               onClick={() => navigate("/mypage")}
               className="nav-btn-sub px-7 py-1 text-base rounded-md shadow-md border border-primary/30 font-semibold transition-all duration-150"
             >
               마이페이지
             </button>
+              <button
+                  onClick={logout}
+                  className="nav-btn-sub px-7 py-1 text-base rounded-md shadow-md border border-primary/30 font-semibold transition-all duration-150"
+              >
+                  로그아웃
+              </button>
           </>
         ) : (
           <>
