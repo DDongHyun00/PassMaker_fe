@@ -26,7 +26,7 @@ const WebRTCConnection = ({ roomId, userId, localVideoRef, remoteVideoRef, setLo
         }
 
         const stompClient = new Client({
-            brokerURL: "ws://localhost:8080/ws",
+            brokerURL: "ws://passmaker.kro.kr/ws",
             reconnectDelay: 5000,
             onConnect: () => {
                 stompClient.subscribe(`/topic/room/${roomId}`, async (message) => {

@@ -28,7 +28,7 @@ const ReservationPage = () => {
     const fetchNickname = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8080/api/mentors/id/${mentorId}`,
+          `/api/mentors/id/${mentorId}`,
           { withCredentials: true }
         );
         setMentorNickname(res.data.nickname);
@@ -45,7 +45,7 @@ const ReservationPage = () => {
     const fetchUnavailableTimes = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8080/api/reservations/mentor/${mentorId}/unavailable-times`,
+          `/api/reservations/mentor/${mentorId}/unavailable-times`,
           { withCredentials: true }
         );
         setUnavailableTimes(res.data);
@@ -73,7 +73,7 @@ const ReservationPage = () => {
     try {
       // ✅ 중복 예약 체크
       await axios.post(
-        "http://localhost:8080/api/reservations/check-duplicate",
+        "/api/reservations/check-duplicate",
         {
           mentorId: Number(mentorId),
           reservationTime,

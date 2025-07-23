@@ -24,7 +24,7 @@ export default function MentorList() {
   useEffect(() => {
     const fetchMentors = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/api/mentors", {
+        const res = await axios.get("/api/mentors", {
           withCredentials: true,
         });
         setMentors(res.data);

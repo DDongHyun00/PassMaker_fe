@@ -70,7 +70,7 @@ const MyPage = () => {
 
   const loadProfile = async () => {
     try {
-      const res = await authApi.get("http://localhost:8080/api/mypage/profile");
+      const res = await authApi.get("/api/mypage/profile");
       console.log("프론트엔드 profile 객체:", res.data); // [추가] 응답 데이터 콘솔 출력
       setProfile({ ...res.data, isMentor: res.data.mentor });
       setFormData({
