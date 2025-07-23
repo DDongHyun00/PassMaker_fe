@@ -70,13 +70,24 @@ const ReservationPage = () => {
       return;
     }
 
-    const dateStr = selectedDate.toISOString().split("T")[0];
-    const timeStr = selectedTime.split("~")[0];
-    const safeTime = timeStr.replace(/[:\-T]/g, "");
-    const orderId_set = `${dateStr}T${safeTime}`;
-    const reservationTime = dayjs.tz(`${dateStr}T${timeStr}:00`, "Asia/Seoul").add(1, "day").format("YYYY-MM-DDTHH:mm:ss");
+    // const dateStr = selectedDate.toISOString().split("T")[0];
+    // const timeStr = selectedTime.split("~")[0];
+    // const safeTime = timeStr.replace(/[:\-T]/g, "");
+    // const orderId_set = `${dateStr}T${safeTime}`;
+    // const reservationTime = dayjs.tz(`${dateStr}T${timeStr}:00`, "Asia/Seoul").add(1, "day").format("YYYY-MM-DDTHH:mm:ss");
 
+// ✅ 1. 선택한 날짜를 Asia/Seoul 기준으로 변환
+    const dateStr = dayjs(selectedDate).tz("Asia/Seoul").format("YYYY-MM-DD");
 
+    // ✅ 2. 시간은 16:00~18:00 → 16:00만 추출
+    const timeStr = selectedTime.split("~")[0]; // "16:00"
+
+    // ✅ 3. KST 기준으로 정확한 예약 시간 생성
+    const reservationTime = dayjs
+        .tz(`${dateStr}T${timeStr}:00`, "Asia/Seoul")
+        .format("YYYY-MM-DDTHH:mm:ss"); // 예: "2025-07-26T16:00:00"
+
+    console.log("👉 최종 예약 시간:", reservationTime); // ✅ 이거 꼭 확인해봐
     // const reservationTime = dayjs.tz(`${dateStr}T${timeStr}:00`, "Asia/Seoul").format("YYYY-MM-DDTHH:mm:ss");
     // dayjs로 Asia/Seoul 기준의 날짜로 명시
     // const reservationTime = dayjs.tz(`${dateStr}T${timeStr}:00`, "Asia/Seoul").toISOString();
