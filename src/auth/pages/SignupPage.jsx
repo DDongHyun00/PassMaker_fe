@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "../../common/lib/axios.js";
 import { useNavigate } from "react-router-dom";
 import CenterWrapper from "../../common/styles/CenterWrapper.jsx";
+import authApi from "../../common/lib/axios.js";
 
 // 컴포넌트 정의
 const SignupPage = () => {
@@ -43,7 +44,7 @@ const SignupPage = () => {
 
     try {
       // axios 요청
-      const response = await axios.post("/auth/signup", form, {
+      const response = await authApi.post("/auth/signup", form, {
         withCredentials: true,
       });
       console.log("회원가입 성공:", response.data);

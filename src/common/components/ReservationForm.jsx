@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "../../common/lib/axios";
+import authApi from "../../common/lib/axios";
 
 // ReservationForm: 멘토/시간 선택 후 예약 생성 API 호출 폼
 const ReservationForm = ({ onSuccess }) => {
@@ -22,7 +23,7 @@ const ReservationForm = ({ onSuccess }) => {
     setLoading(true);
     try {
       // 예약 생성 API 호출
-      const res = await axios.post("/reservations", {
+      const res = await authApi.post("/reservations", {
         mentorId: Number(mentorId),
         reservationTime,
       });

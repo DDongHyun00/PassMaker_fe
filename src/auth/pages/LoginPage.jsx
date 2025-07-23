@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "../../common/lib/axios.js";
 import CenterWrapper from "../../common/styles/CenterWrapper.jsx";
 import { useAuth } from "../AuthContext.jsx";
+import authApi from "../../common/lib/axios.js";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const LoginPage = () => {
 
     try {
       // 1. 로그인 요청 (AccessToken/RefreshToken은 HttpOnly 쿠키로 저장됨)
-      const response = await axios.post("/auth/login", form, {
+      const response = await authApi.post("/auth/login", form, {
         withCredentials: true,
       });
 

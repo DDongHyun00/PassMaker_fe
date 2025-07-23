@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../common/lib/axios.js";
+import authApi from "../../common/lib/axios.js";
 
 const RoomEntryBox = () => {
   const [roomId, setRoomId] = useState("");
@@ -9,7 +10,7 @@ const RoomEntryBox = () => {
 
   const handleEnterRoom = async () => {
     try {
-      const res = await axios.post(
+      const res = await authApi.post(
         `/rooms/${roomId}/enter`,
         { roomCode },
         { withCredentials: true }

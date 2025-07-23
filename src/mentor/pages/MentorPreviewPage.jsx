@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from "../../common/lib/axios.js";
+import authApi from "../../common/lib/axios.js";
 
 const MentorPreviewPage = () => {
   const location = useLocation();
@@ -16,7 +17,7 @@ const MentorPreviewPage = () => {
 
   const handleConfirmSave = async () => {
     try {
-      await axios.put('/mentors/me/edit-profile', settings);
+      await authApi.put('/mentors/me/edit-profile', settings);
       alert("설정이 성공적으로 저장되었습니다.");
       navigate('/mypage'); // 저장 성공 후 마이페이지로 이동
     } catch (err) {

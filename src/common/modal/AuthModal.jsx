@@ -1,6 +1,7 @@
 // src/components/AuthModal.jsx
 import React, { useState } from "react";
 import axios from "../../common/lib/axios.js";
+import authApi from "../../common/lib/axios.js";
 
 const AuthModal = ({ onClose }) => {
   const [activeTab, setActiveTab] = useState("email"); // "email" 또는 "password"
@@ -24,7 +25,7 @@ const AuthModal = ({ onClose }) => {
   const handleFindEmail = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/users/find-email", {
+      const res = await authApi.post("/users/find-email", {
         name,
         phone,
       });
@@ -37,7 +38,7 @@ const AuthModal = ({ onClose }) => {
   const handleResetPassword = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/users/reset-password", {
+      const res = await authApi.post("/users/reset-password", {
         email,
         phone,
       });

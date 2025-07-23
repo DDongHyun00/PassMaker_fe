@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import PaymentSuccessPopup from "../../common/components/PaymentSuccessPopup";
 import axios from "../../src/common/lib/axios.js";
+import authApi from "../../src/common/lib/axios.js";
 
 const MentorDetailPage = () => {
   const location = useLocation();
@@ -27,7 +28,7 @@ const MentorDetailPage = () => {
     if (paymentKey && amount && orderId) {
       const reserveAndConfirm = async () => {
         try {
-          const res = await axios.post(
+          const res = await authApi.post(
               "/payments/toss/reserve",
               {
                 orderId,             // ✅ 백엔드에서 orderId 기반 예약 파싱

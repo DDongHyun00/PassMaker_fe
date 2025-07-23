@@ -1,6 +1,7 @@
 import React,{ useState } from "react";
 import {CheckCircle, XCircle} from "lucide-react";
 import axios from "../../../common/lib/axios.js";
+import authApi from "../../../common/lib/axios.js";
 const Permission = ({ applyId }) => {
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
@@ -9,7 +10,7 @@ const Permission = ({ applyId }) => {
     const handleApprove = async () => {
         setLoading(true);
         try {
-            await axios.patch(`/admin/mentor-application/${applyId}?status=APPROVED`);
+            await authApi.patch(`/admin/mentor-application/${applyId}?status=APPROVED`);
             alert('멘토 신청이 승인되었습니다.');
         } catch (error) {
             setErrorMessage('승인 처리 중 오류가 발생했습니다.');
@@ -26,7 +27,7 @@ const Permission = ({ applyId }) => {
         }
         setLoading(true);
         try {
-            await axios.patch(`/admin/mentor-application/${applyId}?status=REJECTED&rejectionReason=${encodeURIComponent(rejectionReason)}`);
+            await authApi.patch(`/admin/mentor-application/${applyId}?status=REJECTED&rejectionReason=${encodeURIComponent(rejectionReason)}`);
             alert('멘토 신청이 반려되었습니다.');
         } catch (error) {
             setErrorMessage('반려 처리 중 오류가 발생했습니다.');

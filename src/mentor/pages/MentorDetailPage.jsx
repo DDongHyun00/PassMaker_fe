@@ -12,6 +12,7 @@ import MentorReviewList from "../components/MentorReviewList";
 import PaymentSuccessPopup from "../../common/components/PaymentSuccessPopup";
 import axios from "../../common/lib/axios";
 import defaultAvatar from "../../assets/default_user.png";
+import authApi from "../../common/lib/axios";
 
 export default function MentorDetailPage() {
   const params = useParams();
@@ -45,14 +46,14 @@ export default function MentorDetailPage() {
 
     const fetchMentorAndReviews = async () => {
       try {
-        const mentorRes = await axios.get(`/mentors/${nickname}`);
+        const mentorRes = await authApi.get(`/mentors/${nickname}`);
         const fetchedMentor = mentorRes.data;
         console.log("상세 멘토 응답:", fetchedMentor);
 
         setMentor(fetchedMentor);
 
         if (fetchedMentor?.mentorId) {
-          const reviewsRes = await axios.get(
+          const reviewsRes = await authApi.get(
             `/mentors/${fetchedMentor.mentorId}/reviews`
           );
           setReviews(reviewsRes.data);
@@ -73,7 +74,7 @@ export default function MentorDetailPage() {
     if (mentor?.mentorId && paymentKey && amount && orderId && nickname) {
       const reserveAfterPayment = async () => {
         try {
-          const res = await axios.post(
+          const res = await authApi.post(
             "/payments/toss/reserve",
             {
               orderId,

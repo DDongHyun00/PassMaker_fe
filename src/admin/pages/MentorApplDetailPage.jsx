@@ -8,6 +8,7 @@ import Introduce from "../components/mentorApplDetail/Introduce.jsx";
 import Information from "../components/mentorApplDetail/Information.jsx";
 import Back from "../common/Back.jsx";
 import { useParams } from 'react-router-dom';
+import authApi from "../../common/lib/axios.js";
 
 const MentorApplDetailPage = () => {
     const { applyId } = useParams(); // URL 파라미터에서 applyId 가져오기
@@ -16,7 +17,7 @@ const MentorApplDetailPage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get(`/admin/mentor-application/${applyId}`)
+        authApi.get(`/admin/mentor-application/${applyId}`)
             .then(res => setData(res.data))
             .catch(err => {
                 console.error(err);

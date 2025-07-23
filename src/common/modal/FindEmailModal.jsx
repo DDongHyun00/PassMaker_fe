@@ -1,6 +1,7 @@
 // src/components/FindEmailModal.jsx
 import React, { useState } from "react";
 import axios from "../../common/lib/axios.js";
+import authApi from "../../common/lib/axios.js";
 
 const FindEmailModal = ({ onClose }) => {
   const [name, setName] = useState("");
@@ -10,7 +11,7 @@ const FindEmailModal = ({ onClose }) => {
   const handleFindEmail = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/user/find-email", {
+      const response = await authApi.post("/user/find-email", {
         name,
         phone,
       });

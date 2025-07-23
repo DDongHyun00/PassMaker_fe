@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import axios from "../common/lib/axios"; // 인터셉터 포함된 axios여야 함
+import axios from "../common/lib/axios";
+import authApi from "../common/lib/axios"; // 인터셉터 포함된 axios여야 함
 
 export const AuthContext = createContext();
 
@@ -31,7 +32,7 @@ export function AuthProvider({ children }) {
   // 로그인 성공 후 상태 설정 (localStorage x)
   const login = async () => {
     try {
-      const res = await axios.get("/auth/me", {
+      const res = await authApi.get("/auth/me", {
         withCredentials: true,
       });
       console.log("Raw res.data (login):", res.data); // <-- 이 라인을 추가합니다.
@@ -47,7 +48,7 @@ export function AuthProvider({ children }) {
   // 로그아웃 요청 후 상태 초기화
   const logout = async () => {
     try {
-      await axios.post(
+      await authApi.post(
         "/auth/logout",
         {},
         { withCredentials: true }

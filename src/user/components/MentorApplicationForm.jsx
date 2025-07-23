@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from "../../common/lib/axios.js";
+import authApi from "../../common/lib/axios.js";
 
 const MentorApplicationForm = ({ onClose }) => {
   const [intro, setIntro] = useState('');
@@ -25,7 +26,7 @@ const MentorApplicationForm = ({ onClose }) => {
     };
 
     try {
-      const response = await axios.post(
+      const response = await authApi.post(
         `/mentor-applications`,
         applicationData,
         { withCredentials: true }

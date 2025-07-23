@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../../../common/lib/axios.js";
+import authApi from "../../../common/lib/axios.js";
 
 const InquiryContents = () => {
     const { inquiryId } = useParams();
@@ -9,7 +10,7 @@ const InquiryContents = () => {
     const [replyContent, setReplyContent] = useState("");
 
     useEffect(() => {
-        axios.get(`/admin/inquiries/${inquiryId}`)
+        authApi.get(`/admin/inquiries/${inquiryId}`)
             .then(res => {
                 setInquiry(res.data);
                 setReplyTitle(res.data.respondTitle);
@@ -19,7 +20,7 @@ const InquiryContents = () => {
     }, [inquiryId]);
 
     const handleReplySubmit = () => {
-        axios.post(`/admin/inquiries/${inquiryId}/response`, {
+        authApi.post(`/admin/inquiries/${inquiryId}/response`, {
             respondTitle: replyTitle,
             respondContent: replyContent
         }).then(() => {

@@ -7,6 +7,7 @@ import Blindness from "../components/reportsDetail/Blindness.jsx";
 import ReportsInfo from "../components/reportsDetail/ReportsInfo.jsx";
 import ReviewContents from "../components/reportsDetail/ReviewContents.jsx";
 import Back from "../common/Back.jsx";
+import authApi from "../../common/lib/axios.js";
 
 const ReportsDetailPage = () => {
     const { reportReviewId } = useParams();
@@ -16,7 +17,7 @@ const ReportsDetailPage = () => {
     useEffect(() => {
         const fetchReportedReviewDetail = async () => {
             try {
-                const response = await axios.get(`/admin/report-review/${reportReviewId}`);
+                const response = await authApi.get(`/admin/report-review/${reportReviewId}`);
                 setReportData(response.data);
             } catch (error) {
                 console.error("신고 상세 정보를 가져오는 데 실패했습니다.", error);

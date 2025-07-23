@@ -7,6 +7,7 @@ import ApplicationStatus from "../components/mentorApplication/ApplicationStatus
 import ApplicationTable from "../components/mentorApplication/ApplicationTable.jsx";
 import SearchBar from "../components/mentorApplication/SearchBar.jsx";
 import Pagination from "../common/Pagination.jsx";
+import authApi from "../../common/lib/axios.js";
 
 const MentorApplicationPage = () => {
     const [applications, setApplications] = useState([]);
@@ -44,7 +45,7 @@ const MentorApplicationPage = () => {
     useEffect(() => {
         const fetchAllApplications = async () => {
             try {
-                const allRes = await axios.get('/admin/mentor-application/all');
+                const allRes = await authApi.get('/admin/mentor-application/all');
                 setFullApplications(allRes.data.map(mapApplication));
             } catch (error) {
                 console.error('전체 신청 데이터 요청 실패:', error);
@@ -58,7 +59,7 @@ const MentorApplicationPage = () => {
         const fetchApplications = async () => {
             setLoading(true);
             try {
-                const response = await axios.get('/admin/mentor-application', {
+                const response = await authApi.get('/admin/mentor-application', {
                     params: {
                         searchText,
                         status: statusFilter === '전체 상태' ? '' : statusFilter,

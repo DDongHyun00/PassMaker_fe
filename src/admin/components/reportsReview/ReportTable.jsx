@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../../common/lib/axios.js";
 import {Link} from "react-router-dom";
+import authApi from "../../../common/lib/axios.js";
 
 const ReportTable = ({ searchText, statusFilter, typeFilter, currentPage, itemsPerPage}) => {
     const [reports, setReports] = useState([]);
     useEffect(() => {
-        axios.get("/admin/report-review", {
+        authApi.get("/admin/report-review", {
             params: {
                 keyword: searchText,
                 status: statusFilter,

@@ -3,6 +3,7 @@ import axios from "../../common/lib/axios.js";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { useAuth } from "../../auth/AuthContext";
+import authApi from "../../common/lib/axios.js";
 
 const ReservedMentoringPage = () => {
   const [reservations, setReservations] = useState([]);
@@ -42,7 +43,7 @@ const ReservedMentoringPage = () => {
   const handleReject = async (reservationId) => {
     if (window.confirm("정말로 거절하시겠습니까?")) {
       try {
-        await axios.patch(
+        await authApi.patch(
             `/reservations/${reservationId}/cancel`, // 백엔드에서 만든 API 경로
             {},
             { withCredentials: true }
@@ -77,7 +78,7 @@ const ReservedMentoringPage = () => {
     }
 
     try {
-      const res = await axios.post(
+      const res = await authApi.post(
         `/rooms/${selectedRoom.roomId}/enter`,
         { roomCode: codeInput },
         { withCredentials: true }
@@ -92,13 +93,13 @@ const ReservedMentoringPage = () => {
 
   const handleApprove = async (reservationId) => {
     try {
-      await axios.patch(
+      await authApi.patch(
         `/reservations/${reservationId}/approve`,
         {},
         { withCredentials: true }
       );
       // 상태 갱신: 예약 목록 재조회
-      const res = await axios.get("/reservations/enterable", {
+      const res = await authApi.get("/reservations/enterable", {
         withCredentials: true,
       });
       console.log("멘토링 예약 응답:", res.data);

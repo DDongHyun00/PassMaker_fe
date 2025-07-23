@@ -6,6 +6,7 @@ import Filter from '../components/userList/Filter.jsx';
 import UserTable from '../components/userList/UserTable.jsx';
 import Pagination from '../common/Pagination.jsx';
 import { Plus } from 'lucide-react';
+import authApi from "../../common/lib/axios.js";
 
 const UserListPage = () => {
     const [searchText, setSearchText] = useState('');
@@ -25,7 +26,7 @@ const UserListPage = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('/admin/users', {
+            const response = await authApi.get('/admin/users', {
                 params: {
                     keyword: searchName || '',
                     role: roleParam,

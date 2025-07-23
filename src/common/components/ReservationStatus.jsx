@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "../../common/lib/axios";
+import authApi from "../../common/lib/axios";
 
 // ReservationStatus: 예약/결제 상태 표시 및 예약 취소 기능
 const ReservationStatus = ({ reservation, payment, onCancel }) => {
@@ -11,7 +12,7 @@ const ReservationStatus = ({ reservation, payment, onCancel }) => {
     setLoading(true);
     try {
       // 예약 취소 API 호출
-      await axios.delete(`/reservations/${reservation.reserveId}/cancel`);
+      await authApi.delete(`/reservations/${reservation.reserveId}/cancel`);
       // 성공 시 부모로 알림
       onCancel();
     } catch (err) {

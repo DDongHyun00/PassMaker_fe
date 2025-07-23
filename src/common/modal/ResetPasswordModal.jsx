@@ -1,6 +1,7 @@
 // src/components/ResetPasswordModal.jsx
 import React, { useState } from "react";
 import axios from "../../common/lib/axios.js";
+import authApi from "../../common/lib/axios.js";
 
 const ResetPasswordModal = ({ onClose }) => {
   const [email, setEmail] = useState("");
@@ -10,7 +11,7 @@ const ResetPasswordModal = ({ onClose }) => {
   const handleResetPassword = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/user/reset-password", {
+      const response = await authApi.post("/user/reset-password", {
         email,
         phone,
       });

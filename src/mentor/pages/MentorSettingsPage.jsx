@@ -6,7 +6,8 @@ import DetailedDescriptionSection from '../components/DetailedDescriptionSection
 import CategorySection from '../components/CategorySection';
 import TimeSettingsSection from '../components/TimeSettingsSection';
 import SettlementInfoSection from '../components/SettlementInfoSection';
-import { useNavigate } from 'react-router-dom'; // [추가] useNavigate 임포트
+import { useNavigate } from 'react-router-dom';
+import authApi from "../../common/lib/axios.js"; // [추가] useNavigate 임포트
 
 const MentoringSettingsPage = () => {
   // [추가] 멘토 설정 정보를 담을 상태
@@ -25,7 +26,7 @@ const MentoringSettingsPage = () => {
   useEffect(() => {
     const fetchMentorSettings = async () => {
       try {
-        const response = await axios.get('/mentors/me/profile');
+        const response = await authApi.get('/mentors/me/profile');
         setSettings(response.data);
       } catch (err) {
         console.error("멘토 설정 정보 로딩 실패:", err);

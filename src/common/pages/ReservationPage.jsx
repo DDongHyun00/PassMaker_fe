@@ -5,6 +5,7 @@ import "react-calendar/dist/Calendar.css";
 import "../styles/customCalendar.css";
 import { loadTossPayments } from "@tosspayments/payment-sdk";
 import axios from "../../common/lib/axios.js";
+import authApi from "../../common/lib/axios.js";
 
 const ReservationPage = () => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -27,7 +28,7 @@ const ReservationPage = () => {
   useEffect(() => {
     const fetchNickname = async () => {
       try {
-        const res = await axios.get(
+        const res = await authApi.get(
           `/mentors/id/${mentorId}`,
           { withCredentials: true }
         );
@@ -44,7 +45,7 @@ const ReservationPage = () => {
   useEffect(() => {
     const fetchUnavailableTimes = async () => {
       try {
-        const res = await axios.get(
+        const res = await authApi.get(
           `/reservations/mentor/${mentorId}/unavailable-times`,
           { withCredentials: true }
         );
@@ -72,7 +73,7 @@ const ReservationPage = () => {
 
     try {
       // ✅ 중복 예약 체크
-      await axios.post(
+      await authApi.post(
         "/reservations/check-duplicate",
         {
           mentorId: Number(mentorId),

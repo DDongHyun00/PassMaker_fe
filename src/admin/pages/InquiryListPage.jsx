@@ -5,6 +5,7 @@ import Footer from "../common/Footer.jsx";
 import InquiryTable from "../components/inquiryList/InquiryTable.jsx";
 import Search from "../components/inquiryList/Search.jsx"
 import Pagination from "../common/Pagination.jsx";
+import authApi from "../../common/lib/axios.js";
 
 const InquiryListPage = () => {
     const [searchText, setSearchText] = useState("");
@@ -22,7 +23,7 @@ const InquiryListPage = () => {
     const fetchInquiries = async () => {
         setLoading(true);
         try {
-            const res = await axios.get('/admin/inquiries', {
+            const res = await authApi.get('/admin/inquiries', {
                 params: {
                     searchText,
                     status: statusFilter,
