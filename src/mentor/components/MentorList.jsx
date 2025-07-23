@@ -23,10 +23,10 @@ export default function MentorList() {
 
   useEffect(() => {
     const fetchMentors = async () => {
-      console.log("mentor 응답", res.data); // 먼저 찍어보고
+      // console.log("mentor 응답", res.data); // 먼저 찍어보고
 
       try {
-        console.log("mentor 응답", res.data); // 먼저 찍어보고
+        // console.log("mentor 응답", res.data); // 먼저 찍어보고
         const res = await axios.get("/mentors", {
           withCredentials: true,
         });
