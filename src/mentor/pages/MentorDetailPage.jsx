@@ -47,6 +47,8 @@ export default function MentorDetailPage() {
       try {
         const mentorRes = await axios.get(`/api/mentors/${nickname}`);
         const fetchedMentor = mentorRes.data;
+        console.log("상세 멘토 응답:", fetchedMentor);
+
         setMentor(fetchedMentor);
 
         if (fetchedMentor?.mentorId) {
@@ -65,16 +67,21 @@ export default function MentorDetailPage() {
     fetchMentorAndReviews();
   }, [nickname]);
 
-  
   // ✅ paymentKey 등의 조건만 체크
   const reservationTime = searchParams.get("reservationTime"); // ✅ URL 쿼리에서 가져오기
   useEffect(() => {
-    if (mentor?.mentorId &&paymentKey && amount && orderId && nickname) {
+    if (mentor?.mentorId && paymentKey && amount && orderId && nickname) {
       const reserveAfterPayment = async () => {
         try {
           const res = await axios.post(
             "/api/payments/toss/reserve",
-            { orderId, paymentKey, amount: Number(amount),reservationTime,mentorId: mentor.mentorId, },
+            {
+              orderId,
+              paymentKey,
+              amount: Number(amount),
+              reservationTime,
+              mentorId: mentor.mentorId,
+            },
             { withCredentials: true }
           );
 
@@ -94,7 +101,7 @@ export default function MentorDetailPage() {
 
       reserveAfterPayment();
     }
-  },  [mentor, paymentKey, amount, orderId, reservationTime, nickname]); // ✅ 의존성도 수정
+  }, [mentor, paymentKey, amount, orderId, reservationTime, nickname]); // ✅ 의존성도 수정
   // [mentor, paymentKey, amount, orderId]);
 
   // ✅ 새로고침 대비 → 상태 기반 팝업 띄우기
@@ -125,20 +132,21 @@ export default function MentorDetailPage() {
     );
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="pt-32">
       <div className="bg-white shadow-md rounded-lg p-6 mb-8">
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* ─── 좌측: 프로필, 평점, 버튼, 액션 ─── */}
             <div className="flex flex-col items-center md:items-start text-center md:text-left">
               <img
-                src={mentor.avatarUrl || defaultAvatar}
+                src={mentor.thumbnail || defaultAvatar}
                 alt={`${mentor.nickname} 아바타`}
                 onError={(e) => {
                   e.currentTarget.src = defaultAvatar;
                 }}
                 className="w-32 h-32 rounded-full border-2 border-purple-600 mb-4"
               />
+
               <h2 className="text-2xl font-bold mb-2">{mentor.nickname}</h2>
               <div className="flex items-center mb-4">
                 <User className="w-5 h-5 text-yellow-400" />
@@ -194,8 +202,7 @@ export default function MentorDetailPage() {
                 <ul className="space-y-4 ml-4">
                   {(mentor.careers || []).map((c, i) => (
                     <li key={i}>
-                      <p className="font-medium">{c.title}</p>
-                      <p className="text-gray-500 text-sm">{c.period}</p>
+                      <p className="text-gray-700">{c}</p>
                     </li>
                   ))}
                 </ul>
@@ -206,7 +213,7 @@ export default function MentorDetailPage() {
                   <Code className="w-5 h-5 text-purple-600 mr-2" /> 기술 스택
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {(mentor.skills || []).map((s) => (
+                  {(mentor.fields || []).map((s) => (
                     <span
                       key={s}
                       className="text-sm px-3 py-1 border border-gray-300 rounded-full"

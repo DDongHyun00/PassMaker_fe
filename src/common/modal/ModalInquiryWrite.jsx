@@ -33,27 +33,32 @@ export default function ModalInquiryWrite({ onClose }) {
 
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black/50 z-50 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg w-full max-w-lg shadow-lg relative">
-        <h2 className="text-xl font-bold mb-4">문의하기</h2>
-
-        <label className="block mb-2 text-sm font-medium">제목</label>
+      <div className="bg-white p-8 rounded-3xl w-full max-w-lg shadow-2xl border border-primary/10 relative">
+        <h2 className="text-2xl font-extrabold mb-6 text-primary text-center tracking-tight">
+          문의하기
+        </h2>
+        <label className="block mb-2 text-base font-semibold text-primary">
+          제목
+        </label>
         <input
           type="text"
-          className="w-full border px-3 py-2 mb-4 rounded"
+          className="w-full border border-primary/30 px-4 py-3 mb-4 rounded-xl text-lg focus:ring-2 focus:ring-primary outline-none bg-primary/5 placeholder:text-primary/40"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-
-        <label className="block mb-2 text-sm font-medium">내용</label>
+        <label className="block mb-2 text-base font-semibold text-primary">
+          내용
+        </label>
         <textarea
-          className="w-full border px-3 py-2 mb-4 rounded h-28 resize-none"
+          className="w-full border border-primary/30 px-4 py-3 mb-4 rounded-xl h-32 resize-none text-lg focus:ring-2 focus:ring-primary outline-none bg-primary/5 placeholder:text-primary/40"
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
-
-        <label className="block mb-2 text-sm font-medium">문의 유형</label>
+        <label className="block mb-2 text-base font-semibold text-primary">
+          문의 유형
+        </label>
         <select
-          className="w-full border px-3 py-2 mb-4 rounded"
+          className="w-full border border-primary/30 px-4 py-3 mb-6 rounded-xl text-lg focus:ring-2 focus:ring-primary outline-none bg-primary/5"
           value={type}
           onChange={(e) => setType(e.target.value)}
         >
@@ -62,26 +67,23 @@ export default function ModalInquiryWrite({ onClose }) {
           <option value="ACCOUNT">계정 관련</option>
           <option value="ETC">기타</option>
         </select>
-
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-end gap-3 mt-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+            className="mypage-btn-outline px-6 py-2 text-base"
           >
             취소
           </button>
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+            className="mypage-btn px-6 py-2 text-base"
           >
             작성하기
           </button>
         </div>
-
-        {/* 닫기 버튼 */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-4 text-gray-500 hover:text-gray-700 text-xl"
+          className="absolute top-4 right-6 text-gray-400 hover:text-primary text-2xl font-bold"
         >
           ×
         </button>

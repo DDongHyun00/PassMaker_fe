@@ -9,7 +9,7 @@ const InquiryContents = () => {
     const [replyContent, setReplyContent] = useState("");
 
     useEffect(() => {
-        axios.get(`/admin/inquiries/${inquiryId}`)
+        axios.get(`/api/admin/inquiries/${inquiryId}`)
             .then(res => {
                 setInquiry(res.data);
                 setReplyTitle(res.data.respondTitle);
@@ -19,7 +19,7 @@ const InquiryContents = () => {
     }, [inquiryId]);
 
     const handleReplySubmit = () => {
-        axios.post(`/admin/inquiries/${inquiryId}/response`, {
+        axios.post(`/api/admin/inquiries/${inquiryId}/response`, {
             respondTitle: replyTitle,
             respondContent: replyContent
         }).then(() => {
@@ -30,9 +30,7 @@ const InquiryContents = () => {
     if (!inquiry) return <div className="p-6">로딩 중...</div>;
 
     return (
-        <div className="w-full max-w-6xl bg-white p-6 mb-4 ml-0">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">1:1 문의 상세 정보</h2>
-
+        <div className="w-full max-w-6xl bg-white mb-4 ml-0">
             <div className="mb-6">
                 <div className="border border-gray-200 rounded-lg p-4">
                     <h3 className="text-lg font-bold text-gray-900 mb-3 border-b border-gray-300 pb-2">문의 내용</h3>

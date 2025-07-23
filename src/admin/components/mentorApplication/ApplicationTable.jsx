@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
-const ApplicationTable = ({applications =[], searchText, statusFilter, typeFilter}) => {
+const ApplicationTable = React.memo(({applications =[], searchText, statusFilter, typeFilter}) => {
     const getStatusColor = (status) => {
         switch (status) {
             case '승인': return 'bg-green-100 text-green-800';
@@ -105,7 +105,7 @@ const ApplicationTable = ({applications =[], searchText, statusFilter, typeFilte
                 </table>
             </div>
         </div>
-    )
-}
+    );
+});
 
 export default ApplicationTable;

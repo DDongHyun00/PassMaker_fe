@@ -1,112 +1,116 @@
 // src/components/AudioRecorder.jsx
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const AudioRecorder = ({ localStream, roomId }) => {
+  const hasStarted = useRef(false);
+
   useEffect(() => {
-    if (!localStream || !roomId) {
-      console.warn("녹음 시작 안함: localStream 또는 roomId 없음");
+    // localStream 또는 roomId가 없거나 이미 시작된 경우 바로 리턴
+    if (!localStream || !roomId || hasStarted.current) {
       return;
     }
+    hasStarted.current = true;
 
-    // 1️⃣ 브라우저가 MediaRecorder를 지원하는지 확인
-    if (typeof window.MediaRecorder === "undefined") {
-      console.error("❌ 이 브라우저는 MediaRecorder를 지원하지 않습니다.");
+    // 1) 지원 포맷 찾기
+    const possible = [
+      "audio/webm;codecs=opus",
+      "audio/ogg;codecs=opus",
+      "audio/webm",
+      "audio/mpeg",
+    ];
+    const mimeType = possible.find((t) => MediaRecorder.isTypeSupported(t));
+    if (!mimeType) {
+      console.error("지원 가능한 포맷 없음:", possible);
       return;
     }
+    console.log("녹음 포맷:", mimeType);
 
-    // 2️⃣ 스트림에 오디오 트랙이 있는지 확인
-    const audioTracks = localStream.getAudioTracks();
-    if (!audioTracks || audioTracks.length === 0) {
-      console.error("❌ 오디오 트랙이 없습니다. getUserMedia({ audio: true })를 확인하세요.");
+    // 2) 오디오 트랙만 추출
+    const tracks = localStream.getAudioTracks();
+    if (tracks.length === 0) {
+      console.error("오디오 트랙 없음");
       return;
     }
+    const audioStream = new MediaStream(tracks);
 
-    // 3️⃣ localStream에서 audio 트랙만 뽑아 새로운 MediaStream 생성
-    const audioStream = new MediaStream(audioTracks);
+    // 3) MediaRecorder 생성
+    const recorder = new MediaRecorder(audioStream, { mimeType });
+    const chunks = [];
+    let partIndex = 0;
 
-    // 4️⃣ 지원 가능한 MIME 타입 중 하나를 골라 지정
-    const preferredMime = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
-      ? "audio/webm;codecs=opus"
-      : MediaRecorder.isTypeSupported("audio/webm")
-      ? "audio/webm"
-      : MediaRecorder.isTypeSupported("audio/ogg;codecs=opus")
-      ? "audio/ogg;codecs=opus"
-      : "";
+    // 테스트용: 20초 간격 (운영 시에는 20 * 60 * 1000)
+    const CHUNK_MS = 20 * 1000;
 
-    if (!preferredMime) {
-      console.error("❌ 지원하는 오디오 녹음 MIME 타입이 없습니다.");
-      return;
-    }
-
-    let mediaRecorder;
-    try {
-      // 5️⃣ MediaRecorder 인스턴스 생성 (audioStream만 사용)
-      mediaRecorder = new MediaRecorder(audioStream, { mimeType: preferredMime });
-    } catch (err) {
-      console.error("❌ MediaRecorder 생성 실패:", err);
-      return;
-    }
-
-    const audioChunks = [];
-
-    mediaRecorder.ondataavailable = (e) => {
+    recorder.ondataavailable = (e) => {
+      console.log("🎙️ ondataavailable size=", e.data.size);
       if (e.data.size > 0) {
-        audioChunks.push(e.data);
-      }
-    };
+        chunks.push(e.data);
 
-    mediaRecorder.onstop = async () => {
-      const audioBlob = new Blob(audioChunks, { type: preferredMime });
-      const audioFile = new File([audioBlob], "audio.webm", { type: preferredMime });
+        // 즉시 파트 업로드
+        const ext = mimeType.split("/")[1].split(";")[0];
+        const file = new File(
+          [e.data],
+          `chunk${partIndex}.${ext}`,
+          { type: mimeType }
+        );
+        const form = new FormData();
+        form.append("roomId", roomId);
+        form.append("partIndex", partIndex);
+        form.append("audioFile", file);
 
-      const formData = new FormData();
-      formData.append("audioFile", audioFile);
-      formData.append("roomId", roomId);
-
-      try {
-        const res = await fetch("http://localhost:8080/api/stt/upload-audio", {
+        fetch("/api/stt/upload-audio", {
           method: "POST",
-          body: formData,
-        });
+          body: form,
+        })
+          .then((res) => console.log(`✅ part ${partIndex} 업로드:`, res.status))
+          .catch((err) => console.error(`❌ part ${partIndex} 업로드 오류`, err));
 
-        if (res.ok) {
-          console.log("🎤 녹음 업로드 성공");
-        } else {
-          console.error("❌ 업로드 실패", await res.text());
-        }
-      } catch (err) {
-        console.error("❌ 업로드 오류", err);
+        partIndex++;
       }
     };
 
-    try {
-      // 6️⃣ 녹음 시작
-      mediaRecorder.start();
-      console.log(`🎙 MediaRecorder 시작됨 (MIME: ${preferredMime})`);
-    } catch (err) {
-      console.error("❌ MediaRecorder.start() 실패:", err);
-      return;
-    }
+    recorder.onstop = () => {
+      const total = chunks.reduce((sum, b) => sum + b.size, 0);
+      console.log("🎙️ onstop: chunks=", chunks.length, "totalBytes=", total);
+      if (total > 0) {
+        const blob = new Blob(chunks, { type: mimeType });
+        const ext = mimeType.split("/")[1].split(";")[0];
+        const combined = new File(
+          [blob],
+          `audio.${ext}`,
+          { type: mimeType }
+        );
+        const form = new FormData();
+        form.append("roomId", roomId);
+        form.append("partIndex", partIndex);
+        form.append("audioFile", combined);
 
-    // 20분 후 자동 정지
-    const stopTimer = setTimeout(() => {
-      if (mediaRecorder.state !== "inactive") {
-        mediaRecorder.stop();
-        console.log("⏹ MediaRecorder 자동 종료");
+        fetch("/api/stt/upload-audio", {
+          method: "POST",
+          body: form,
+        })
+          .then((res) => console.log("📤 최종 업로드:", res.status))
+          .catch((err) => console.error("📤 최종 업로드 오류", err));
+      } else {
+        console.warn("⚠️ onstop: 전송할 청크가 없습니다.");
       }
-    }, 20 * 60 * 1000);
+    };
 
+    // 녹음 시작 (CHUNK_MS 간격으로 ondataavailable 트리거)
+    recorder.start(CHUNK_MS);
+    console.log(`MediaRecorder 시작 (chunk every ${CHUNK_MS} ms)`);
+
+    // 언마운트 시 정리
     return () => {
-      // 컴포넌트 언마운트 시 정리
-      if (mediaRecorder && mediaRecorder.state !== "inactive") {
-        mediaRecorder.stop();
-        console.log("🧹 컴포넌트 unmount → MediaRecorder 종료");
+      if (recorder.state !== "inactive") {
+        recorder.stop();
+        console.log("컴포넌트 언마운트 → MediaRecorder 종료");
       }
-      clearTimeout(stopTimer);
+      audioStream.getTracks().forEach((t) => t.stop());
     };
   }, [localStream, roomId]);
 
-  return null; // UI가 필요 없으면 null
+  return null;
 };
 
 export default AudioRecorder;

@@ -44,11 +44,11 @@ const FooterMain = () => {
                         <div className="space-y-2 text-sm text-gray-600">
                             <div className="flex items-center gap-2">
                                 <Mail size={20} />
-                                <p>support@admin-system.com</p>
+                                <p>kd3573@naver.com</p>
                             </div>
                             <div className="flex items-center gap-2">
                                 <Phone size={20}/>
-                                <p>02-123-4567</p>
+                                <p>02-337-4217</p>
                             </div>
                             <div className="flex items-center gap-2">
                                 < MapPin />

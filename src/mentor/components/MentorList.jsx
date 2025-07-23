@@ -43,32 +43,30 @@ export default function MentorList() {
   const popular = mentors.filter((m) => m.isPopular);
 
   return (
-    <div className="px-4 space-y-12">
-      {/* ─── 직무별 멘토 찾기 ─── */}
-      <section className="px-4">
-        <h1 className="text-4xl font-bold mb-8 mt-8">직무별 멘토 찾기</h1>
-        <div className="flex space-x-2 mb-6">
+    <div className="mentorlist-bg px-2 space-y-20 pt-32">
+      <section className="w-full">
+        <h1 className="text-4xl font-extrabold text-primary mb-10 tracking-tight drop-shadow">
+          직무별 멘토 찾기
+        </h1>
+        <div className="flex flex-wrap gap-5 mb-12">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelected(cat)}
-              className={`px-4 py-2 rounded-full transition ${
-                selected === cat
-                  ? "bg-purple-600 text-white"
-                  : "bg-gray-200 text-gray-700"
-              }`}
+              className={`mentor-filter-btn px-10 py-3 rounded-2xl font-bold text-lg transition-all shadow-lg border-2 ${selected === cat ? "selected" : ""}`}
+              style={{ minWidth: 120 }}
             >
               {cat}
             </button>
           ))}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
           {filtered.map((m, i) => (
             <MentorCard
               key={m.id ?? i}
               id={m.nickname}
-              nickname={m.nickname} // ✅ 이거 하나만 추가!
-              avatarUrl={defaultAvatar}
+              nickname={m.nickname}
+              avatarUrl={m.thumbnail ? m.thumbnail : defaultAvatar}
               role={m.fieldName}
               experience={m.careerDesc}
               name={m.nickname}
