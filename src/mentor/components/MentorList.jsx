@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MentorCard from "./MentorCard";
-import axios from "../../common/lib/axios.js"; // axios import 추가
+import axios from "../../common/lib/axios.js";
+import authApi from "../../common/lib/axios.js"; // axios import 추가
 
 const categories = [
   "전체",
@@ -26,7 +27,7 @@ export default function MentorList() {
 
 
       try {
-        const res = await axios.get("/mentors", {
+        const res = await authApi.get("/mentors", {
           withCredentials: true,
         });
         console.log("mentor 응답", res.data);
