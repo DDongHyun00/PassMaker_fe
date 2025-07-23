@@ -4,8 +4,13 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../styles/customCalendar.css";
 import { loadTossPayments } from "@tosspayments/payment-sdk";
-import axios from "../../common/lib/axios.js";
 import authApi from "../../common/lib/axios.js";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const ReservationPage = () => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -69,7 +74,10 @@ const ReservationPage = () => {
     const timeStr = selectedTime.split("~")[0];
     const safeTime = timeStr.replace(/[:\-T]/g, "");
     const orderId_set = `${dateStr}T${safeTime}`;
-    const reservationTime = `${dateStr}T${timeStr}:00`;
+    // dayjs로 Asia/Seoul 기준의 날짜로 명시
+    const reservationTime = dayjs.tz(`${dateStr}T${timeStr}:00`, "Asia/Seoul").toISOString();
+
+    // const reservationTime = `${dateStr}T${timeStr}:00`;
 
     try {
       // ✅ 중복 예약 체크
