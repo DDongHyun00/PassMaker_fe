@@ -140,12 +140,12 @@ const ReservedMentoringPage = () => {
                 <div className="text-sm text-gray-500">
                   {res.startedAt && res.endedAt ? (
                       <>
-                        {dayjs(res.startedAt).tz("Asia/Seoul").format("YYYY-MM-DD HH:mm")} ~{" "}
-                        {dayjs(res.endedAt).tz("Asia/Seoul").format("HH:mm")}
+                        {dayjs.utc(res.startedAt).tz("Asia/Seoul").format("YYYY-MM-DD HH:mm")} ~{" "}
+                        {dayjs.utc(res.endedAt).tz("Asia/Seoul").format("HH:mm")}
                       </>
                   ) : res.reservationTime ? (
                       <>
-                        {dayjs(res.reservationTime).tz("Asia/Seoul").format("YYYY-MM-DD HH:mm")} (예약 시간)
+                        {dayjs.utc(res.reservationTime).tz("Asia/Seoul").format("YYYY-MM-DD HH:mm")} (예약 시간)
                       </>
                   ) : (
                       <>예약 시간 미정</>
