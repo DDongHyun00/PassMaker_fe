@@ -26,7 +26,7 @@ export default function MentorList() {
 
 
       try {
-        const res = await axios.get("/api/mentors", {
+        const res = await axios.get("mentors", {
           withCredentials: true,
         });
         console.log("mentor 응답", res.data);
