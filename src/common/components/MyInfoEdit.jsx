@@ -46,9 +46,19 @@ const MyInfoEdit = ({ formData, onChange, onFileChange, onSave, onCancel }) => {
           className="border rounded w-full px-2 py-1"
         />
       </div>
-      <div className="flex gap-2">
-        <MyPageButton onClick={onSave}>저장</MyPageButton>
-        <MyPageButton onClick={onCancel}>취소</MyPageButton>
+      <div className="flex gap-2 justify-end mt-4">
+        <MyPageButton
+          onClick={onSave}
+          className="mypage-btn w-24 py-2 text-base rounded-md shadow-sm font-semibold transition-all"
+        >
+          저장
+        </MyPageButton>
+        <MyPageButton
+          onClick={onCancel}
+          className="mypage-btn-outline w-24 py-2 text-base rounded-md shadow-sm font-semibold transition-all"
+        >
+          취소
+        </MyPageButton>
       </div>
     </div>
   );

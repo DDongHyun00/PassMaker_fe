@@ -42,7 +42,10 @@ const MentoringTogglePanel = ({
           >
             <path d="M21 6h-2V4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12l4 4V8a2 2 0 0 0-2-2zM7 9h10v2H7V9zm6 4H7v-2h6v2zm4-6H7V5h10v2z" />
           </svg>
-          <MyPageButton onClick={onSettingsClick}>
+          <MyPageButton
+            onClick={onSettingsClick}
+            className="mypage-btn w-24 py-2 text-base rounded-md shadow-sm font-semibold transition-all"
+          >
             멘토링 설정
           </MyPageButton>
         </div>

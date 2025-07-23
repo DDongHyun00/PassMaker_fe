@@ -27,8 +27,7 @@ const UserListPage = () => {
         try {
             const response = await axios.get('/api/admin/users', {
                 params: {
-                    name: searchName || '',
-                    nickname: '',
+                    keyword: searchName || '',
                     role: roleParam,
                     sortOrder,
                     page: currentPage - 1,

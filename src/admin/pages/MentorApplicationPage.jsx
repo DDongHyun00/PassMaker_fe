@@ -65,7 +65,8 @@ const MentorApplicationPage = () => {
                         type: typeFilter === '전체 분야' ? '' : typeFilter,
                         page: currentPage - 1, // 백엔드는 0부터 시작
                         size: usersPerPage
-                    }
+                    },
+                    withCredentials: true
                 });
                 const { content, totalElements, totalPages } = response.data;
 
