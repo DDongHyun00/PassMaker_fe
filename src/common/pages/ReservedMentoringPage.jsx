@@ -140,8 +140,8 @@ const ReservedMentoringPage = () => {
                 <div className="text-sm text-gray-500">
                   {res.startedAt && res.endedAt ? (
                       <>
-                        {dayjs.utc(res.startedAt).tz("Asia/Seoul").format("YYYY-MM-DD HH:mm")} ~{" "}
-                        {dayjs.utc(res.endedAt).tz("Asia/Seoul").format("HH:mm")}
+                        {dayjs(res.startedAt).format("YYYY-MM-DD HH:mm")} ~{" "}
+                        {dayjs(res.endedAt).format("HH:mm")}
                       </>
                   ) : res.reservationTime ? (
                       <>
