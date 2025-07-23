@@ -12,6 +12,9 @@ import { useAuth } from "../../auth/AuthContext.jsx";
 import defaultUserImage from "../../assets/default_user.png"; // [추가] 기본 이미지 임포트
 import ReservedMentoringPage from "./ReservedMentoringPage.jsx";
 
+// 1) ✅ 요약 목록/상세 상태 추가
+const mainColor = "#7C3AED";
+
 const MyPage = () => {
   const [profile, setProfile] = useState(null);
   const [formData, setFormData] = useState({
@@ -29,6 +32,15 @@ const MyPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mentoringEnabled, setMentoringEnabled] = useState(false); // 멘토링 활성화 상태
   const [toggleLoading, setToggleLoading] = useState(false); // 토글 로딩 상태
+
+  // --- 요약 목록 상태
+  const [summaryListOpen, setSummaryListOpen] = useState(false); // 요약 목록 토글
+  const [summaries, setSummaries] = useState([]);
+  const [summariesLoading, setSummariesLoading] = useState(false);
+  const [summariesError, setSummariesError] = useState("");
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [summaryText, setSummaryText] = useState("");
+  const [summaryDetailLoading, setSummaryDetailLoading] = useState(false);
 
   // 멘토링 토글 핸들러
   const handleMentoringToggle = async () => {
@@ -51,6 +63,40 @@ const MyPage = () => {
     } finally {
       setToggleLoading(false); // 로딩 종료
     }
+  };
+
+  // ✅ 요약 목록 전체 조회
+  const fetchSummaries = async () => {
+    setSummariesLoading(true);
+    setSummariesError("");
+    try {
+      const res = await authApi.get("/api/stt/summaries");
+      setSummaries(res.data);
+    } catch (e) {
+      setSummariesError("요약 목록 조회 실패");
+    } finally {
+      setSummariesLoading(false);
+    }
+  };
+
+  // ✅ 요약 상세 조회
+  const fetchSummaryDetail = async (roomId) => {
+    setSelectedRoom(roomId);
+    setSummaryDetailLoading(true);
+    setSummaryText("");
+    try {
+      const res = await authApi.get(`/api/stt/summary?roomId=${roomId}`);
+      setSummaryText(res.data);
+    } catch {
+      setSummaryText("상세 불러오기 실패");
+    } finally {
+      setSummaryDetailLoading(false);
+    }
+  };
+
+  // ✅ 다운로드
+  const handleDownload = (roomId) => {
+    window.open(`/api/stt/summary/download?roomId=${roomId}`, "_blank");
   };
 
   useEffect(() => {
@@ -215,6 +261,109 @@ const MyPage = () => {
             className="mb-10 max-w-5xl mx-auto"
           />
         )}
+        {/* ✅ 요약 목록 카드 */}
+        <div className="bg-white/80 rounded-2xl px-12 py-16 md:py-20 mb-10 shadow-xl border-2 border-primary/10 transition-all duration-200 hover:shadow-2xl hover:-translate-y-1 max-w-5xl mx-auto">
+          <h3 className="text-2xl font-extrabold mb-8 text-primary drop-shadow">
+            요약 결과
+          </h3>
+          <button
+            className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 mb-6"
+            onClick={() => {
+              if (!summaryListOpen) fetchSummaries();
+              setSummaryListOpen(!summaryListOpen);
+            }}
+          >
+            {summaryListOpen ? "요약 목록 닫기" : "요약 목록 보기"}
+          </button>
+
+          {summaryListOpen && (
+            <>
+              {summariesLoading ? (
+                <div className="text-primary">불러오는 중...</div>
+              ) : summariesError ? (
+                <div className="text-red-500">{summariesError}</div>
+              ) : summaries.length === 0 ? (
+                <div className="text-gray-400">요약 데이터가 없습니다.</div>
+              ) : (
+                <ul className="space-y-4">
+                  {summaries.map((item) => (
+                    <li
+                      key={item.roomId}
+                      className="bg-gray-50 rounded-xl p-5 border border-gray-200 shadow-sm"
+                    >
+                      <div className="font-bold text-lg mb-2 text-primary">
+                        {item.mentoringTitle}
+                      </div>
+                      <div className="text-sm text-gray-500 mb-1">
+                        멘토: {item.mentorNickname} / 멘티:{" "}
+                        {item.menteeNickname}
+                      </div>
+                      <div className="text-xs text-gray-400 mb-2">
+                        {new Date(item.createdAt).toLocaleString()} / 상태:{" "}
+                        <span
+                          className={
+                            item.status === "completed"
+                              ? "text-primary"
+                              : "text-gray-400"
+                          }
+                        >
+                          {item.status === "completed" ? "완료" : "진행중"}
+                        </span>
+                      </div>
+                      <div className="mb-2 text-gray-700 text-[15px] bg-violet-50 px-3 py-2 rounded-md">
+                        {item.preview}
+                      </div>
+                  <div className="flex gap-2">
+  <button
+    className={`px-4 py-2 text-sm rounded-md border-2 font-semibold
+    ${
+      selectedRoom === item.roomId
+        ? "bg-white text-primary border-primary"
+        : "bg-violet-50 text-primary border-violet-200"
+    }
+    hover:border-violet-600 transition-all`}
+    onClick={() => fetchSummaryDetail(item.roomId)}
+  >
+    상세 보기
+  </button>
+  <button
+    className={`px-4 py-2 text-sm rounded-md border-2 font-semibold
+    ${
+      selectedRoom === item.roomId
+        ? "bg-white text-primary border-primary"
+        : "bg-violet-50 text-primary border-violet-200"
+    }
+    hover:border-violet-600 transition-all`}
+    onClick={() =>
+      window.open(
+        `/api/stt/summary/download?roomId=${item.roomId}`,
+        "_blank"
+      )
+    }
+  >
+    다운로드
+  </button>
+</div>
+
+
+                      {selectedRoom === item.roomId && (
+                        <div className="px-4 py-2 rounded border border-primary text-primary bg-white hover:bg-violet-100 text-sm transition-all">
+                          {summaryDetailLoading ? (
+                            "상세 불러오는 중..."
+                          ) : (
+                            <pre className="text-gray-800 whitespace-pre-line">
+                              {summaryText}
+                            </pre>
+                          )}
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
+          )}
+        </div>
 
         {/* 계정 설정 카드 */}
         <div className="bg-white/80 rounded-2xl px-12 py-16 md:py-20 mb-10 shadow-xl border-2 border-primary/10 transition-all duration-200 hover:shadow-2xl hover:-translate-y-1 max-w-5xl mx-auto">
@@ -222,9 +371,9 @@ const MyPage = () => {
             계정 설정
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <button className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full">
+            {/* <button className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full">
               요약 목록
-            </button>
+            </button> */}
             <button
               className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full"
               onClick={() => setEditOpen(true)}
@@ -296,7 +445,8 @@ const MyPage = () => {
             onClick={() => navigate("/reserved-test")}
           >
             예약 내역 보기-테스트페이지
-          </button> */} {/* 내용중복으로 주석처리 */}
+          </button> */}{" "}
+          {/* 내용중복으로 주석처리 */}
         </div>
       </div>
 
@@ -334,3 +484,4 @@ const MyPage = () => {
 };
 
 export default MyPage;
+// src / common / pages / MyPage.jsx;

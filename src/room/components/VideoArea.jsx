@@ -102,6 +102,7 @@ const VideoArea = ({
       />
       {/* STT 오디오 레코더 연결 */}
       <AudioRecorder localStream={localStreamRef.current} roomId={roomId} />
+
     </div>
   );
 };
