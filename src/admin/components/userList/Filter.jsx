@@ -49,10 +49,6 @@ const Filter = ({ searchText, setSearchText, statusFilter, setStatusFilter, role
                             필터 초기화
                         </button>
                     </div>
-
-                    {/*<div className="flex items-center space-x-2">*/}
-                    {/*    <span className="text-sm text-gray-600">엑셀 다운로드</span>*/}
-                    {/*</div>*/}
             </div>
         </div>
     );

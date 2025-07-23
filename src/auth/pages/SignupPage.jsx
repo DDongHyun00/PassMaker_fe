@@ -43,7 +43,9 @@ const SignupPage = () => {
 
     try {
       // axios 요청
-      const response = await axios.post("/api/auth/signup", form,{ withCredentials: true });
+      const response = await axios.post("/api/auth/signup", form, {
+        withCredentials: true,
+      });
       console.log("회원가입 성공:", response.data);
       // 성공 시 로그인 페이지로 이동
       navigate("/login");
@@ -62,23 +64,22 @@ const SignupPage = () => {
 
   // 실제 화면 렌더링
   return (
-    <CenterWrapper>
-      <div className="p-8 max-w-md my--auto">
-        <h2 className="text-2xl 2xl font-bold mb-6 text-center">회원가입</h2>
-
-        {/* 에러 메시지 출력 위치 */}
+    <div className="signup-bg min-h-screen flex items-center justify-center py-16 px-2">
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-10 border border-primary/10">
+        <h2 className="text-3xl font-extrabold mb-8 text-center text-primary tracking-tight">
+          회원가입
+        </h2>
         {error && (
           <p className="text-red-500 text-sm text-center mb-4">{error}</p>
         )}
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           <input
             name="email"
             type="email"
             placeholder="이메일"
             value={form.email}
             onChange={handleChange}
-            className="border p-2 rounded"
+            className="border border-primary/30 p-3 rounded-xl text-black text-lg focus:ring-2 focus:ring-primary outline-none bg-primary/5 placeholder:text-primary/40"
           />
           <input
             name="password"
@@ -86,7 +87,7 @@ const SignupPage = () => {
             placeholder="비밀번호"
             value={form.password}
             onChange={handleChange}
-            className="border p-2 rounded"
+            className="border border-primary/30 p-3 rounded-xl text-black text-lg focus:ring-2 focus:ring-primary outline-none bg-primary/5 placeholder:text-primary/40"
           />
           <input
             name="nickname"
@@ -94,7 +95,7 @@ const SignupPage = () => {
             placeholder="닉네임"
             value={form.nickname}
             onChange={handleChange}
-            className="border p-2 rounded"
+            className="border border-primary/30 p-3 rounded-xl text-black text-lg focus:ring-2 focus:ring-primary outline-none bg-primary/5 placeholder:text-primary/40"
           />
           <input
             name="name"
@@ -102,7 +103,7 @@ const SignupPage = () => {
             placeholder="이름"
             value={form.name}
             onChange={handleChange}
-            className="border p-2 rounded"
+            className="border border-primary/30 p-3 rounded-xl text-black text-lg focus:ring-2 focus:ring-primary outline-none bg-primary/5 placeholder:text-primary/40"
           />
           <input
             name="phone"
@@ -110,17 +111,14 @@ const SignupPage = () => {
             placeholder="전화번호"
             value={form.phone}
             onChange={handleChange}
-            className="border p-2 rounded"
+            className="border border-primary/30 p-3 rounded-xl text-black text-lg focus:ring-2 focus:ring-primary outline-none bg-primary/5 placeholder:text-primary/40"
           />
-          <button
-            type="submit"
-            className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
-          >
+          <button type="submit" className="mypage-btn w-full py-3 text-lg mt-2">
             가입하기
           </button>
         </form>
       </div>
-    </CenterWrapper>
+    </div>
   );
 };
 

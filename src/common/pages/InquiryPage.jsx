@@ -2,48 +2,44 @@ import React, { useState } from "react";
 import ModalInquiryWrite from "../modal/ModalInquiryWrite";
 import ModalInquiryList from "../modal/ModalInquiryList";
 import inquiry_svg from "../../assets/inquiry_svg.png";
-export default function ContactPage() {
+
+export default function InquiryPage() {
   const [isWriteOpen, setIsWriteOpen] = useState(false);
   const [isListOpen, setIsListOpen] = useState(false);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
-      <div className="max-w-2xl w-full bg-white p-10 rounded-xl shadow-md text-center">
-        {/* 이미지 */}
-        <div className="flex justify-center mb-6">
+    <div className="min-h-screen bg-gray-50 inquiry-bg flex items-center justify-center py-16 px-2">
+      <div className="w-full max-w-3xl bg-white/80 rounded-2xl shadow-xl border-2 border-primary/10 p-12 text-center flex flex-col items-center transition-all duration-200 hover:shadow-2xl hover:-translate-y-1">
+        <div className="flex justify-center mb-8">
           <img
             src={inquiry_svg}
             alt="문의 이미지"
-            className="w-64 opacity-80"
+            className="w-48 opacity-90 rounded-xl shadow"
           />
         </div>
-
-        {/* 안내문구 */}
-        <h2 className="text-3xl font-bold text-purple-700 mb-2">1:1 문의</h2>
-        <p className="text-gray-600 mb-8 leading-relaxed">
+        <h2 className="text-3xl font-extrabold text-primary mb-3 tracking-tight">
+          1:1 문의
+        </h2>
+        <p className="text-gray-500 mb-10 leading-relaxed text-lg">
           궁금한 점이나 불편한 사항이 있으시면 언제든지 문의해주세요.
           <br />
           친절하게 안내해드릴게요!
         </p>
-
-        {/* 버튼 */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center w-full">
           <button
             onClick={() => setIsWriteOpen(true)}
-            className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 shadow transition-all"
+            className="mypage-btn flex-1 py-3 text-lg"
           >
             문의하기
           </button>
           <button
             onClick={() => setIsListOpen(true)}
-            className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 shadow transition-all"
+            className="mypage-btn-outline flex-1 py-3 text-lg"
           >
             문의 내역
           </button>
         </div>
       </div>
-
-      {/* 모달 */}
       {isWriteOpen && (
         <ModalInquiryWrite onClose={() => setIsWriteOpen(false)} />
       )}

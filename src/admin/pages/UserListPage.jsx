@@ -25,10 +25,9 @@ const UserListPage = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('/admin/users', {
+            const response = await axios.get('/api/admin/users', {
                 params: {
-                    name: searchName || '',
-                    nickname: '',
+                    keyword: searchName || '',
                     role: roleParam,
                     sortOrder,
                     page: currentPage - 1,
@@ -53,7 +52,8 @@ const UserListPage = () => {
         setSortOrder('가입일순');
         setCurrentPage(1);
     };
-    const totalPages = Math.ceil(totalUsers / usersPerPage);
+    const totalPages = Math.ceil((totalUsers || 0) / (usersPerPage > 0 ? usersPerPage : 1));
+
 
     return (
         <div className="fixed inset-0 flex justify-center overflow-auto items-start bg-gray-50 mt-12">
@@ -80,6 +80,7 @@ const UserListPage = () => {
                             sortOrder={sortOrder}
                             setSortOrder={setSortOrder}
                             resetFilters={resetFilters}/>
+                    {users ? (
                         <UserTable
                             users={users}
                             searchText={searchText}
@@ -88,6 +89,9 @@ const UserListPage = () => {
                             sortOrder={sortOrder}
                             currentPage={currentPage}
                             usersPerPage={usersPerPage}/>
+                    ) : (
+                        <div>로딩 중...</div>
+                    )}
                         <Pagination
                             currentPage={currentPage}
                             setCurrentPage={setCurrentPage}

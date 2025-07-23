@@ -66,10 +66,10 @@ const MentoringHeader = ({ roomId }) => {
           {/* 사용자 프로필 */}
           <div className="flex items-center space-x-3 ml-4">
             <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-              <span className="text-gray-600 text-sm font-medium">김</span>
+              <span className="text-gray-600 text-sm font-medium">페</span>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="text-gray-900 font-medium">김동현</span>
+              <span className="text-gray-900 font-medium">페브리즈</span>
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
             </div>
           </div>

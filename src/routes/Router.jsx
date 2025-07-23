@@ -10,11 +10,13 @@ import SignupPage from "../auth/pages/SignupPage.jsx";
 import MyPage from "../common/pages/MyPage.jsx";
 import MentoringRoomPage from "../room/pages/MentoringRoomPage.jsx";
 import Layout from "../common/components/Layout.jsx";
-
 import UserListPage from "../admin/pages/UserListPage.jsx";
 import UserDetailPage from "../admin/pages/UserDetailPage.jsx";
-import MentorApplicationPage from "../admin/pages/MentorApplicationPage.jsx";
+import AdminMentorApplicationPage from "../admin/pages/MentorApplicationPage.jsx";
+
+
 import MentorApplDetailPage from "../admin/pages/MentorApplDetailPage.jsx";
+import MentorApplicationPage from "../user/pages/MentorApplicationPage.jsx";
 import ReportsReviewPage from "../admin/pages/ReportsReviewPage.jsx";
 import ReportsDetailPage from "../admin/pages/ReportsDetailPage.jsx";
 import InquiryListPage from "../admin/pages/InquiryListPage.jsx";
@@ -23,12 +25,15 @@ import Dashboard from "../admin/pages/Dashboard.jsx";
 import MentorIntroSection from "../mentor/components/MentorIntroSection.jsx";
 import MentorSettingsPage from "../mentor/pages/MentorSettingsPage.jsx";
 import MentorPreviewPage from "../mentor/pages/MentorPreviewPage.jsx"; // [추가] MentorPreviewPage 임포트 // <-- 이 라인을 추가합니다.
-import InquiryPage from '../common/pages/InquiryPage.jsx';
-
+import InquiryPage from "../common/pages/InquiryPage.jsx"
 import ReservationPage from "../common/pages/ReservationPage.jsx";
 import MentorDetailPage from "../mentor/pages/MentorDetailPage.jsx";
-import ReservedMentoringPage from "../common/pages/ReservedMentoringPage.jsx"
 
+import ReservedMentoringPage from "../common/pages/ReservedMentoringPage.jsx"
+// import ReservedMentoringTestPage from "../common/pages/ReservedMentoringTestPage.jsx" // 내용 중복으로 주석처리
+
+import WithdrawConfirmModal from "../common/modal/WithdrawConfirmModal.jsx";
+import PaymentSettlementPage from "../admin/pages/PaymentSettlementPage.jsx";
 const Router = () => {
   const { user, loading } = useAuth();
 
@@ -41,16 +46,16 @@ const Router = () => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/reservation/:mentorId" element={<ReservationPage />} />
-
       <Route path="/payment/success" element={<MentorDetailPage />} /> {/* ✅ 결제 후 리다이렉트 */}
-
-      <Route path="/mypage" element={<MyPage />} />
+      {/* <Route path="/mypage" element={<MyPage />} /> */}
       <Route path="/inquiry" element={<InquiryPage/>} />
-      <Route path="/ReservedMentoring" element={<ReservedMentoringPage/>} />
-
+      {/* ───── 멘티 전용 ───── */}
 
       {/* ───── 공통 레이아웃 적용 ───── */}
       <Route element={<Layout />}>
+
+
+        {/*<Route path="/reserved" element={<ReservedMentoringPage/>} />*/}
         <Route path="/" element={<MainPage />} />
         <Route
           path="/mypage"
@@ -65,16 +70,17 @@ const Router = () => {
 
         {/* ✅ 멘토 상세 페이지 (nickname 기준) */}
         <Route path="/mentors/:nickname" element={<MentorDetailPage />} />
-tn
+
+        {/* ───── 멘티 전용 ───── */}
+        <Route path="/mentor/apply" element={user && !user.isMentor ? <MentorApplicationPage /> : <Navigate to="/login" replace />} />
+        <Route path="/reserved" element={<ReservedMentoringPage />} /> {/* /reserved 주소 정리  */}
+
         {/* ───── 관리자 전용 ───── */}
         <Route path="/admin/users" element={<UserListPage />} />
-        <Route path="/admin/users/id" element={<UserDetailPage />} />
-        <Route path="/admin/mentor-application" element={<MentorApplicationPage />}/>
-        <Route path="/admin/mentor-application/id" element={<MentorApplDetailPage />}/>
+        <Route path="/admin/mentor-application" element={<AdminMentorApplicationPage />}/>
         <Route path="/admin/report-review" element={<ReportsReviewPage />} />
-        <Route path="/admin/report-review/id" element={<ReportsDetailPage />} />
         <Route path="/admin/inquiries" element={<InquiryListPage />} />
-        <Route path="/admin/inquiries/id" element={<InquiryDetailPage />} />
+        <Route path="/admin/payments" element={<PaymentSettlementPage />} />
         <Route path="/admin" element={<Dashboard />} />
 
         {/* ───── 멘토 전용 ───── */}
@@ -85,6 +91,7 @@ tn
         <Route path="/admin/users/:userId" element={<UserDetailPage />} />
         <Route path="/admin/mentor-application/:applyId" element={<MentorApplDetailPage />}/>
         <Route path="/admin/inquiries/:inquiryId" element={<InquiryDetailPage />} />
+        <Route path="/admin/report-review/:reportReviewId" element={<ReportsDetailPage />} />
       </Route>
     </Routes>
   );

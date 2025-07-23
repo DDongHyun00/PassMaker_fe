@@ -8,9 +8,9 @@ export default function Layout() {
   const { isLoggedIn, logout } = useAuth(); // AuthContext에서 isLoggedIn과 logout 가져오기
 
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen">
       <Header isLoggedIn={isLoggedIn} onLogout={logout} /> {/* AuthContext의 logout 함수 전달 */}
-      <main>
+      <main className="pt-16">
         <Outlet />
       </main>
       <FooterMain />

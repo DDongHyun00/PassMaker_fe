@@ -12,11 +12,6 @@ const Pagination = ({
 
   return (
     <div className="w-full mx-auto px-6 py-4 flex justify-end mb-8">
-      {/*<div className="flex items-center space-x-2">*/}
-      {/*    <span className="text-sm text-gray-700">*/}
-      {/*        총 {totalItems}명 유저 중 {startItem}-{endItem}명 표시*/}
-      {/*    </span>*/}
-      {/*</div>*/}
 
       <div className="flex items-center space-x-2">
         <button

@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext.jsx";
+import passmakerLogo from "../../assets/passmaker-pavicon.svg";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -10,40 +11,52 @@ export default function Header() {
   if (loading) return null; // 로딩 중일 땐 비워두기
 
   return (
-    <header className="fixed top-0 left-0 right-0 h-16 px-8 bg-white shadow-sm flex justify-between items-center z-10">
-      <h1
-        className="text-2xl font-bold cursor-pointer"
+    <header className="fixed top-0 left-0 right-0 h-14 md:h-16 px-4 md:px-8 bg-white/80 backdrop-blur border-b border-gray-200 flex items-center justify-between z-50">
+      <div
+        className="flex items-center gap-4 cursor-pointer"
         onClick={() => navigate("/")}
       >
-        PassMaker
-      </h1>
-      <div className="flex space-x-4">
+        <img src={passmakerLogo} alt="PassMaker Logo" className="w-8 h-8" />
+        <span className="text-xl font-extrabold tracking-tight text-gray-900">
+          PassMaker
+        </span>
+      </div>
+      <div className="flex items-center gap-4">
         {user ? (
           <>
-            <button
-              onClick={logout}
-              className="px-4 py-1 bg-purple-600 text-white rounded hover:bg-purple-700"
-            >
-              로그아웃
-            </button>
+               {/*관리자 버튼 추가*/}
+              {user.role === "ADMIN" && (
+                  <button
+                      onClick={() => navigate("/admin")}
+                      className="nav-btn-sub px-7 py-1 text-base rounded-md shadow-md border border-primary/30 font-semibold transition-all duration-150"
+                  >
+                      관리자 페이지
+                  </button>
+              )}
             <button
               onClick={() => navigate("/mypage")}
-              className="px-4 py-1 bg-purple-600 text-white rounded hover:bg-purple-700"
+              className="nav-btn-sub px-7 py-1 text-base rounded-md shadow-md border border-primary/30 font-semibold transition-all duration-150"
             >
               마이페이지
             </button>
+              <button
+                  onClick={logout}
+                  className="nav-btn-sub px-7 py-1 text-base rounded-md shadow-md border border-primary/30 font-semibold transition-all duration-150"
+              >
+                  로그아웃
+              </button>
           </>
         ) : (
           <>
             <button
               onClick={() => navigate("/login-select")}
-              className="px-4 py-1 rounded hover:bg-gray-100"
+              className="nav-btn-sub px-7 py-1 text-base rounded-md shadow-md border border-primary/30 font-semibold transition-all duration-150"
             >
               로그인
             </button>
             <button
               onClick={() => navigate("/signup")}
-              className="px-4 py-1 rounded bg-purple-600 text-white hover:bg-purple-700"
+              className="nav-btn-main px-7 py-1 text-base rounded-md shadow-md border border-primary/30 font-semibold transition-all duration-150"
             >
               회원가입
             </button>

@@ -5,9 +5,7 @@ const TableReports = ({ data, title }) => (
     <div className="w-full bg-white p-6 rounded-lg shadow-sm border">
         <div className="w-full flex text-between justify-between mb-6">
             <h3 className="text-lg font-semibold text-gray-900 flex-grow">{title}</h3>
-            {/*<Link to="/admin/report-review" className="text-blue-600 text-sm">*/}
-            {/*    더보기*/}
-            {/*</Link>*/}
+            <button className="text-blue-600 hover:text-blue-700 text-sm">더보기</button>
         </div>
         <div className="w-full">
             <table className=" w-full text-sm table-fixed">
@@ -22,10 +20,10 @@ const TableReports = ({ data, title }) => (
                 <tbody>
                 {data.map((item, index) => (
                     <tr key={index} className="border-b">
-                        <td className="w-1/4 text-center py-2">{item.id}</td>
-                        <td className="w-1/4 text-center py-2">{item.mentor}</td>
-                        <td className="w-1/4 text-center py-2">{item.mentee}</td>
-                        <td className="w-1/4 text-center py-2">{item.amount}</td>
+                        <td className="w-1/4 text-center py-2">{item.payId}</td>
+                        <td className="w-1/4 text-center py-2">{item.mentorName}</td>
+                        <td className="w-1/4 text-center py-2">{item.userName}</td>
+                        <td className="w-1/4 text-center py-2">{item.amount.toLocaleString()}원</td>
                     </tr>
                 ))}
                 </tbody>

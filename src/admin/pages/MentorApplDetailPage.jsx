@@ -16,7 +16,7 @@ const MentorApplDetailPage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get(`/admin/mentor-application/${applyId}`)
+        axios.get(`/api/admin/mentor-application/${applyId}`)
             .then(res => setData(res.data))
             .catch(err => {
                 console.error(err);
@@ -31,7 +31,7 @@ const MentorApplDetailPage = () => {
 
     return (
         <div className="fixed inset-0 flex justify-center overflow-auto items-start bg-gray-50 mt-12">
-            <div className="w-full max-w-7xl  rounded p-6">
+            <div className="w-full max-w-7xl rounded p-6">
         <div className="w-full mx-auto min-h-screen bg-gray-50 flex flex-col">
             <Header />
 
