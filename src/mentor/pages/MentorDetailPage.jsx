@@ -45,7 +45,7 @@ export default function MentorDetailPage() {
 
     const fetchMentorAndReviews = async () => {
       try {
-        const mentorRes = await axios.get(`/api/mentors/${nickname}`);
+        const mentorRes = await axios.get(`/mentors/${nickname}`);
         const fetchedMentor = mentorRes.data;
         console.log("상세 멘토 응답:", fetchedMentor);
 
@@ -53,7 +53,7 @@ export default function MentorDetailPage() {
 
         if (fetchedMentor?.mentorId) {
           const reviewsRes = await axios.get(
-            `/api/mentors/${fetchedMentor.mentorId}/reviews`
+            `/mentors/${fetchedMentor.mentorId}/reviews`
           );
           setReviews(reviewsRes.data);
         }
@@ -74,7 +74,7 @@ export default function MentorDetailPage() {
       const reserveAfterPayment = async () => {
         try {
           const res = await axios.post(
-            "/api/payments/toss/reserve",
+            "/payments/toss/reserve",
             {
               orderId,
               paymentKey,

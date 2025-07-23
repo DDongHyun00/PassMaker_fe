@@ -31,7 +31,7 @@ const MentorProfileEdit = ({ currentProfile, onUpdate, onSuccess }) => {
         e.preventDefault();
         try {
             // TODO: 실제 멘토 프로필 수정 API 엔드포인트로 변경 필요
-            const res = await authApi.put("/api/mentors/me/edit-profile", formData);
+            const res = await authApi.put("/mentors/me/edit-profile", formData);
             if (onUpdate) {
                 onUpdate(res.data); // 부모 컴포넌트의 상태 업데이트
             }

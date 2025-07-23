@@ -13,7 +13,7 @@ const MentorStatusToggle = ({ mentorId, currentStatus, onSuccess }) => {
         try {
             const newStatus = !isActive;
             // TODO: 실제 멘토 상태 변경 API 엔드포인트로 변경 필요
-            const res = await authApi.patch(`/api/mentors/me/status`, { mentorId, isActive: newStatus });
+            const res = await authApi.patch(`/mentors/me/status`, { mentorId, isActive: newStatus });
             setIsActive(res.data.isActive);
             if (onSuccess) {
                 onSuccess(); // 성공 콜백 호출

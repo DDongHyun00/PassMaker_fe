@@ -39,7 +39,7 @@ const MyPage = () => {
     setToggleLoading(true); // 로딩 시작
     try {
       // MPR-006 API 사용: PATCH /api/mentors/me/status
-      await authApi.patch("/api/mentors/me/status", {
+      await authApi.patch("/mentors/me/status", {
         isActive: !previousState,
       });
       console.log("멘토링 활성화 상태 업데이트 성공:", !previousState);
@@ -70,7 +70,7 @@ const MyPage = () => {
 
   const loadProfile = async () => {
     try {
-      const res = await authApi.get("/api/mypage/profile");
+      const res = await authApi.get("/mypage/profile");
       console.log("프론트엔드 profile 객체:", res.data); // [추가] 응답 데이터 콘솔 출력
       setProfile({ ...res.data, isMentor: res.data.mentor });
       setFormData({
@@ -96,7 +96,7 @@ const MyPage = () => {
       return alert("전화번호 형식이 올바르지 않습니다. 예: 010-1234-5678");
 
     try {
-      const res = await authApi.patch("/api/mypage/profile/edit", formData);
+      const res = await authApi.patch("/mypage/profile/edit", formData);
       setProfile(res.data);
       setEditOpen(false);
     } catch (err) {
@@ -125,7 +125,7 @@ const MyPage = () => {
     try {
       setUploading(true);
       const res = await authApi.post(
-        "/api/mypage/upload-thumbnail",
+        "/mypage/upload-thumbnail",
         formDataFile,
         {
           headers: { "Content-Type": "multipart/form-data" },

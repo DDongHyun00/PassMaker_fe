@@ -22,7 +22,7 @@ const InquiryListPage = () => {
     const fetchInquiries = async () => {
         setLoading(true);
         try {
-            const res = await axios.get('/api/admin/inquiries', {
+            const res = await axios.get('/admin/inquiries', {
                 params: {
                     searchText,
                     status: statusFilter,

@@ -44,7 +44,7 @@ const MentorApplicationPage = () => {
     useEffect(() => {
         const fetchAllApplications = async () => {
             try {
-                const allRes = await axios.get('/api/admin/mentor-application/all');
+                const allRes = await axios.get('/admin/mentor-application/all');
                 setFullApplications(allRes.data.map(mapApplication));
             } catch (error) {
                 console.error('전체 신청 데이터 요청 실패:', error);
@@ -58,7 +58,7 @@ const MentorApplicationPage = () => {
         const fetchApplications = async () => {
             setLoading(true);
             try {
-                const response = await axios.get('/api/admin/mentor-application', {
+                const response = await axios.get('/admin/mentor-application', {
                     params: {
                         searchText,
                         status: statusFilter === '전체 상태' ? '' : statusFilter,

@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 const ReportTable = ({ searchText, statusFilter, typeFilter, currentPage, itemsPerPage}) => {
     const [reports, setReports] = useState([]);
     useEffect(() => {
-        axios.get("/api/admin/report-review", {
+        axios.get("/admin/report-review", {
             params: {
                 keyword: searchText,
                 status: statusFilter,

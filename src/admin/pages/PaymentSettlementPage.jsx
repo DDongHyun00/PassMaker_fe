@@ -30,7 +30,7 @@ const PaymentSettlementPage = () => {
         const fetchStats = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`/api/admin/statscard`);
+                const response = await axios.get(`/admin/statscard`);
                 setStats(response.data);
             } catch (err) {
                 setError('통계 데이터를 불러오지 못했습니다.');
@@ -45,7 +45,7 @@ const PaymentSettlementPage = () => {
     useEffect(() => {
         const fetchSettlementData = async () => {
             try {
-                const response = await axios.get(`/api/admin/table`);
+                const response = await axios.get(`/admin/table`);
                 setSettlementData(response.data);
             } catch (err) {
                 console.error("정산 리스트 데이터를 불러오는 데 실패했습니다.", err);

@@ -43,7 +43,7 @@ const SignupPage = () => {
 
     try {
       // axios 요청
-      const response = await axios.post("/api/auth/signup", form, {
+      const response = await axios.post("/auth/signup", form, {
         withCredentials: true,
       });
       console.log("회원가입 성공:", response.data);

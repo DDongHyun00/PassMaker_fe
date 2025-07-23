@@ -12,7 +12,7 @@ const WithdrawConfirmModal = ({ onClose, onSuccess }) => {
     }
 
     try {
-      await authApi.delete("/api/users/delete", {
+      await authApi.delete("/users/delete", {
         data: { password }, // 백엔드에서 @RequestBody PasswordDto 로 받을 수 있게 해야 함
       });
       alert("회원 탈퇴가 완료되었습니다.");

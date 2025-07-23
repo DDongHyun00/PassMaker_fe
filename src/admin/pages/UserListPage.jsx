@@ -25,7 +25,7 @@ const UserListPage = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('/api/admin/users', {
+            const response = await axios.get('/admin/users', {
                 params: {
                     keyword: searchName || '',
                     role: roleParam,

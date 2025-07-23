@@ -24,7 +24,7 @@ const AuthModal = ({ onClose }) => {
   const handleFindEmail = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/users/find-email", {
+      const res = await axios.post("/users/find-email", {
         name,
         phone,
       });
@@ -37,7 +37,7 @@ const AuthModal = ({ onClose }) => {
   const handleResetPassword = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/users/reset-password", {
+      const res = await axios.post("/users/reset-password", {
         email,
         phone,
       });

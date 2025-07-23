@@ -25,7 +25,7 @@ const MentoringSettingsPage = () => {
   useEffect(() => {
     const fetchMentorSettings = async () => {
       try {
-        const response = await axios.get('/api/mentors/me/profile');
+        const response = await axios.get('/mentors/me/profile');
         setSettings(response.data);
       } catch (err) {
         console.error("멘토 설정 정보 로딩 실패:", err);

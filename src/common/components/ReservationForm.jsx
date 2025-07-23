@@ -22,7 +22,7 @@ const ReservationForm = ({ onSuccess }) => {
     setLoading(true);
     try {
       // 예약 생성 API 호출
-      const res = await axios.post("/api/reservations", {
+      const res = await axios.post("/reservations", {
         mentorId: Number(mentorId),
         reservationTime,
       });

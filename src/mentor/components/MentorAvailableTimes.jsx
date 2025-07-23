@@ -13,7 +13,7 @@ const MentorAvailableTimes = ({ mentorId, onSuccess }) => {
     // 1) 멘토 시간 불러오기(GET)
     useEffect(() => {
         if (!mentorId) return;
-        authApi.get(`/api/mentors/${mentorId}/available-time`)
+        authApi.get(`/mentors/${mentorId}/available-time`)
             .then(res => {
                 setAvailableSlots(res.data.savedSlots || []);
             })
@@ -53,7 +53,7 @@ const MentorAvailableTimes = ({ mentorId, onSuccess }) => {
             endTime,
         }));
 
-        authApi.put(`/api/mentors/${mentorId}/available-time`, {
+        authApi.put(`/mentors/${mentorId}/available-time`, {
             mentorId,
             availableSlots: availableSlotsForRequest,
         })

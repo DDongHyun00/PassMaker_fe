@@ -38,7 +38,7 @@ export default function MainPage() {
     // ✅ 현재 로그인한 사용자의 역할 확인
     const fetchUserRole = async () => {
       try {
-        const res = await axios.get("/api/auth/me", { withCredentials: true });
+        const res = await axios.get("/auth/me", { withCredentials: true });
         setUserRole(res.data.role); // "MENTOR" expected
       } catch (err) {
         console.error("사용자 정보 조회 실패", err);
@@ -50,7 +50,7 @@ export default function MainPage() {
   const handleAction = async (action) => {
     try {
       await axios.patch(
-        `/api/reservations/${reservationId}/action`,
+        `/reservations/${reservationId}/action`,
         { action: action },
         { withCredentials: true }
       );

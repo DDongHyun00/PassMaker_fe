@@ -10,7 +10,7 @@ const RoomEntryBox = () => {
   const handleEnterRoom = async () => {
     try {
       const res = await axios.post(
-        `/api/rooms/${roomId}/enter`,
+        `/rooms/${roomId}/enter`,
         { roomCode },
         { withCredentials: true }
       );

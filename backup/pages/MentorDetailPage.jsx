@@ -28,7 +28,7 @@ const MentorDetailPage = () => {
       const reserveAndConfirm = async () => {
         try {
           const res = await axios.post(
-              "/api/payments/toss/reserve",
+              "/payments/toss/reserve",
               {
                 orderId,             // ✅ 백엔드에서 orderId 기반 예약 파싱
                 paymentKey,

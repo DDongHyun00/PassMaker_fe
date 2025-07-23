@@ -16,7 +16,7 @@ const MentorPreviewPage = () => {
 
   const handleConfirmSave = async () => {
     try {
-      await axios.put('/api/mentors/me/edit-profile', settings);
+      await axios.put('/mentors/me/edit-profile', settings);
       alert("설정이 성공적으로 저장되었습니다.");
       navigate('/mypage'); // 저장 성공 후 마이페이지로 이동
     } catch (err) {

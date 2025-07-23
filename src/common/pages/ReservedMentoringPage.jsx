@@ -18,7 +18,7 @@ const ReservedMentoringPage = () => {
 
   useEffect(() => {
     axios
-      .get("/api/reservations/enterable", { withCredentials: true })
+      .get("/reservations/enterable", { withCredentials: true })
       .then((res) => {
         console.log("예약 응답 전체:", res.data);
         setReservations(res.data)
@@ -43,7 +43,7 @@ const ReservedMentoringPage = () => {
     if (window.confirm("정말로 거절하시겠습니까?")) {
       try {
         await axios.patch(
-            `/api/reservations/${reservationId}/cancel`, // 백엔드에서 만든 API 경로
+            `/reservations/${reservationId}/cancel`, // 백엔드에서 만든 API 경로
             {},
             { withCredentials: true }
         );
@@ -78,7 +78,7 @@ const ReservedMentoringPage = () => {
 
     try {
       const res = await axios.post(
-        `/api/rooms/${selectedRoom.roomId}/enter`,
+        `/rooms/${selectedRoom.roomId}/enter`,
         { roomCode: codeInput },
         { withCredentials: true }
       );
@@ -93,12 +93,12 @@ const ReservedMentoringPage = () => {
   const handleApprove = async (reservationId) => {
     try {
       await axios.patch(
-        `/api/reservations/${reservationId}/approve`,
+        `/reservations/${reservationId}/approve`,
         {},
         { withCredentials: true }
       );
       // 상태 갱신: 예약 목록 재조회
-      const res = await axios.get("/api/reservations/enterable", {
+      const res = await axios.get("/reservations/enterable", {
         withCredentials: true,
       });
       console.log("멘토링 예약 응답:", res.data);

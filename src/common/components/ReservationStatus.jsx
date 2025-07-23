@@ -11,7 +11,7 @@ const ReservationStatus = ({ reservation, payment, onCancel }) => {
     setLoading(true);
     try {
       // 예약 취소 API 호출
-      await axios.delete(`/api/reservations/${reservation.reserveId}/cancel`);
+      await axios.delete(`/reservations/${reservation.reserveId}/cancel`);
       // 성공 시 부모로 알림
       onCancel();
     } catch (err) {
