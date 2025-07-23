@@ -139,9 +139,12 @@ const ReservationPage = () => {
     }
   };
 
+  // const selectedDateStr = selectedDate
+  //   ? selectedDate.toISOString().split("T")[0]
+  //   : null;
   const selectedDateStr = selectedDate
-    ? selectedDate.toISOString().split("T")[0]
-    : null;
+      ? dayjs(selectedDate).tz("Asia/Seoul").format("YYYY-MM-DD")
+      : null;
 
   const isTimeDisabled = (slot) => {
     if (!selectedDateStr) return false;
