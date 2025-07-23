@@ -26,7 +26,7 @@ export default function MentorList() {
 
 
       try {
-        const res = await axios.get("mentors", {
+        const res = await axios.get("/api/mentors", {
           withCredentials: true,
         });
         console.log("mentor 응답", res.data);
@@ -39,7 +39,7 @@ export default function MentorList() {
   }, []);
 
   // ✅ 0) 활성화된 멘토만 필터링
-  // const activeMentors = mentors.filter(m => m.active === true);
+  //  const activeMentors = mentors.filter(m => m.active === true);
   const activeMentors = mentors.filter(m => m.active !== false); // false만 제외
   // 1) 직무별 필터
   const filtered =
