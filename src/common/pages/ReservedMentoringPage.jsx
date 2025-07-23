@@ -2,8 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "../../common/lib/axios.js";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import { useAuth } from "../../auth/AuthContext";
 import authApi from "../../common/lib/axios.js";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const ReservedMentoringPage = () => {
   const [reservations, setReservations] = useState([]);
@@ -135,8 +140,8 @@ const ReservedMentoringPage = () => {
                 <div className="text-sm text-gray-500">
                   {res.startedAt && res.endedAt ? (
                       <>
-                        {dayjs(res.startedAt).format("YYYY-MM-DD HH:mm")} ~{" "}
-                        {dayjs(res.endedAt).format("HH:mm")}
+                        {dayjs(res.startedAt).tz("Asia/Seoul").format("YYYY-MM-DD HH:mm")} ~{" "}
+                        {dayjs(res.endedAt).tz("Asia/Seoul").format("HH:mm")}
                       </>
                   ) : res.reservationTime ? (
                       <>
