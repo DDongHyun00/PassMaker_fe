@@ -1,168 +1,160 @@
+// src/components/WebRTCConnection.jsx
 import React, { useEffect, useRef } from "react";
 import { Client } from "@stomp/stompjs";
 
-const WebRTCConnection = ({ roomId, userId, localVideoRef, remoteVideoRef, setLocalStream }) => {
-    const myUserId = userId;
+const WebRTCConnection = ({
+  roomId,
+  userId,
+  localVideoRef,
+  remoteVideoRef,
+  setLocalStream,
+}) => {
+  const peerRef        = useRef({});
+  const stompClientRef = useRef(null);
+  const localStreamRef = useRef(null);
+  const queueRef       = useRef([]);
+  const readyRef       = useRef(false);
 
-    const peerRef = useRef({});
-    const stompClientRef = useRef(null);
-    const roomIdRef = useRef(roomId);
-    const signalQueueRef = useRef([]);
-    const peerReadyRef = useRef(false);
-    const localStreamRef = useRef(null);
+  const rtcConfig = {
+    iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+  };
 
-    const rtcConfig = {
-        iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-    };
+  useEffect(() => {
+    if (!userId) return console.warn("userId 없음; WebRTC 차단");
 
-    useEffect(() => {
-        roomIdRef.current = roomId;
-    }, [roomId]);
-
-    useEffect(() => {
-        if (!myUserId) {
-            console.warn("userId 없음. WebRTC 연결 차단됨");
-            return;
-        }
-
-        const stompClient = new Client({
-            brokerURL: "ws://localhost:8080/ws",
-            reconnectDelay: 5000,
-            onConnect: () => {
-                stompClient.subscribe(`/topic/room/${roomId}`, async (message) => {
-                    try {
-                        const signal = JSON.parse(message.body);
-                        console.log("시그널 수신:", signal);
-                        await handleSignal(signal);
-                    } catch (e) {
-                        console.error("시그널 파싱 실패", e);
-                    }
-                });
-
-                initLocalStream().then(() => {
-                    peerReadyRef.current = true;
-                    signalQueueRef.current.forEach((sig) => handleSignal(sig));
-                    signalQueueRef.current = [];
-                    sendSignal({ type: "join", sender: myUserId });
-                });
-            },
+    const client = new Client({
+      brokerURL: "ws://localhost:8080/ws",
+      reconnectDelay: 5000,
+      onConnect: () => {
+        client.subscribe(`/topic/room/${roomId}`, async (msg) => {
+          const signal = JSON.parse(msg.body);
+          if (signal.sender === userId) return;
+          if (!readyRef.current) {
+            queueRef.current.push(signal);
+          } else {
+            await handleSignal(signal);
+          }
         });
 
-        stompClient.activate();
-        stompClientRef.current = stompClient;
-
-        return () => {
-            stompClient.deactivate();
-        };
-    }, [myUserId]);
-
-    const initLocalStream = async () => {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-        localVideoRef.current.srcObject = stream;
-        localStreamRef.current = stream;
-        setLocalStream(stream);
-    };
-
-    const createPeerConnection = (otherUserId, stream) => {
-        const peer = new RTCPeerConnection(rtcConfig);
-        peerRef.current[otherUserId] = peer;
-
-        stream.getTracks().forEach((track) => {
-            peer.addTrack(track, stream);
+        initLocalStream().then(async () => {
+          readyRef.current = true;
+          for (let s of queueRef.current) await handleSignal(s);
+          queueRef.current = [];
+          sendSignal({ type: "join", sender: userId });
         });
+      },
+    });
 
-        peer.onicecandidate = (e) => {
-            if (e.candidate) {
-                sendSignal({
-                    type: "candidate",
-                    data: e.candidate,
-                    sender: myUserId,
-                    receiver: otherUserId,
-                });
-            }
-        };
+    client.activate();
+    stompClientRef.current = client;
 
-        peer.ontrack = (e) => {
-            const stream = e.streams[0];
-            if (remoteVideoRef.current) {
-                remoteVideoRef.current.srcObject = stream;
-                const tryPlay = () => {
-                    remoteVideoRef.current.play().catch((err) => {
-                        console.warn("remote video 재생 실패:", err.message);
-                        setTimeout(tryPlay, 300);
-                    });
-                };
-                tryPlay();
-            }
-        };
+    return () => client.deactivate();
+  }, [userId, roomId]);
 
-        return peer;
-    };
+//   const initLocalStream = async () => {
+//     const stream = await navigator.mediaDevices.getUserMedia({
+//       video: true,
+//       audio: true,
+//     });
+//     localVideoRef.current.srcObject = stream;
+//     localStreamRef.current          = stream;
+//     setLocalStream(stream);
+//   };
+// ↓ 여기를 이렇게 바꿔주세요
+  const initLocalStream = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      localVideoRef.current.srcObject = stream;
+      localStreamRef.current          = stream;
+      setLocalStream(stream);
+    } catch (err) {
+      console.error("🔥 getUserMedia 실패:", err);
+      alert("카메라/마이크 권한이 필요합니다. 설정에서 허용해 주세요.");
+    }
+  };
 
-    const sendSignal = (signal) => {
-        const currentRoomId = roomIdRef.current;
-        if (!currentRoomId) return;
+  const sendSignal = (signal) => {
+    stompClientRef.current.publish({
+      destination: "/app/signal",
+      body: JSON.stringify({ ...signal, roomId: String(roomId) }),
+    });
+  };
 
-        stompClientRef.current.publish({
-            destination: "/app/signal",
-            body: JSON.stringify({ ...signal, roomId: String(currentRoomId) }),
+  const createPeer = (other) => {
+    const peer = new RTCPeerConnection(rtcConfig);
+    localStreamRef.current.getTracks().forEach((t) =>
+      peer.addTrack(t, localStreamRef.current)
+    );
+    peer.onicecandidate = (e) => {
+      if (e.candidate) {
+        sendSignal({
+          type: "candidate",
+          data: e.candidate,
+          sender: userId,
+          receiver: other,
         });
+      }
     };
-
-    const handleSignal = async (signal) => {
-        const { type, sender, data } = signal;
-        if (sender === myUserId) return;
-
-        if (!peerRef.current[sender]) {
-            peerRef.current[sender] = createPeerConnection(sender, localStreamRef.current);
-        }
-
-        const peer = peerRef.current[sender];
-
-        switch (type) {
-            case "join":
-                if (myUserId < sender) {
-                    const offer = await peer.createOffer();
-                    await peer.setLocalDescription(offer);
-                    sendSignal({ type: "offer", data: offer, sender: myUserId, receiver: sender });
-                }
-                break;
-
-            case "offer":
-                await peer.setRemoteDescription(new RTCSessionDescription(data));
-                const answer = await peer.createAnswer();
-                await peer.setLocalDescription(answer);
-                sendSignal({ type: "answer", data: answer, sender: myUserId, receiver: sender });
-
-                const pending = signalQueueRef.current.filter((s) => s.sender === sender);
-                signalQueueRef.current = signalQueueRef.current.filter((s) => s.sender !== sender);
-                for (const queued of pending) await handleSignal(queued);
-                break;
-
-            case "answer":
-                if (peer.signalingState !== "have-local-offer") {
-                    console.warn("answer 무시: signalingState:", peer.signalingState);
-                    return;
-                }
-                await peer.setRemoteDescription(new RTCSessionDescription(data));
-                break;
-
-            case "candidate":
-                if (!data || !data.candidate) return;
-
-                if (peer.remoteDescription?.type) {
-                    await peer.addIceCandidate(new RTCIceCandidate(data));
-                } else {
-                    signalQueueRef.current.push(signal);
-                }
-                break;
-
-            default:
-                console.warn("알 수 없는 시그널 타입:", type);
-        }
+    peer.ontrack = (e) => {
+      remoteVideoRef.current.srcObject = e.streams[0];
+      remoteVideoRef.current
+        .play()
+        .catch(() => setTimeout(() => remoteVideoRef.current.play(), 300));
     };
+    return peer;
+  };
 
-    return null;
+  const handleSignal = async ({ type, sender, data }) => {
+    let peer = peerRef.current[sender];
+    if (!peer) peerRef.current[sender] = peer = createPeer(sender);
+
+    switch (type) {
+      case "join":
+        if (userId < sender) {
+          const offer = await peer.createOffer();
+          await peer.setLocalDescription(offer);
+          sendSignal({
+            type: "offer",
+            data: offer,
+            sender: userId,
+            receiver: sender,
+          });
+        }
+        break;
+
+      case "offer":
+        await peer.setRemoteDescription(new RTCSessionDescription(data));
+        const answer = await peer.createAnswer();
+        await peer.setLocalDescription(answer);
+        sendSignal({
+          type: "answer",
+          data: answer,
+          sender: userId,
+          receiver: sender,
+        });
+        break;
+
+      case "answer":
+        if (peer.signalingState === "have-local-offer") {
+          await peer.setRemoteDescription(new RTCSessionDescription(data));
+        }
+        break;
+
+      case "candidate":
+        if (peer.remoteDescription) {
+          await peer.addIceCandidate(new RTCIceCandidate(data));
+        }
+        break;
+
+      default:
+        console.warn("Unknown signal:", type);
+    }
+  };
+
+  return null;
 };
 
 export default WebRTCConnection;
