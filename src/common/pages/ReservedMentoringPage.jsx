@@ -85,7 +85,7 @@ const ReservedMentoringPage = () => {
     try {
       const res = await authApi.post(
         `/rooms/${selectedRoom.roomId}/enter`,
-        { roomCode: codeInput },
+        // { roomCode: codeInput },
         { withCredentials: true }
       );
       navigate(`/mentoringroom/${selectedRoom.roomId}`, {
