@@ -24,14 +24,26 @@ export default function Header() {
       <div className="flex items-center gap-4">
         {user ? (
           <>
+             {user.role === "USER" && (
+              <span className="text-gray-800 font-bold hidden sm:inline">
+                  {user.nickname} ({user.isMentor ? "멘토" : "멘티"})
+                  <span className="font-medium">   님</span>
+              </span>
+             )}
                {/*관리자 버튼 추가*/}
               {user.role === "ADMIN" && (
+                  <>
+                  <span className="text-gray-800 font-bold hidden sm:inline">
+                  {user.nickname}
+                  <span className="font-medium">   님</span>
+                  </span>
                   <button
                       onClick={() => navigate("/admin")}
                       className="nav-btn-sub px-7 py-1 text-base rounded-md shadow-md border border-primary/30 font-semibold transition-all duration-150"
                   >
                       관리자 페이지
                   </button>
+                  </>
               )}
             <button
               onClick={() => navigate("/mypage")}
