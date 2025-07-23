@@ -1,4 +1,4 @@
-import axios from "../../common/lib/axios.js";
+import axios from 'axios';
 
 const authApi = axios.create({
     baseURL: import.meta.env.VITE_API_URL, // 예: http://localhost:8080 import.meta.env.VITE_API_BASE_URL
