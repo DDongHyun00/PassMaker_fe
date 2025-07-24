@@ -21,9 +21,9 @@ const ReservationPage = () => {
   const { mentorId } = useParams();
 
   const mockUser = {
-    name: "김민수",
-    email: "martinkim99@daum.net",
-    phone: "+82 010-5091-8814",
+    name: "페브리즈",
+    email: "kd3573@naver.com",
+    phone: "+82 010-2885-3573",
   };
   const mockPrice = 33000;
   const timeSlots = ["09:00~10:00","10:00~11:00","11:00~12:00","13:00~14:00", "14:00~15:00" , "15:00~16:00", "16:00~17:00", "17:00~18:00", "18:00~19:00", "19:00~20:00", "20:00~21:00"];
