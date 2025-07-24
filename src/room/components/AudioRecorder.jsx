@@ -87,7 +87,7 @@ const AudioRecorder = ({ localStream, roomId }) => {
       const stopTimer = setTimeout(() => {
         mediaRecorder.stop();
         console.log("MediaRecorder 자동 종료");
-      }, 20 * 1000); // 20분
+      }, 20 * 60 * 1000); // 20분
 
       return () => {
         if (mediaRecorder && mediaRecorder.state !== "inactive") {
