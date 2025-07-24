@@ -135,12 +135,15 @@ const WebRTCConnection = ({ roomId, userId, localVideoRef, remoteVideoRef, setLo
 
         const peer = peerRef.current[sender];
 
+
         switch (type) {
             case "join":
                 if (myUserId < sender) {
                     const offer = await peer.createOffer();
                     await peer.setLocalDescription(offer);
+                    console.log("🔥 offer 생성됨:", offer);
                     sendSignal({ type: "offer", data: offer, sender: myUserId, receiver: sender });
+                    console.log("📨 offer 보냄 to:", sender);
                 }
                 break;
 
@@ -159,6 +162,7 @@ const WebRTCConnection = ({ roomId, userId, localVideoRef, remoteVideoRef, setLo
             case "answer":
                 if (peer.signalingState !== "have-local-offer") {
                     console.warn("answer 무시: signalingState:", peer.signalingState);
+                    console.log("📥 answer 수신:", data);
                     return;
                 }
                 await peer.setRemoteDescription(new RTCSessionDescription(data));
