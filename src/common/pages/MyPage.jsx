@@ -12,6 +12,9 @@ import { useAuth } from "../../auth/AuthContext.jsx";
 import defaultUserImage from "../../assets/default_user.png"; // [추가] 기본 이미지 임포트
 import ReservedMentoringPage from "./ReservedMentoringPage.jsx";
 
+// 1) ✅ 요약 목록/상세 상태 추가
+const mainColor = "#7C3AED";
+
 const MyPage = () => {
   const [profile, setProfile] = useState(null);
   const [formData, setFormData] = useState({
@@ -30,6 +33,15 @@ const MyPage = () => {
   const [mentoringEnabled, setMentoringEnabled] = useState(false); // 멘토링 활성화 상태
   const [toggleLoading, setToggleLoading] = useState(false); // 토글 로딩 상태
 
+  // --- 요약 목록 상태
+  const [summaryListOpen, setSummaryListOpen] = useState(false); // 요약 목록 토글
+  const [summaries, setSummaries] = useState([]);
+  const [summariesLoading, setSummariesLoading] = useState(false);
+  const [summariesError, setSummariesError] = useState("");
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [summaryText, setSummaryText] = useState("");
+  const [summaryDetailLoading, setSummaryDetailLoading] = useState(false);
+
   // 멘토링 토글 핸들러
   const handleMentoringToggle = async () => {
     // Optimistic update: UI를 먼저 업데이트하고, API 실패 시 되돌립니다.
@@ -39,7 +51,7 @@ const MyPage = () => {
     setToggleLoading(true); // 로딩 시작
     try {
       // MPR-006 API 사용: PATCH /api/mentors/me/status
-      await authApi.patch("/mentors/me/status", {
+      await authApi.patch("/api/mentors/me/status", {
         isActive: !previousState,
       });
       console.log("멘토링 활성화 상태 업데이트 성공:", !previousState);
@@ -51,6 +63,40 @@ const MyPage = () => {
     } finally {
       setToggleLoading(false); // 로딩 종료
     }
+  };
+
+  // ✅ 요약 목록 전체 조회
+  const fetchSummaries = async () => {
+    setSummariesLoading(true);
+    setSummariesError("");
+    try {
+      const res = await authApi.get("/api/stt/summaries");
+      setSummaries(res.data);
+    } catch (e) {
+      setSummariesError("요약 목록 조회 실패");
+    } finally {
+      setSummariesLoading(false);
+    }
+  };
+
+  // ✅ 요약 상세 조회
+  const fetchSummaryDetail = async (roomId) => {
+    setSelectedRoom(roomId);
+    setSummaryDetailLoading(true);
+    setSummaryText("");
+    try {
+      const res = await authApi.get(`/api/stt/summary?roomId=${roomId}`);
+      setSummaryText(res.data);
+    } catch {
+      setSummaryText("상세 불러오기 실패");
+    } finally {
+      setSummaryDetailLoading(false);
+    }
+  };
+
+  // ✅ 다운로드
+  const handleDownload = (roomId) => {
+    window.open(`/api/stt/summary/download?roomId=${roomId}`, "_blank");
   };
 
   useEffect(() => {
@@ -125,11 +171,11 @@ const MyPage = () => {
     try {
       setUploading(true);
       const res = await authApi.post(
-        "/mypage/upload-thumbnail",
-        formDataFile,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
+          "/mypage/upload-thumbnail",
+          formDataFile,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
       );
       const imageUrl = res.data;
       setFormData((prev) => ({ ...prev, thumbnail: imageUrl }));
@@ -144,193 +190,298 @@ const MyPage = () => {
   if (!profile) return <div className="p-6">불러오는 중...</div>;
 
   return (
-    <div className="min-h-screen pt-8 pb-16 px-2 flex flex-col items-center bg-gray-50">
-      <div className="w-full max-w-[1400px] bg-white rounded-2xl shadow-xl p-6 md:p-12 my-2">
-        {/* 상단 인사 */}
-        <div className="mb-12 text-center">
-          <h2 className="text-4xl font-extrabold text-primary mb-3 tracking-tight drop-shadow">
-            안녕하세요, <span className="text-primary">{profile.name}</span>님!
-          </h2>
-          <p className="text-lg text-gray-500">
-            계정 정보와 멘토링 예약 내역을 확인하세요.
-          </p>
-        </div>
-
-        {/* 프로필 카드 */}
-        <div className="bg-white/80 rounded-2xl flex flex-col md:flex-row items-center md:items-start gap-12 px-12 py-16 md:py-20 mb-10 shadow-xl border-2 border-primary/10 transition-all duration-200 hover:shadow-2xl hover:-translate-y-1 max-w-5xl mx-auto">
-          {/* 프로필 이미지 */}
-          <div className="flex-shrink-0">
-            <img
-              src={thumbnailPreview || profile.thumbnail || defaultUserImage}
-              alt="프로필 썸네일"
-              className="w-40 h-40 rounded-full object-cover border-4 border-primary shadow-xl cursor-pointer transition-transform hover:scale-105 bg-white"
-              onClick={() => setIsModalOpen(true)}
-            />
+      <div className="min-h-screen pt-8 pb-16 px-2 flex flex-col items-center bg-gray-50">
+        <div className="w-full max-w-[1400px] bg-white rounded-2xl shadow-xl p-6 md:p-12 my-2">
+          {/* 상단 인사 */}
+          <div className="mb-12 text-center">
+            <h2 className="text-4xl font-extrabold text-primary mb-3 tracking-tight drop-shadow">
+              안녕하세요, <span className="text-primary">{profile.name}</span>님!
+            </h2>
+            <p className="text-lg text-gray-500">
+              계정 정보와 멘토링 예약 내역을 확인하세요.
+            </p>
           </div>
-          {/* 프로필 정보 */}
-          <div className="flex-1 flex flex-col justify-center items-center md:items-start gap-6">
-            <h3 className="text-3xl font-extrabold mb-1 text-gray-900 drop-shadow">
-              {profile.nickname}
-            </h3>
-            <span className="text-lg text-gray-500 mb-2">님 환영합니다!</span>
-            <div className="flex gap-4 w-full">
-              <button
-                className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 flex-1"
-                onClick={() => setViewOpen(true)}
+
+          {/* 프로필 카드 */}
+          <div className="bg-white/80 rounded-2xl flex flex-col md:flex-row items-center md:items-start gap-12 px-12 py-16 md:py-20 mb-10 shadow-xl border-2 border-primary/10 transition-all duration-200 hover:shadow-2xl hover:-translate-y-1 max-w-5xl mx-auto">
+            {/* 프로필 이미지 */}
+            <div className="flex-shrink-0">
+              <img
+                  src={thumbnailPreview || profile.thumbnail || defaultUserImage}
+                  alt="프로필 썸네일"
+                  className="w-40 h-40 rounded-full object-cover border-4 border-primary shadow-xl cursor-pointer transition-transform hover:scale-105 bg-white"
+                  onClick={() => setIsModalOpen(true)}
+              />
+            </div>
+            {/* 프로필 정보 */}
+            <div className="flex-1 flex flex-col justify-center items-center md:items-start gap-6">
+              <h3 className="text-3xl font-extrabold mb-1 text-gray-900 drop-shadow">
+                {profile.nickname}
+              </h3>
+              <span className="text-lg text-gray-500 mb-2">님 환영합니다!</span>
+              <div className="flex gap-4 w-full">
+                <button
+                    className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 flex-1"
+                    onClick={() => setViewOpen(true)}
+                >
+                  내 정보 조회
+                </button>
+                <button
+                    className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 flex-1"
+                    onClick={() => setEditOpen(true)}
+                >
+                  내 정보 수정
+                </button>
+              </div>
+            </div>
+          </div>
+          {isModalOpen && (
+              <div
+                  className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+                  onClick={() => setIsModalOpen(false)}
               >
-                내 정보 조회
-              </button>
+                <div className="bg-white p-4 rounded-2xl shadow-2xl">
+                  <img
+                      src={thumbnailPreview || profile.thumbnail || defaultUserImage}
+                      alt="확대 프로필 썸네일"
+                      className="max-w-full max-h-[90vh] object-contain"
+                  />
+                </div>
+              </div>
+          )}
+
+          {/* 멘토링 토글 패널 */}
+          {profile.isMentor && (
+              <MentoringTogglePanel
+                  enabled={mentoringEnabled}
+                  onToggle={handleMentoringToggle}
+                  title="멘토링 활성화"
+                  onCommentClick={() => {}}
+                  onSettingsClick={() => navigate("/mentor/settings")}
+                  className="mb-10 max-w-5xl mx-auto"
+              />
+          )}
+          {/* ✅ 요약 목록 카드 */}
+          <div className="bg-white/80 rounded-2xl px-12 py-16 md:py-20 mb-10 shadow-xl border-2 border-primary/10 transition-all duration-200 hover:shadow-2xl hover:-translate-y-1 max-w-5xl mx-auto">
+            <h3 className="text-2xl font-extrabold mb-8 text-primary drop-shadow">
+              요약 결과
+            </h3>
+            <button
+                className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 mb-6"
+                onClick={() => {
+                  if (!summaryListOpen) fetchSummaries();
+                  setSummaryListOpen(!summaryListOpen);
+                }}
+            >
+              {summaryListOpen ? "요약 목록 닫기" : "요약 목록 보기"}
+            </button>
+
+            {summaryListOpen && (
+                <>
+                  {summariesLoading ? (
+                      <div className="text-primary">불러오는 중...</div>
+                  ) : summariesError ? (
+                      <div className="text-red-500">{summariesError}</div>
+                  ) : summaries.length === 0 ? (
+                      <div className="text-gray-400">요약 데이터가 없습니다.</div>
+                  ) : (
+                      <ul className="space-y-4">
+                        {summaries.map((item) => (
+                            <li
+                                key={item.roomId}
+                                className="bg-gray-50 rounded-xl p-5 border border-gray-200 shadow-sm"
+                            >
+                              <div className="font-bold text-lg mb-2 text-primary">
+                                {item.mentoringTitle}
+                              </div>
+                              <div className="text-sm text-gray-500 mb-1">
+                                멘토: {item.mentorNickname} / 멘티:{" "}
+                                {item.menteeNickname}
+                              </div>
+                              <div className="text-xs text-gray-400 mb-2">
+                                {new Date(item.createdAt).toLocaleString()} / 상태:{" "}
+                                <span
+                                    className={
+                                      item.status === "completed"
+                                          ? "text-primary"
+                                          : "text-gray-400"
+                                    }
+                                >
+                          {item.status === "completed" ? "완료" : "진행중"}
+                        </span>
+                              </div>
+                              <div className="mb-2 text-gray-700 text-[15px] bg-violet-50 px-3 py-2 rounded-md">
+                                {item.preview}
+                              </div>
+                              <div className="flex gap-2">
+                                <button
+                                    className={`px-4 py-2 text-sm rounded-md border-2 font-semibold
+    ${
+                                        selectedRoom === item.roomId
+                                            ? "bg-white text-primary border-primary"
+                                            : "bg-violet-50 text-primary border-violet-200"
+                                    }
+    hover:border-violet-600 transition-all`}
+                                    onClick={() => fetchSummaryDetail(item.roomId)}
+                                >
+                                  상세 보기
+                                </button>
+                                <button
+                                    className={`px-4 py-2 text-sm rounded-md border-2 font-semibold
+    ${
+                                        selectedRoom === item.roomId
+                                            ? "bg-white text-primary border-primary"
+                                            : "bg-violet-50 text-primary border-violet-200"
+                                    }
+    hover:border-violet-600 transition-all`}
+                                    onClick={() =>
+                                        window.open(
+                                            `/api/stt/summary/download?roomId=${item.roomId}`,
+                                            "_blank"
+                                        )
+                                    }
+                                >
+                                  다운로드
+                                </button>
+                              </div>
+
+
+                              {selectedRoom === item.roomId && (
+                                  <div className="px-4 py-2 rounded border border-primary text-primary bg-white hover:bg-violet-100 text-sm transition-all">
+                                    {summaryDetailLoading ? (
+                                        "상세 불러오는 중..."
+                                    ) : (
+                                        <pre className="text-gray-800 whitespace-pre-line">
+                              {summaryText}
+                            </pre>
+                                    )}
+                                  </div>
+                              )}
+                            </li>
+                        ))}
+                      </ul>
+                  )}
+                </>
+            )}
+          </div>
+
+          {/* 계정 설정 카드 */}
+          <div className="bg-white/80 rounded-2xl px-12 py-16 md:py-20 mb-10 shadow-xl border-2 border-primary/10 transition-all duration-200 hover:shadow-2xl hover:-translate-y-1 max-w-5xl mx-auto">
+            <h3 className="text-2xl font-extrabold mb-8 text-primary drop-shadow">
+              계정 설정
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* <button className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full">
+              요약 목록
+            </button> */}
               <button
-                className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 flex-1"
-                onClick={() => setEditOpen(true)}
+                  className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full"
+                  onClick={() => setEditOpen(true)}
               >
                 내 정보 수정
               </button>
+              <button className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full">
+                찜한 멘토 조회
+              </button>
+              {profile.isMentor && (
+                  <button
+                      className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full"
+                      onClick={() => navigate("/mentor/settings")}
+                  >
+                    멘토링 설정
+                  </button>
+              )}
+              {!profile.isMentor && (
+                  <button
+                      className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full"
+                      onClick={() => navigate("/mentor/apply")}
+                  >
+                    멘토 신청
+                  </button>
+              )}
+              <button
+                  className="px-8 py-3 bg-white text-red-600 font-semibold border-2 border-red-200 rounded-md shadow-md hover:bg-red-50 transition-all duration-150 w-full"
+                  onClick={() => setWithdrawOpen(true)}
+              >
+                회원탈퇴
+              </button>
             </div>
           </div>
-        </div>
-        {isModalOpen && (
-          <div
-            className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-            onClick={() => setIsModalOpen(false)}
-          >
-            <div className="bg-white p-4 rounded-2xl shadow-2xl">
-              <img
-                src={thumbnailPreview || profile.thumbnail || defaultUserImage}
-                alt="확대 프로필 썸네일"
-                className="max-w-full max-h-[90vh] object-contain"
-              />
-            </div>
-          </div>
-        )}
 
-        {/* 멘토링 토글 패널 */}
-        {profile.isMentor && (
-          <MentoringTogglePanel
-            enabled={mentoringEnabled}
-            onToggle={handleMentoringToggle}
-            title="멘토링 활성화"
-            onCommentClick={() => {}}
-            onSettingsClick={() => navigate("/mentor/settings")}
-            className="mb-10 max-w-5xl mx-auto"
-          />
-        )}
-
-        {/* 계정 설정 카드 */}
-        <div className="bg-white/80 rounded-2xl px-12 py-16 md:py-20 mb-10 shadow-xl border-2 border-primary/10 transition-all duration-200 hover:shadow-2xl hover:-translate-y-1 max-w-5xl mx-auto">
-          <h3 className="text-2xl font-extrabold mb-8 text-primary drop-shadow">
-            계정 설정
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <button className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full">
-              요약 목록
-            </button>
-            <button
-              className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full"
-              onClick={() => setEditOpen(true)}
-            >
-              내 정보 수정
-            </button>
-            <button className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full">
-              찜한 멘토 조회
-            </button>
-            {profile.isMentor && (
-              <button
-                className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full"
-                onClick={() => navigate("/mentor/settings")}
-              >
-                멘토링 설정
-              </button>
-            )}
-            {!profile.isMentor && (
-              <button
-                className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 w-full"
-                onClick={() => navigate("/mentor/apply")}
-              >
-                멘토 신청
-              </button>
-            )}
-            <button
-              className="px-8 py-3 bg-white text-red-600 font-semibold border-2 border-red-200 rounded-md shadow-md hover:bg-red-50 transition-all duration-150 w-full"
-              onClick={() => setWithdrawOpen(true)}
-            >
-              회원탈퇴
-            </button>
-          </div>
-        </div>
-
-        {/* 1:1 문의 카드 */}
-        <div className="bg-white/80 rounded-2xl px-12 py-16 md:py-20 mb-10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl border-2 border-primary/10 transition-all duration-200 hover:shadow-2xl hover:-translate-y-1 max-w-5xl mx-auto">
-          <div className="flex-1 text-left">
-            <h3 className="text-2xl font-extrabold mb-2 text-primary drop-shadow">
-              1:1 문의
-            </h3>
-            <span className="text-gray-700">
+          {/* 1:1 문의 카드 */}
+          <div className="bg-white/80 rounded-2xl px-12 py-16 md:py-20 mb-10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl border-2 border-primary/10 transition-all duration-200 hover:shadow-2xl hover:-translate-y-1 max-w-5xl mx-auto">
+            <div className="flex-1 text-left">
+              <h3 className="text-2xl font-extrabold mb-2 text-primary drop-shadow">
+                1:1 문의
+              </h3>
+              <span className="text-gray-700">
               문의사항이 있다면 여기를 눌러주세요
             </span>
+            </div>
+            <button
+                className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 flex-shrink-0"
+                onClick={() => navigate("/inquiry")}
+            >
+              문의하러 가기
+            </button>
           </div>
-          <button
-            className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 flex-shrink-0"
-            onClick={() => navigate("/inquiry")}
-          >
-            문의하러 가기
-          </button>
-        </div>
 
-        {/* 예약된 멘토링 카드 */}
-        <div className="bg-white/80 rounded-2xl px-12 py-16 md:py-20 mb-10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl border-2 border-primary/10 transition-all duration-200 hover:shadow-2xl hover:-translate-y-1 max-w-5xl mx-auto">
-          <div className="flex-1 text-left">
-            <h3 className="text-2xl font-extrabold mb-2 text-primary drop-shadow">
-              멘토링
-            </h3>
-            <span className="text-gray-700">예약된 멘토링을 확인하세요</span>
-          </div>
-          <button
-            className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 flex-shrink-0"
-            onClick={() => navigate("/reserved")} // 경로 수정
-          >
-            예약 내역 보기
-          </button>
-          {/* <button
+          {/* 예약된 멘토링 카드 */}
+          <div className="bg-white/80 rounded-2xl px-12 py-16 md:py-20 mb-10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl border-2 border-primary/10 transition-all duration-200 hover:shadow-2xl hover:-translate-y-1 max-w-5xl mx-auto">
+            <div className="flex-1 text-left">
+              <h3 className="text-2xl font-extrabold mb-2 text-primary drop-shadow">
+                멘토링
+              </h3>
+              <span className="text-gray-700">예약된 멘토링을 확인하세요</span>
+            </div>
+            <button
+                className="px-8 py-3 bg-white text-primary font-semibold border-2 border-primary rounded-md shadow-md hover:bg-primary hover:text-black transition-all duration-150 flex-shrink-0"
+                onClick={() => navigate("/reserved")} // 경로 수정
+            >
+              예약 내역 보기
+            </button>
+            {/* <button
             className="mypage-btn-main flex-shrink-0 py-3 px-10 text-lg shadow-md"
             onClick={() => navigate("/reserved-test")}
           >
             예약 내역 보기-테스트페이지
-          </button> */} {/* 내용중복으로 주석처리 */}
+          </button> */}{" "}
+            {/* 내용중복으로 주석처리 */}
+          </div>
         </div>
-      </div>
 
-      {/* 모달 - 내 정보 조회 */}
-      {viewOpen && (
-        <Modal onClose={() => setViewOpen(false)}>
-          <MyInfoView profile={profile} />
-        </Modal>
-      )}
-      {/* 모달 - 내 정보 수정 */}
-      {editOpen && (
-        <Modal onClose={() => setEditOpen(false)}>
-          <MyInfoEdit
-            formData={formData}
-            onChange={handleChange}
-            onFileChange={handleFileChange}
-            onSave={handleUpdate}
-            onCancel={() => setEditOpen(false)}
-          />
-        </Modal>
-      )}
-      {withdrawOpen && (
-        <Modal onClose={() => setWithdrawOpen(false)}>
-          <WithdrawConfirmModal
-            onClose={() => setWithdrawOpen(false)}
-            onSuccess={async () => {
-              await logout();
-              navigate("/");
-            }}
-          />
-        </Modal>
-      )}
-    </div>
+        {/* 모달 - 내 정보 조회 */}
+        {viewOpen && (
+            <Modal onClose={() => setViewOpen(false)}>
+              <MyInfoView profile={profile} />
+            </Modal>
+        )}
+        {/* 모달 - 내 정보 수정 */}
+        {editOpen && (
+            <Modal onClose={() => setEditOpen(false)}>
+              <MyInfoEdit
+                  formData={formData}
+                  onChange={handleChange}
+                  onFileChange={handleFileChange}
+                  onSave={handleUpdate}
+                  onCancel={() => setEditOpen(false)}
+              />
+            </Modal>
+        )}
+        {withdrawOpen && (
+            <Modal onClose={() => setWithdrawOpen(false)}>
+              <WithdrawConfirmModal
+                  onClose={() => setWithdrawOpen(false)}
+                  onSuccess={async () => {
+                    await logout();
+                    navigate("/");
+                  }}
+              />
+            </Modal>
+        )}
+      </div>
   );
 };
 
 export default MyPage;
+// src / common / pages / MyPage.jsx;
