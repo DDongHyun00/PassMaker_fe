@@ -2,7 +2,7 @@ name: frontend-auto-deploy
 
 on:
   push:
-    branches: [ pass50 ]
+    branches: [ final ]
 
 jobs:
   build:
