@@ -1,4 +1,3 @@
-// src/pages/LoginPage.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../common/lib/axios.js";
@@ -56,37 +55,37 @@ const LoginPage = () => {
     }
   };
 
-
+  // msg?.includes("탈퇴한 회원")
   return (
-    <div className="login-bg min-h-screen flex items-center justify-center py-16 px-2">
-      <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-10 border border-primary/10">
-        <h2 className="text-3xl font-extrabold mb-8 text-center text-primary tracking-tight">
-          로그인
-        </h2>
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-          <input
-            name="email"
-            type="email"
-            placeholder="이메일"
-            value={form.email}
-            onChange={handleChange}
-            className="border border-primary/30 p-3 rounded-xl text-black text-lg focus:ring-2 focus:ring-primary outline-none bg-primary/5 placeholder:text-primary/40"
-          />
-          <input
-            name="password"
-            type="password"
-            placeholder="비밀번호"
-            value={form.password}
-            onChange={handleChange}
-            className="border border-primary/30 p-3 rounded-xl text-black text-lg focus:ring-2 focus:ring-primary outline-none bg-primary/5 placeholder:text-primary/40"
-          />
-          <button type="submit" className="mypage-btn w-full py-3 text-lg mt-2">
+      <div className="login-bg min-h-screen flex items-center justify-center py-16 px-2">
+        <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-10 border border-primary/10">
+          <h2 className="text-3xl font-extrabold mb-8 text-center text-primary tracking-tight">
             로그인
-          </button>
-        </form>
+          </h2>
+          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <input
+                name="email"
+                type="email"
+                placeholder="이메일"
+                value={form.email}
+                onChange={handleChange}
+                className="border border-primary/30 p-3 rounded-xl text-black text-lg focus:ring-2 focus:ring-primary outline-none bg-primary/5 placeholder:text-primary/40"
+            />
+            <input
+                name="password"
+                type="password"
+                placeholder="비밀번호"
+                value={form.password}
+                onChange={handleChange}
+                className="border border-primary/30 p-3 rounded-xl text-black text-lg focus:ring-2 focus:ring-primary outline-none bg-primary/5 placeholder:text-primary/40"
+            />
+            <button type="submit" className="mypage-btn w-full py-3 text-lg mt-2">
+              로그인
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
   );
 };
 

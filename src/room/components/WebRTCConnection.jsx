@@ -26,40 +26,30 @@ const WebRTCConnection = ({
   }, [roomId]);
 
   useEffect(() => {
-    if (!myUserId) {
-      console.warn("userId 없음. WebRTC 연결 차단됨");
-      return;
-    }
+    if (!myUserId) return;
 
-    const stompClient = new Client({
-      brokerURL: "wss://passmaker.kro.kr/ws",
-      reconnectDelay: 5000,
-      onConnect: () => {
-        stompClient.subscribe(`/topic/room/${roomId}`, async (message) => {
-          try {
+    // ✅ 먼저 localStream을 확보한 후에
+    initLocalStream().then(() => {
+      const stompClient = new Client({
+        brokerURL: "wss://passmaker.kro.kr/ws",
+        reconnectDelay: 5000,
+        onConnect: () => {
+          stompClient.subscribe(`/topic/room/${roomId}`, async (message) => {
             const signal = JSON.parse(message.body);
-            console.log("시그널 수신:", signal);
             await handleSignal(signal);
-          } catch (e) {
-            console.error("시그널 파싱 실패", e);
-          }
-        });
+          });
 
-        initLocalStream().then(() => {
+          // ✅ localStream 확보가 이미 완료된 상태에서 peer 처리
           peerReadyRef.current = true;
           signalQueueRef.current.forEach((sig) => handleSignal(sig));
           signalQueueRef.current = [];
           sendSignal({ type: "join", sender: myUserId });
-        });
-      },
+        },
+      });
+
+      stompClient.activate(); // ✅ 이제야 signaling 시작
+      stompClientRef.current = stompClient;
     });
-
-    stompClient.activate();
-    stompClientRef.current = stompClient;
-
-    return () => {
-      stompClient.deactivate();
-    };
   }, [myUserId]);
 
   const initLocalStream = async () => {
