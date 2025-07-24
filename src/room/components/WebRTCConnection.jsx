@@ -160,13 +160,29 @@ const WebRTCConnection = ({ roomId, userId, localVideoRef, remoteVideoRef, setLo
                 break;
 
             case "answer":
-                if (peer.signalingState !== "have-local-offer") {
-                    console.warn("answer 무시: signalingState:", peer.signalingState);
-                    console.log("📥 answer 수신:", data);
-                    return;
+                try {
+                    // 항상 answer 수신 시도
+                    const peer = peerRef.current[data.sender];
+                    if (!peer) {
+                        console.warn("❌ answer 처리 실패: 해당 peer가 없습니다.", data.sender);
+                        return;
+                    }
+
+                    const remoteDesc = new RTCSessionDescription(data);
+
+                    // 중복 설정 방지용 로그
+                    if (peer.signalingState === "stable") {
+                        console.warn("⚠️ signalingState는 stable이지만 answer 설정 시도함");
+                    }
+
+                    // 강제 설정
+                    await peer.setRemoteDescription(remoteDesc);
+                    console.log("✅ answer 설정 성공:", remoteDesc);
+                } catch (err) {
+                    console.error("❌ answer 처리 중 오류:", err);
                 }
-                await peer.setRemoteDescription(new RTCSessionDescription(data));
                 break;
+
 
             case "candidate":
                 if (!data || !data.candidate) return;
