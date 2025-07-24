@@ -67,6 +67,10 @@ const WebRTCConnection = ({ roomId, userId, localVideoRef, remoteVideoRef, setLo
         const peer = new RTCPeerConnection(rtcConfig);
         peerRef.current[otherUserId] = peer;
 
+        peer.oniceconnectionstatechange = () => {
+            console.log("ICE 상태:", peer.iceConnectionState);
+        };
+
         stream.getTracks().forEach((track) => {
             peer.addTrack(track, stream);
         });
@@ -83,9 +87,11 @@ const WebRTCConnection = ({ roomId, userId, localVideoRef, remoteVideoRef, setLo
         };
 
         peer.ontrack = (e) => {
+            console.log("ontrack fired", e.streams);
             const stream = e.streams[0];
             if (remoteVideoRef.current) {
                 remoteVideoRef.current.srcObject = stream;
+
                 const tryPlay = () => {
                     remoteVideoRef.current.play().catch((err) => {
                         console.warn("remote video 재생 실패:", err.message);
@@ -95,6 +101,7 @@ const WebRTCConnection = ({ roomId, userId, localVideoRef, remoteVideoRef, setLo
                 tryPlay();
             }
         };
+
 
         return peer;
     };
@@ -133,6 +140,7 @@ const WebRTCConnection = ({ roomId, userId, localVideoRef, remoteVideoRef, setLo
                 const answer = await peer.createAnswer();
                 await peer.setLocalDescription(answer);
                 sendSignal({ type: "answer", data: answer, sender: myUserId, receiver: sender });
+
 
                 const pending = signalQueueRef.current.filter((s) => s.sender === sender);
                 signalQueueRef.current = signalQueueRef.current.filter((s) => s.sender !== sender);
