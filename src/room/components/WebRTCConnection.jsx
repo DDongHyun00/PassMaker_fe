@@ -161,31 +161,31 @@ const WebRTCConnection = ({ roomId, userId, localVideoRef, remoteVideoRef, setLo
 
             case "answer":
                 try {
-                    const senderId = data.sender;
+                    const senderId = sender; // 수정: signal.sender를 사용해야 함
 
                     let peer = peerRef.current[senderId];
                     if (!peer) {
                         console.warn("🛠️ peer가 없어 자동 생성 시도:", senderId);
 
-                        // 로컬 스트림이 준비된 상태여야 함
                         if (!localStreamRef.current) {
                             console.error("❌ localStream이 아직 없습니다. peer 생성 실패");
                             return;
                         }
 
-                        // peer 강제 생성
                         peer = createPeerConnection(senderId, localStreamRef.current);
                         peerRef.current[senderId] = peer;
                     }
 
                     const remoteDesc = new RTCSessionDescription(data);
 
-                    if (peer.signalingState === "stable") {
-                        console.warn("⚠️ peer signalingState가 stable이지만 answer 설정 시도");
+                    if (peer.signalingState === "have-local-offer") {
+                        await peer.setRemoteDescription(remoteDesc);
+                        console.log("✅ answer 설정 성공:", senderId);
+                    } else if (peer.signalingState === "stable") {
+                        console.warn("⚠️ 이미 stable 상태, answer 설정 생략:", senderId);
+                    } else {
+                        console.warn("❓ 예상치 못한 signalingState:", peer.signalingState);
                     }
-
-                    await peer.setRemoteDescription(remoteDesc);
-                    console.log("✅ answer 설정 성공:", senderId);
                 } catch (err) {
                     console.error("❌ answer 처리 중 오류:", err);
                 }
