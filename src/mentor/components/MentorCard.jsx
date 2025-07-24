@@ -55,7 +55,7 @@ const MentorCard = ({
           {/* 가격 구분선 & 가격 */}
           <div className="border-t border-gray-200 w-full mb-1"></div>
           <div className="text-primary font-bold text-xl mt-auto min-h-[36px] mb-0 pb-2 flex items-end justify-center text-center truncate">
-            {hourlyRate?.toLocaleString()}원 / 시간
+            {hourlyRate?.toLocaleString()}원 / `시간`
           </div>
         </div>
       </div>
