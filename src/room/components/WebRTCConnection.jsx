@@ -161,27 +161,66 @@ const WebRTCConnection = ({ roomId, userId, localVideoRef, remoteVideoRef, setLo
 
             case "answer":
                 try {
-                    // 항상 answer 수신 시도
-                    const peer = peerRef.current[data.sender];
+                    const senderId = data.sender;
+
+                    let peer = peerRef.current[senderId];
                     if (!peer) {
-                        console.warn("❌ answer 처리 실패: 해당 peer가 없습니다.", data.sender);
-                        return;
+                        console.warn("🛠️ peer가 없어 자동 생성 시도:", senderId);
+
+                        // 로컬 스트림이 준비된 상태여야 함
+                        if (!localStreamRef.current) {
+                            console.error("❌ localStream이 아직 없습니다. peer 생성 실패");
+                            return;
+                        }
+
+                        // peer 강제 생성
+                        peer = createPeerConnection(senderId, localStreamRef.current);
+                        peerRef.current[senderId] = peer;
                     }
 
                     const remoteDesc = new RTCSessionDescription(data);
 
-                    // 중복 설정 방지용 로그
                     if (peer.signalingState === "stable") {
-                        console.warn("⚠️ signalingState는 stable이지만 answer 설정 시도함");
+                        console.warn("⚠️ peer signalingState가 stable이지만 answer 설정 시도");
                     }
 
-                    // 강제 설정
                     await peer.setRemoteDescription(remoteDesc);
-                    console.log("✅ answer 설정 성공:", remoteDesc);
+                    console.log("✅ answer 설정 성공:", senderId);
                 } catch (err) {
                     console.error("❌ answer 처리 중 오류:", err);
                 }
                 break;
+
+            // case "answer":
+            //     try {
+            //         // 상대방 ID
+            //         const senderId = data.sender;
+            //
+            //         // 상대방 peer가 없으면 에러 로그 출력
+            //         const peer = peerRef.current[senderId];
+            //         if (!peer) {
+            //             console.warn("❌ answer 처리 실패: 해당 peer가 없습니다.", senderId);
+            //             // 💡 필요시 여기서 자동으로 peer를 생성할 수도 있음
+            //             // peerRef.current[senderId] = createPeerConnection(senderId, localStream);
+            //             // return; 또는 아래 로직 계속
+            //             return;
+            //         }
+            //
+            //         const remoteDesc = new RTCSessionDescription(data);
+            //
+            //         // signalingState가 stable이면 보통 answer를 설정하면 안 되지만,
+            //         // 중복 연결을 허용할 경우엔 무시할 수 있음
+            //         if (peer.signalingState === "stable") {
+            //             console.warn("⚠️ peer signalingState가 이미 stable입니다. answer 무시할 가능성 있음");
+            //         }
+            //
+            //         await peer.setRemoteDescription(remoteDesc);
+            //         console.log("✅ answer 설정 성공 from:", senderId);
+            //     } catch (err) {
+            //         console.error("❌ answer 처리 중 오류:", err);
+            //     }
+            //     break;
+
 
 
             case "candidate":
