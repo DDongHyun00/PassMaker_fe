@@ -64,12 +64,11 @@ const WebRTCConnection = ({ roomId, userId, localVideoRef, remoteVideoRef, setLo
     };
 
     const createPeerConnection = (otherUserId, stream) => {
-        const peer = new RTCPeerConnection(rtcConfig);
-        peerRef.current[otherUserId] = peer;
+        const peer = new RTCPeerConnection({
+            iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
+        });
 
-        peer.oniceconnectionstatechange = () => {
-            console.log("ICE 상태:", peer.iceConnectionState);
-        };
+        peerRef.current[otherUserId] = peer;
 
         stream.getTracks().forEach((track) => {
             peer.addTrack(track, stream);
@@ -86,25 +85,35 @@ const WebRTCConnection = ({ roomId, userId, localVideoRef, remoteVideoRef, setLo
             }
         };
 
-        peer.ontrack = (e) => {
-            console.log("ontrack fired", e.streams);
-            const stream = e.streams[0];
-            if (remoteVideoRef.current) {
-                remoteVideoRef.current.srcObject = stream;
-
-                const tryPlay = () => {
-                    remoteVideoRef.current.play().catch((err) => {
-                        console.warn("remote video 재생 실패:", err.message);
-                        setTimeout(tryPlay, 300);
-                    });
-                };
-                tryPlay();
-            }
+        peer.oniceconnectionstatechange = () => {
+            console.log(`🌐 ICE 상태(${otherUserId}):`, peer.iceConnectionState);
         };
 
+        peer.ontrack = (e) => {
+            console.log("📡 ontrack fired from", otherUserId, e.streams);
+            const stream = e.streams[0];
+            if (!remoteVideoRef.current) {
+                console.warn("❌ remoteVideoRef is null");
+                return;
+            }
+
+            remoteVideoRef.current.srcObject = stream;
+            remoteVideoRef.current.autoplay = true;
+            remoteVideoRef.current.playsInline = true;
+            remoteVideoRef.current.muted = false;
+
+            const tryPlay = () => {
+                remoteVideoRef.current.play().catch((err) => {
+                    console.warn("🔇 remote video 재생 실패:", err.message);
+                    setTimeout(tryPlay, 300);
+                });
+            };
+            tryPlay();
+        };
 
         return peer;
     };
+
 
     const sendSignal = (signal) => {
         const currentRoomId = roomIdRef.current;
