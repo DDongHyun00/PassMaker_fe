@@ -106,18 +106,24 @@ const WebRTCConnection = ({
         return;
       }
 
-      remoteVideoRef.current.srcObject = stream;
-      remoteVideoRef.current.autoplay = true;
-      remoteVideoRef.current.playsInline = true;
-      remoteVideoRef.current.muted = false;
+      // 이미 같은 스트림이 할당되어 있으면 재설정하지 않음
+      if (remoteVideoRef.current.srcObject !== stream) {
+        remoteVideoRef.current.srcObject = stream;
+        remoteVideoRef.current.autoplay = true;
+        remoteVideoRef.current.playsInline = true;
+        remoteVideoRef.current.muted = false;
 
-      const tryPlay = () => {
-        remoteVideoRef.current.play().catch((err) => {
-          console.warn("🔇 remote video 재생 실패:", err.message);
-          setTimeout(tryPlay, 300);
-        });
-      };
-      tryPlay();
+        remoteVideoRef.current
+          .play()
+          .then(() => {
+            console.log("▶️ remote video 재생 성공");
+          })
+          .catch((err) => {
+            console.warn("🔇 remote video 재생 실패:", err.message);
+          });
+      } else {
+        console.log("🔁 이미 같은 remote stream이 할당되어 있음");
+      }
     };
 
     return peer;
@@ -229,7 +235,7 @@ const WebRTCConnection = ({
       //         const peer = peerRef.current[senderId];
       //         if (!peer) {
       //             console.warn("❌ answer 처리 실패: 해당 peer가 없습니다.", senderId);
-      //             // 💡 필요시 여기서 자동으로 peer를 생성할 수도 있음
+      //             // �� 필요시 여기서 자동으로 peer를 생성할 수도 있음
       //             // peerRef.current[senderId] = createPeerConnection(senderId, localStream);
       //             // return; 또는 아래 로직 계속
       //             return;
